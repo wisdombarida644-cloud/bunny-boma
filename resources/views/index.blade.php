@@ -7,9 +7,9 @@
     <a href="#home">Home</a>
     <a href="#story">Our Story</a>
     <a href="#wedding">Our Wedding</a>
-    <a href="#moments">Moments</a>
+    <a href="#memories">Memories</a>
     <a href="#qa">Q&A</a>
-    <a href="#gifts">Gift Registry</a>
+    <a href="#cash-gift">Cash Gift</a>
   </div>
   <div class="nav_right">
     <a href="#rsvp" class="nav_cta">RSVP</a>
@@ -26,23 +26,23 @@
     <a href="#home" data-close><span>01</span>Home</a>
     <a href="#story" data-close><span>02</span>Our Story</a>
     <a href="#wedding" data-close><span>03</span>Our Wedding</a>
-    <a href="#moments" data-close><span>04</span>Moments</a>
+    <a href="#memories" data-close><span>04</span>Memories</a>
     <a href="#qa" data-close><span>05</span>Q&A</a>
-    <a href="#gifts" data-close><span>06</span>Gift Registry</a>
+    <a href="#cash-gift" data-close><span>06</span>Cash Gift</a>
     <a href="#rsvp" data-close><span>07</span>RSVP</a>
   </div>
   <div class="mobile_menu_foot">
-    <span>{{ $setting->hashtag ?? '#TheGospels26' }}</span>
-    <span>{{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-09-26')->format('M j, Y') }}</span>
+    <span>{{ $setting->hashtag ?? '#THEGOSPELS26' }}</span>
+    <span>{{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('M j, Y') }}</span>
   </div>
 </div>
 
 <header class="hero" id="home">
   <div class="hero_slides" id="heroSlides">
-    <img class="hero_slide active" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop" alt="{{ $setting->partner_one }} & {{ $setting->partner_two }}">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1520854221256-17451ccdf07b?q=80&w=2000&auto=format&fit=crop" alt="Benny & Boma Prewedding">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop" alt="Benny & Boma Moments">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=2000&auto=format&fit=crop" alt="Benny & Boma Celebration">
+    <img class="hero_slide active" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
+    <img class="hero_slide" src="https://images.unsplash.com/photo-1520854221256-17451ccdf07b?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
+    <img class="hero_slide" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
+    <img class="hero_slide" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
   </div>
   <div class="hero_overlay"></div>
   <div class="hero_content">
@@ -70,6 +70,18 @@
   </div>
 </header>
 
+@if(filled($setting->family_one) || filled($setting->family_two))
+<section class="families_bar" aria-label="Families">
+  <div class="families_inner">
+    <div class="eyebrow">Together with their families</div>
+    <div class="families_grid">
+      @if(filled($setting->family_one))<p>{{ $setting->family_one }}</p>@endif
+      @if(filled($setting->family_two))<p>{{ $setting->family_two }}</p>@endif
+    </div>
+  </div>
+</section>
+@endif
+
 <section class="countdown_sec" id="countdownSec">
   <div class="count_wrap">
     <div>
@@ -93,8 +105,8 @@
       </div>
       <div style="margin-top:24px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;line-height:1.8">
         {{ \Carbon\Carbon::parse($setting->wedding_date)->format('l') }}<br>
-        {{ $setting->arrival_time ?? 'Four in the afternoon' }}<br>
-        {{ $setting->venue_name ?? 'Harbour Point, Lagos' }}
+        {{ $setting->ceremony_time ?? '11:00 AM' }} prompt<br>
+        {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }} • {{ $setting->city ?? 'Port Harcourt, Rivers State' }}
       </div>
       <div style="margin-top:32px;display:flex;gap:12px">
         <button class="btn_line" id="copyLinkBtn" style="margin-top:0">Copy Link</button>
@@ -108,9 +120,9 @@
   <div class="gospels_inner">
     <div>
       <div class="eyebrow">The Gospel</div>
-      <div class="gospels_hash reveal">#The<br>Gospels26</div>
-      <div class="gospels_quote reveal">One story.<br>Two hearts.<br>A lifetime ahead.</div>
-      <p class="body gospels_text reveal">We chose {{ $setting->hashtag }} because our story has always felt like good news worth telling — ordinary moments made sacred, laughter that lingered, and a love that kept choosing. This is our testimony.</p>
+      <div class="gospels_hash reveal">{{ $setting->hashtag ?? '#THEGOSPELS26' }}</div>
+      <div class="gospels_quote reveal">One celebration.<br>Two families.<br>A new chapter.</div>
+      <p class="body gospels_text reveal">With gratitude to God and the love of their families, Chiamaka and Gospel invite you to celebrate their wedding ceremony.</p>
     </div>
     <div class="gospels_img_wrap reveal">
       <div class="gospels_behind"></div>
@@ -127,10 +139,12 @@
         <h2 class="h2 reveal" style="margin-top:16px">{!! str_replace('. ', '.<br>', e($setting->story_title ?? 'Some stories are written. Ours was lived.')) !!}</h2>
       </div>
       <div class="story_copy reveal" id="storyCopy">
-        @if(is_array($setting->story_content))
+        @if(is_array($setting->story_content) && count($setting->story_content))
           @foreach($setting->story_content as $p)
             <p>{{ $p }}</p>
           @endforeach
+        @else
+          <p>Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi invite you to celebrate their wedding with their families on Saturday, November 21, 2026.</p>
         @endif
       </div>
     </div>
@@ -153,51 +167,68 @@
 <section class="how" id="howWeMet">
   <div class="how_inner">
     <div class="video_frame reveal" id="videoFrame">
-      <div class="video_poster" id="videoPoster">
+      <div class="video_poster" id="videoPoster" @if($weddingData['podcastUrl']) role="button" tabindex="0" aria-label="Play the couple’s story video" @else aria-disabled="true" tabindex="-1" @endif>
         <img src="https://images.unsplash.com/photo-1529634597503-139d3726fed5?q=80&w=1200&auto=format&fit=crop" alt="How we met poster">
-        <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
+        @if($weddingData['podcastUrl'])
+          <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
+        @endif
       </div>
     </div>
     <div class="how_text reveal">
       <div class="eyebrow">Our story, in our own words</div>
       <h3 style="margin-top:16px">THE MOMENT<br><em>it all began</em></h3>
-      <p class="body">{{ $setting->podcast_desc ?? 'Listen as we tell the story of the first conversation that never really ended.' }}</p>
-      <p class="body" style="opacity:.7;font-size:13px">Filmed in Lagos, with all the nervous laughter intact. Tap to play video.</p>
-      <div class="how_label">Play film — 3:42</div>
+      <p class="body">{{ $setting->podcast_desc ?? 'The families of Chiamaka and Gospel invite you to celebrate their wedding ceremony.' }}</p>
+      @if($weddingData['podcastUrl'])
+        <p class="body" style="opacity:.7;font-size:13px">The podcast will try to start automatically with sound muted. If your browser blocks autoplay, press play in the YouTube player and unmute there.</p>
+        <div class="how_label">Our story, in our own words</div>
+      @else
+        <p class="body" style="opacity:.7;font-size:13px">The couple’s YouTube podcast will appear here once it is added in wedding settings.</p>
+      @endif
     </div>
   </div>
 </section>
 
-<section class="moments_cine" id="moments">
+<section class="moments_cine" id="memories" aria-label="Memories">
   <div class="moments_bg" id="momentsBg"></div>
-  <div class="moments_title"><div class="eyebrow">Through their eyes</div><h2>Every moment, preserved</h2></div>
+  <div class="moments_title"><div class="eyebrow">Our memories</div><h2>Little moments, held forever</h2></div>
+  @if($moments->isNotEmpty())
   <div class="moments_card_wrap">
     <div class="moments_card" id="momentsCard">
-      <img id="momentsImg" alt="">
+      <img id="momentsImg" src="{{ $moments->first()->image_path }}" alt="{{ $moments->first()->title ?: 'Wedding memory' }}">
       <div class="moments_card_caption">
-        <h4 id="momentsTitle"></h4>
-        <p id="momentsCaption"></p>
-        <div class="moments_card_name" id="momentsName"></div>
+        <h4 id="momentsTitle">{{ $moments->first()->title }}</h4>
+        <p id="momentsCaption">{{ $moments->first()->caption }}</p>
+        <div class="moments_card_name" id="momentsName">{{ $moments->first()->credit_name }}</div>
       </div>
     </div>
   </div>
-  <div class="moments_nav"><button id="momPrev" aria-label="Previous">←</button><button id="momNext" aria-label="Next">→</button></div>
-  <div class="moments_counter"><span id="momCounter">01 / 06</span><div class="moments_dots" id="momDots"></div></div>
+  <div class="moments_nav"><button id="momPrev" type="button" aria-label="Previous memory">←</button><button id="momNext" type="button" aria-label="Next memory">→</button></div>
+  <div class="moments_counter"><span id="momCounter">01 / {{ str_pad((string) $moments->count(), 2, '0', STR_PAD_LEFT) }}</span><div class="moments_dots" id="momDots" role="group" aria-label="Choose a memory"></div></div>
+  @else
+  <div class="memories_empty" role="status">
+    <p>Our memory album is taking shape.</p>
+    <a href="#gallery">Visit the photo journal</a>
+  </div>
+  @endif
 </section>
 
 <section class="gallery_mason" id="gallery">
   <div class="gallery_head">
     <div><div class="eyebrow">Photo journal</div><h2 class="h2" style="margin-top:12px">A love letter<br><i>in photographs</i></h2></div>
-    <div class="body" style="max-width:22em;opacity:.7">An editorial selection from our engagement, pre-wedding and quiet in-betweens. Click to view full screen.</div>
+    <div class="body" style="max-width:22em;opacity:.7">A photo journal of the moments Chiamaka and Gospel choose to share with family and friends.</div>
   </div>
-  <div class="gallery_grid" id="galleryGrid">
-    @foreach($galleries as $index => $g)
-    <div class="gallery_item" data-i="{{ $index }}">
-      <img src="{{ $g->image_path }}" loading="lazy" alt="{{ $g->caption }}">
-      <div class="gallery_item_meta"><span>{{ $g->category }} — {{ $g->caption }}</span></div>
+  @if($galleries->isNotEmpty())
+    <div class="gallery_grid" id="galleryGrid">
+      @foreach($galleries as $index => $g)
+      <div class="gallery_item" data-i="{{ $index }}">
+        <img src="{{ $g->image_path }}" loading="lazy" alt="{{ $g->caption }}">
+        <div class="gallery_item_meta"><span>{{ $g->category }} — {{ $g->caption }}</span></div>
+      </div>
+      @endforeach
     </div>
-    @endforeach
-  </div>
+  @else
+    <div class="gallery_empty" role="status">Photos will be added to the journal as they are shared.</div>
+  @endif
 </section>
 
 <div class="lightbox" id="lightbox">
@@ -215,30 +246,20 @@
     <div class="wedding_side reveal">
       <div class="eyebrow">Our wedding</div>
       <h2 class="h2" style="margin-top:12px">Come<br>celebrate<br><i>with us.</i></h2>
-      <p class="body" style="margin-top:20px;opacity:.7">We would be honoured by your presence as we begin this chapter. Dress beautifully, arrive early, stay late.</p>
+      <p class="body" style="margin-top:20px;opacity:.7">Chiamaka and Gospel would be honoured by your presence as they celebrate with their families.</p>
       @if($setting->order_pdf_path)
-        <a class="btn_line" href="{{ $setting->order_pdf_path }}" target="_blank">Download Order of Service</a>
-      @else
-        <button class="btn_line" onclick="alert('Order of Service PDF will be uploaded by couple.')">Download Order of Service</button>
+        <a class="btn_line" href="{{ $setting->order_pdf_path }}" target="_blank" rel="noopener">Download Order of Service</a>
       @endif
     </div>
     <div class="reveal">
       <div class="wedding_timeline">
         <div class="wt_row">
-          <div class="wt_time">{{ $setting->arrival_time }}<div class="wt_label">Arrival</div></div>
-          <div><div class="wt_title">Guests arrive & settle</div><div class="wt_desc">Harbour Point opens, welcome drinks</div></div>
+          <div class="wt_time">{{ $setting->ceremony_time ?: '11:00 AM' }}<div class="wt_label">Ceremony</div></div>
+          <div><div class="wt_title">Wedding ceremony</div><div class="wt_desc">Saturday, November 21, 2026 — beginning promptly.</div></div>
         </div>
         <div class="wt_row">
-          <div class="wt_time">{{ $setting->ceremony_time }}<div class="wt_label">Ceremony</div></div>
-          <div><div class="wt_title">The vows</div><div class="wt_desc">Unplugged, intimate, full of promise</div></div>
-        </div>
-        <div class="wt_row">
-          <div class="wt_time">{{ $setting->reception_time }}<div class="wt_label">Reception</div></div>
-          <div><div class="wt_title">Dinner, toasts & dancing</div><div class="wt_desc">Celebration into the night</div></div>
-        </div>
-        <div class="wt_row">
-          <div class="wt_time">09:00 PM<div class="wt_label">Closing</div></div>
-          <div><div class="wt_title">Last dance</div><div class="wt_desc">Thank you for being here</div></div>
+          <div class="wt_time">{{ $setting->reception_time ?: 'To follow' }}<div class="wt_label">Reception</div></div>
+          <div><div class="wt_title">Reception</div><div class="wt_desc">Reception to follow the ceremony.</div></div>
         </div>
       </div>
     </div>
@@ -248,7 +269,7 @@
 <section class="venue" id="venue">
   <div class="venue_inner reveal">
     <div class="venue_map">
-      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop" alt="Venue map">
+      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop" alt="Decorative map illustration; use the location link for directions">
       <div class="venue_map_overlay"></div>
       <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--warm);padding:12px 16px;border:1px solid var(--line);font-size:10px;letter-spacing:.18em;text-transform:uppercase">
         {{ $setting->venue_name }} • {{ $setting->city }}
@@ -257,9 +278,9 @@
     <div class="venue_info">
       <div class="eyebrow">Venue</div>
       <div class="venue_name">{{ $setting->venue_name }}</div>
-      <div class="venue_addr">{!! nl2br(e($setting->address)) !!}<br>{{ $setting->city }}<br><br>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }} • {{ $setting->wedding_time }}</div>
+      <div class="venue_addr">{!! nl2br(e($weddingData['address'])) !!}<br>{{ $weddingData['city'] }}<br><br>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }} • {{ $setting->ceremony_time ?: '11:00 AM' }} prompt</div>
       <div class="venue_actions">
-        <a class="btn_line" href="{{ $setting->maps_url }}" target="_blank">View location</a>
+        <a class="btn_line" href="{{ $weddingData['mapsUrl'] }}" target="_blank" rel="noopener noreferrer">View location</a>
         <button class="btn_line" id="copyAddrBtn">Copy address</button>
       </div>
     </div>
@@ -270,18 +291,16 @@
   <div class="dress_inner">
     <div class="reveal">
       <div class="eyebrow">Dress code</div>
-      <h2 class="h2" style="margin-top:12px">Formal<br><i>attire</i></h2>
+      <h2 class="h2" style="margin-top:12px">{{ $setting->dress_title ?? 'Formal Attire' }}</h2>
       <p class="body" style="margin-top:16px">We invite you to dress in a way that makes you feel your most beautiful. Think timeless, refined, celebratory.</p>
-      <div class="dress_note">{{ $setting->dress_note }}</div>
+      <div class="dress_note">{{ $setting->dress_note ?: 'Emerald green, beige, gold, and white.' }}</div>
     </div>
     <div class="reveal">
       <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6">Suggested palette</div>
       <div class="dress_swatches">
-        @if(is_array($setting->dress_colors))
-          @foreach($setting->dress_colors as $color)
-            <div class="swatch"><div class="swatch_circle" style="background:{{ $color['hex'] }}"></div><span class="swatch_label">{{ $color['name'] }}</span></div>
-          @endforeach
-        @endif
+        @foreach($weddingData['dressColors'] as $color)
+          <div class="swatch"><div class="swatch_circle" style="background:{{ $color['hex'] }}"></div><span class="swatch_label">{{ $color['name'] }}</span></div>
+        @endforeach
       </div>
     </div>
   </div>
@@ -329,36 +348,29 @@
   </div>
 </section>
 
-<section class="gifts" id="gifts">
-  <div class="gifts_inner">
-    <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:end">
-      <div><div class="eyebrow">Gift registry</div><h2 class="h2" style="margin-top:12px">Your presence is<br><i>the greatest gift.</i></h2></div>
-      <div class="body" style="max-width:26em;opacity:.7">We are incredibly grateful to celebrate this day with you. For those who wish to bless us with a gift, we have put together a registry.</div>
-    </div>
-    <div class="gifts_filters" id="giftFilters">
-      <button class="gf_btn active" data-f="ALL">ALL</button>
-      <button class="gf_btn" data-f="HOME">HOME</button>
-      <button class="gf_btn" data-f="TRAVEL">TRAVEL</button>
-      <button class="gf_btn" data-f="EXPERIENCE">EXPERIENCE</button>
-      <button class="gf_btn" data-f="PERSONAL">PERSONAL</button>
-    </div>
-    <div class="gifts_grid" id="giftsGrid">
-      @foreach($gifts as $gift)
-      <div class="gift_card" data-cat="{{ $gift->category }}" data-status="{{ $gift->status }}">
-        <div class="gift_img"><img src="{{ $gift->image_path }}" loading="lazy" alt="{{ $gift->name }}"></div>
-        <div class="gift_body">
-          <div class="gift_cat">{{ $gift->category }}</div>
-          <div class="gift_name">{{ $gift->name }}</div>
-          <div class="gift_desc">{{ $gift->description }}</div>
-          <div class="gift_price">{{ $gift->price }}</div>
-          <div class="gift_status {{ $gift->status !== 'AVAILABLE' ? 'gifted' : '' }}">{{ $gift->status }}</div>
-          <button class="gift_btn" data-id="{{ $gift->id }}" data-name="{{ $gift->name }}" data-price="{{ $gift->price }}" data-cat="{{ $gift->category }}" data-desc="{{ $gift->description }}" data-img="{{ $gift->image_path }}" {{ $gift->status !== 'AVAILABLE' ? 'disabled style="opacity:.4"' : '' }}>
-            {{ $gift->status === 'AVAILABLE' ? 'Give this gift' : 'Fully gifted' }}
-          </button>
-        </div>
+<section class="cash_gift" id="cash-gift">
+  <div class="cash_gift_inner">
+    <div class="cash_gift_intro">
+      <div>
+        <div class="eyebrow">Cash gifts</div>
+        <h2 class="h2" style="margin-top:12px">Your presence is<br><i>the greatest gift.</i></h2>
       </div>
-      @endforeach
+      <p class="body">We are grateful to celebrate with you. If you would also like to give a cash gift, you may use the bank details below. There is no obligation.</p>
     </div>
+    @if(filled($setting->bank_name) && filled($setting->account_name) && filled($setting->account_number))
+      <div class="cash_gift_details" aria-label="Cash gift bank transfer details">
+        <div class="cash_gift_item"><span>Bank</span><strong>{{ $setting->bank_name }}</strong></div>
+        <div class="cash_gift_item"><span>Account name</span><strong>{{ $setting->account_name }}</strong></div>
+        <div class="cash_gift_item"><span>Account number</span><strong id="cashGiftAccount">{{ $setting->account_number }}</strong></div>
+      </div>
+      <button class="btn_line" type="button" id="copyAccountBtn" data-account="{{ $setting->account_number }}">Copy account number</button>
+      @if(filled($setting->cash_gift_note))
+        <p class="cash_gift_note">{{ $setting->cash_gift_note }}</p>
+      @endif
+    @else
+      <p class="cash_gift_note" role="status">Bank transfer details will be shared here by the couple.</p>
+    @endif
+    <p class="cash_gift_disclaimer">Please verify the account name and number before making a transfer. This website does not collect or process payments.</p>
   </div>
 </section>
 
@@ -366,23 +378,16 @@
   <div class="rsvp_inner">
     <div class="eyebrow" style="color:rgba(252,251,247,.6)">RSVP</div>
     <h2 class="h2" style="color:var(--warm);margin-top:12px">Will you celebrate<br><i>with us?</i></h2>
-    <p class="body" style="margin:16px auto 0;opacity:.7;color:var(--ivory)">Kindly respond by August 26, 2026. We have reserved seats with love.</p>
+    <p class="body" style="margin:16px auto 0;opacity:.7;color:var(--ivory)">Kindly respond by {{ $weddingData['rsvpDeadline'] ?? 'November 7, 2026' }}.</p>
     <form class="rsvp_form" id="rsvpForm" action="{{ route('rsvp.store') }}" method="POST">
       @csrf
-      <div class="rsvp_field"><label>Full name</label><input required name="name" placeholder="Your full name"></div>
-      <div class="rsvp_field"><label>Email</label><input required type="email" name="email" placeholder="you@email.com"></div>
-      <div class="rsvp_field"><label>Phone</label><input name="phone" placeholder="+234..."></div>
-      <div class="rsvp_field"><label>Number attending</label><select name="guests_count"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
-      <div class="rsvp_field full">
-        <label>Will you be there?</label>
-        <div class="rsvp_radio">
-          <label class="active"><input type="radio" name="attendance" value="yes" checked hidden> Yes, I'll be there</label>
-          <label><input type="radio" name="attendance" value="no" hidden> Sorry, I can't make it</label>
-        </div>
-      </div>
-      <div class="rsvp_field full"><label>Message to couple (optional)</label><textarea name="message" rows="3" placeholder="Leave a note..."></textarea></div>
-      <button class="rsvp_submit" type="submit">Send RSVP</button>
+      <div class="rsvp_field"><label for="rsvpName">Full name</label><input id="rsvpName" required name="name" value="{{ old('name') }}" placeholder="Your full name" autocomplete="name" maxlength="255"></div>
+      <div class="rsvp_field"><label for="rsvpPhone">Phone number</label><input id="rsvpPhone" required type="tel" name="phone" value="{{ old('phone') }}" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50"></div>
+      <button class="rsvp_submit" type="submit">Confirm my RSVP</button>
     </form>
+    @if($weddingData['whatsappUrl'])
+      <a class="rsvp_whatsapp" href="{{ $weddingData['whatsappUrl'] }}" target="_blank" rel="noopener noreferrer">Prefer WhatsApp? Message {{ $weddingData['whatsappPhone'] }}</a>
+    @endif
   </div>
 </section>
 
@@ -391,15 +396,17 @@
     <div><div class="eyebrow">Guestbook</div><h2 class="h2" style="margin-top:12px;font-size:36px">Leave us<br><i>a note</i></h2></div>
     <div>
       <div class="gb_list" id="gbList">
-        @foreach($guestbooks as $gb)
+        @forelse($guestbooks as $gb)
         <div class="gb_card"><div class="gb_msg">"{{ $gb->message }}"</div><div class="gb_name">— {{ $gb->name }}</div></div>
-        @endforeach
+        @empty
+        <p class="gb_empty" role="status">Be the first to leave a message. Notes appear here after approval.</p>
+        @endforelse
       </div>
       <form class="gb_form" id="gbForm" action="{{ route('guestbook.store') }}" method="POST">
         @csrf
         <h4>Write a message</h4>
-        <div class="rsvp_field" style="margin-top:16px"><label>Your name</label><input name="name" required placeholder="Name"></div>
-        <div class="rsvp_field" style="margin-top:12px"><label>Message</label><textarea name="message" rows="3" required placeholder="May your home always be..."></textarea></div>
+        <div class="rsvp_field" style="margin-top:16px"><label>Your name</label><input name="name" value="{{ old('name') }}" required maxlength="255" placeholder="Name" autocomplete="name"></div>
+        <div class="rsvp_field" style="margin-top:12px"><label>Message</label><textarea name="message" rows="3" maxlength="2000" required placeholder="May your home always be...">{{ old('message') }}</textarea></div>
         <button class="btn_line" style="width:100%;margin-top:16px;justify-content:center" type="submit">Post note</button>
       </form>
     </div>
@@ -409,150 +416,373 @@
 <footer class="footer">
   <div class="footer_inner">
     <div class="footer_top">
-      <div class="footer_brand">{{ strtoupper($setting->partner_one) }} &<br>{{ strtoupper($setting->partner_two) }}</div>
+      <div class="footer_brand">THE<br>GOSPELS</div>
       <div>
         <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
         <div class="footer_nav">
-          <a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#moments">Moments</a><a href="#qa">Q&A</a><a href="#gifts">Gift registry</a><a href="{{ route('admin.dashboard') }}">Admin</a>
+          <a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
         </div>
       </div>
     </div>
-    <div class="footer_bottom"><span>With love, {{ $setting->partner_one }} & {{ $setting->partner_two }}</span><span>Lagos, Nigeria • Crafted with care</span></div>
+    <div class="footer_bottom"><span>With love, {{ $setting->partner_one }} & {{ $setting->partner_two }}</span><span>{{ $weddingData['city'] }} • Crafted with care</span></div>
   </div>
 </footer>
 
-<!-- Gift Modal -->
-<div class="modal" id="giftModal">
-  <div class="modal_box">
-    <button class="modal_close" id="giftModalClose">✕</button>
-    <div class="modal_img"><img id="giftModalImg" alt=""></div>
-    <div class="modal_content">
-      <div class="eyebrow" id="giftModalCat"></div>
-      <h3 style="font-family:var(--serif);font-size:28px;margin-top:8px" id="giftModalName"></h3>
-      <div style="margin-top:8px;font-family:var(--serif);font-size:20px" id="giftModalPrice"></div>
-      <p class="body" style="margin-top:12px" id="giftModalDesc"></p>
-      <div class="rsvp_field" style="margin-top:20px"><label>Note to couple</label><textarea rows="3" placeholder="Add a personal note..."></textarea></div>
-      <button class="rsvp_submit" style="width:100%;margin-top:16px;background:var(--deep)" id="giftConfirm">Confirm gift — Thank you</button>
-    </div>
-  </div>
+@if($setting->background_music_enabled && $setting->background_music_path)
+<div class="music_player" id="musicPlayer">
+  <audio id="backgroundMusic" src="{{ $setting->background_music_path }}" autoplay loop preload="auto" aria-label="Wedding background music"></audio>
+  <button class="music_toggle" id="musicToggle" type="button" aria-pressed="false" aria-label="Play background music">
+    <span class="music_icon" aria-hidden="true">♫</span><span id="musicButtonText">Play Music</span>
+  </button>
+  <span class="music_status" id="musicStatus" role="status" aria-live="polite">Trying autoplay. If blocked, tap Play Music.</span>
 </div>
+@endif
 
 <script>
-const weddingData = {
-  date: "{{ $setting->wedding_date }}",
-  time: "{{ $setting->wedding_time }}",
-  moments: {!! json_encode($moments) !!},
-  gallery: {!! json_encode($galleries) !!}
-};
+const weddingData = @js($weddingData);
 
-document.addEventListener("DOMContentLoaded", ()=>{
-  // Navigation
-  const nav=document.getElementById("nav"), burger=document.getElementById("burger"), menu=document.getElementById("mobileMenu"), close=document.getElementById("closeMenu"), prog=document.getElementById("scrollProg");
-  window.addEventListener("scroll", ()=>{
-    nav.classList.toggle("scrolled", window.scrollY>60);
-    prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)*100)+"%";
-  });
-  burger.addEventListener("click", ()=>menu.classList.add("open"));
-  close.addEventListener("click", ()=>menu.classList.remove("open"));
-  document.querySelectorAll("[data-close]").forEach(a=>a.addEventListener("click", ()=>menu.classList.remove("open")));
+document.addEventListener("DOMContentLoaded", () => {
+  const nav = document.getElementById("nav");
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("mobileMenu");
+  const closeMenu = document.getElementById("closeMenu");
+  const progress = document.getElementById("scrollProg");
 
-  // Hero Background Slideshow Loop
-  const hSlides = [...document.querySelectorAll(".hero_slide")];
-  const hDots = [...document.querySelectorAll("#heroDots button")];
-  let hIdx = 0;
-  if(hSlides.length > 0) {
-    function changeHeroSlide(newIdx){
-      hSlides[hIdx].classList.remove("active");
-      if(hDots[hIdx]) hDots[hIdx].classList.remove("active");
-      hIdx = (newIdx + hSlides.length) % hSlides.length;
-      hSlides[hIdx].classList.add("active");
-      if(hDots[hIdx]) hDots[hIdx].classList.add("active");
+  const closeMobileMenu = () => menu?.classList.remove("open");
+  const updateScroll = () => {
+    nav?.classList.toggle("scrolled", window.scrollY > 60);
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = `${scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0}%`;
+  };
+  window.addEventListener("scroll", updateScroll, { passive: true });
+  updateScroll();
+  burger?.addEventListener("click", () => menu?.classList.add("open"));
+  closeMenu?.addEventListener("click", closeMobileMenu);
+  document.querySelectorAll("[data-close]").forEach(link => link.addEventListener("click", closeMobileMenu));
+
+  // Hero slideshow.
+  const heroSlides = [...document.querySelectorAll(".hero_slide")];
+  const heroDots = [...document.querySelectorAll("#heroDots button")];
+  let heroIndex = 0;
+  if (heroSlides.length > 1) {
+    const changeHeroSlide = index => {
+      heroSlides[heroIndex]?.classList.remove("active");
+      heroDots[heroIndex]?.classList.remove("active");
+      heroIndex = (index + heroSlides.length) % heroSlides.length;
+      heroSlides[heroIndex].classList.add("active");
+      heroDots[heroIndex]?.classList.add("active");
+    };
+    heroDots.forEach((button, index) => button.addEventListener("click", () => changeHeroSlide(index)));
+    window.setInterval(() => changeHeroSlide(heroIndex + 1), 5000);
+  }
+
+  // Event countdown uses the wedding's configured timezone, not the visitor's local timezone.
+  const countdown = document.getElementById("countGrid");
+  const target = new Date(weddingData.dateTime);
+  const tick = () => {
+    if (!Number.isFinite(target.getTime())) {
+      if (countdown) countdown.textContent = "Event date to be confirmed.";
+      return false;
     }
-    hDots.forEach((btn, i) => btn.addEventListener("click", () => changeHeroSlide(i)));
-    setInterval(() => changeHeroSlide(hIdx + 1), 5000);
-  }
 
-  // Countdown
-  const target = new Date(weddingData.date+"T"+weddingData.time+":00");
-  const cD=document.getElementById("cDays"), cH=document.getElementById("cHours"), cM=document.getElementById("cMins"), cS=document.getElementById("cSecs");
-  function tick(){
-    const diff=target - new Date();
-    if(diff<=0) return;
-    const d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-    cD.textContent=String(d).padStart(2,"0"); cH.textContent=String(h).padStart(2,"0"); cM.textContent=String(m).padStart(2,"0"); cS.textContent=String(s).padStart(2,"0");
-  }
-  tick(); setInterval(tick, 1000);
-
-  // Moments Slider
-  const moments = weddingData.moments;
-  if(moments.length > 0) {
-    const bg=document.getElementById("momentsBg"), img=document.getElementById("momentsImg"), title=document.getElementById("momentsTitle"), cap=document.getElementById("momentsCaption"), name=document.getElementById("momentsName"), counter=document.getElementById("momCounter"), dots=document.getElementById("momDots");
-    let idx=0;
-    bg.innerHTML=moments.map((m,i)=>`<img src="${m.image_path}" alt="" class="${i===0?'active':''}">`).join("");
-    const bgImgs=[...bg.children];
-    function renderMom(){
-      const m=moments[idx];
-      img.src=m.image_path; title.textContent=m.title||''; cap.textContent=m.caption||''; name.textContent=m.credit_name||''; counter.textContent=`${String(idx+1).padStart(2,"0")} / ${String(moments.length).padStart(2,"0")}`;
-      bgImgs.forEach((im,i)=>im.classList.toggle("active", i===idx));
-      dots.innerHTML=moments.map((_,i)=>`<span class="${i===idx?'active':''}"></span>`).join("");
+    const difference = target.getTime() - Date.now();
+    if (difference <= 0) {
+      if (countdown) countdown.innerHTML = '<div class="count_past">The celebration has taken place.<br>Thank you for being part of our story.</div>';
+      return false;
     }
-    document.getElementById("momNext").addEventListener("click", ()=>{idx=(idx+1)%moments.length; renderMom();});
-    document.getElementById("momPrev").addEventListener("click", ()=>{idx=(idx-1+moments.length)%moments.length; renderMom();});
-    renderMom();
-  }
 
-  // Lightbox
-  const gallery = weddingData.gallery;
-  const lb=document.getElementById("lightbox"), lbImg=document.getElementById("lbImg"), lbCounter=document.getElementById("lbCounter");
-  let curG=0;
-  document.querySelectorAll(".gallery_item").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      curG = parseInt(el.dataset.i);
-      lbImg.src = gallery[curG].image_path;
-      lbCounter.textContent = `${curG+1} / ${gallery.length}`;
-      lb.classList.add("open");
+    const values = {
+      cDays: Math.floor(difference / 86400000),
+      cHours: Math.floor((difference % 86400000) / 3600000),
+      cMins: Math.floor((difference % 3600000) / 60000),
+      cSecs: Math.floor((difference % 60000) / 1000),
+    };
+    Object.entries(values).forEach(([id, value]) => {
+      const element = document.getElementById(id);
+      if (element) element.textContent = String(value).padStart(2, "0");
     });
-  });
-  document.getElementById("lbClose").addEventListener("click", ()=>lb.classList.remove("open"));
+    return true;
+  };
+  if (tick()) {
+    const timer = window.setInterval(() => {
+      if (!tick()) window.clearInterval(timer);
+    }, 1000);
+  }
 
-  // Q&A Accordion
-  document.getElementById("qaList").addEventListener("click", e=>{
-    const btn=e.target.closest(".qa_q"); if(!btn) return;
-    btn.parentElement.classList.toggle("open");
+  // Moments carousel and dot navigation.
+  const moments = Array.isArray(weddingData.moments) ? weddingData.moments : [];
+  if (moments.length) {
+    const bg = document.getElementById("momentsBg");
+    const image = document.getElementById("momentsImg");
+    const title = document.getElementById("momentsTitle");
+    const caption = document.getElementById("momentsCaption");
+    const credit = document.getElementById("momentsName");
+    const counter = document.getElementById("momCounter");
+    const dots = document.getElementById("momDots");
+    let index = 0;
+
+    bg.innerHTML = moments.map((moment, i) => `<img src="${moment.image_path}" alt="" class="${i === 0 ? "active" : ""}">`).join("");
+    const backgroundImages = [...bg.children];
+    const renderMoment = () => {
+      const moment = moments[index];
+      image.src = moment.image_path;
+      image.alt = moment.title || "Wedding moment";
+      title.textContent = moment.title || "";
+      caption.textContent = moment.caption || "";
+      credit.textContent = moment.credit_name || "";
+      counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(moments.length).padStart(2, "0")}`;
+      backgroundImages.forEach((item, i) => item.classList.toggle("active", i === index));
+      dots.innerHTML = moments.map((_, i) => `<button type="button" class="${i === index ? "active" : ""}" data-index="${i}" aria-label="Show moment ${i + 1}"></button>`).join("");
+    };
+
+    document.getElementById("momNext")?.addEventListener("click", () => {
+      index = (index + 1) % moments.length;
+      renderMoment();
+    });
+    document.getElementById("momPrev")?.addEventListener("click", () => {
+      index = (index - 1 + moments.length) % moments.length;
+      renderMoment();
+    });
+    dots.addEventListener("click", event => {
+      const button = event.target.closest("button[data-index]");
+      if (!button) return;
+      index = Number(button.dataset.index);
+      renderMoment();
+    });
+    renderMoment();
+  }
+
+  // Accessible gallery lightbox with previous/next, keyboard, and backdrop support.
+  const gallery = Array.isArray(weddingData.gallery) ? weddingData.gallery : [];
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImage = document.getElementById("lbImg");
+  const lightboxCounter = document.getElementById("lbCounter");
+  let galleryIndex = 0;
+  const renderGalleryImage = () => {
+    const item = gallery[galleryIndex];
+    if (!item) return;
+    lightboxImage.src = item.image_path;
+    lightboxImage.alt = item.caption || "Wedding gallery photo";
+    lightboxCounter.textContent = `${galleryIndex + 1} / ${gallery.length}`;
+  };
+  const openLightbox = index => {
+    if (!gallery.length) return;
+    galleryIndex = (index + gallery.length) % gallery.length;
+    renderGalleryImage();
+    lightbox.classList.add("open");
+    document.body.style.overflow = "hidden";
+  };
+  const closeLightbox = () => {
+    lightbox.classList.remove("open");
+    document.body.style.overflow = "";
+  };
+  const moveLightbox = direction => {
+    if (!gallery.length) return;
+    galleryIndex = (galleryIndex + direction + gallery.length) % gallery.length;
+    renderGalleryImage();
+  };
+  document.querySelectorAll(".gallery_item").forEach(item => {
+    item.addEventListener("click", () => openLightbox(Number(item.dataset.i)));
+  });
+  document.getElementById("lbClose")?.addEventListener("click", closeLightbox);
+  document.getElementById("lbPrev")?.addEventListener("click", () => moveLightbox(-1));
+  document.getElementById("lbNext")?.addEventListener("click", () => moveLightbox(1));
+  lightbox.addEventListener("click", event => {
+    if (event.target === lightbox) closeLightbox();
   });
 
-  // Gift Registry Filters & Modal
-  const gBtns=document.querySelectorAll(".gf_btn");
-  gBtns.forEach(b=>{
-    b.addEventListener("click", ()=>{
-      gBtns.forEach(x=>x.classList.remove("active")); b.classList.add("active");
-      const f=b.dataset.f;
-      document.querySelectorAll(".gift_card").forEach(c=>{
-        c.style.display = (f==="ALL" || c.dataset.cat===f) ? "block" : "none";
+  // Background music attempts autoplay, with a prominent manual control when blocked.
+  const backgroundMusic = document.getElementById("backgroundMusic");
+  const musicToggle = document.getElementById("musicToggle");
+  const musicButtonText = document.getElementById("musicButtonText");
+  const musicStatus = document.getElementById("musicStatus");
+  let musicPauseReason = null;
+  const updateMusicState = () => {
+    if (!backgroundMusic || !musicToggle) return;
+    const isPlaying = !backgroundMusic.paused;
+    musicToggle.setAttribute("aria-pressed", String(isPlaying));
+    musicToggle.setAttribute("aria-label", isPlaying ? "Pause background music" : "Play background music");
+    musicButtonText.textContent = isPlaying ? "Pause Music" : "Play Music";
+    musicStatus.textContent = isPlaying ? "Background music is playing." : (musicPauseReason || "Background music is paused.");
+  };
+  const pauseMusicForPodcast = () => {
+    if (!backgroundMusic) return;
+    musicPauseReason = "Background music paused while the podcast starts.";
+    backgroundMusic.pause();
+    musicStatus.textContent = musicPauseReason;
+  };
+  if (backgroundMusic && musicToggle) {
+    backgroundMusic.volume = 0.35;
+    backgroundMusic.addEventListener("play", updateMusicState);
+    backgroundMusic.addEventListener("pause", updateMusicState);
+    backgroundMusic.addEventListener("error", () => {
+      musicStatus.textContent = "The background music file could not be loaded.";
+      musicToggle.disabled = true;
+    });
+    backgroundMusic.play().catch(() => {
+      musicStatus.textContent = "Autoplay was blocked. Tap Play Music to start.";
+    });
+    musicToggle.addEventListener("click", async () => {
+      musicPauseReason = null;
+      if (!backgroundMusic.paused) {
+        backgroundMusic.pause();
+        return;
+      }
+      try {
+        await backgroundMusic.play();
+      } catch {
+        musicStatus.textContent = "Music could not start. Please check your browser's media settings.";
+      }
+    });
+  }
+
+  // YouTube attempts muted autoplay; browser policy or visitor settings may still require a manual tap.
+  const videoPoster = document.getElementById("videoPoster");
+  if (videoPoster && weddingData.podcastUrl) {
+    const iframe = document.createElement("iframe");
+    iframe.src = `${weddingData.podcastUrl}?autoplay=1&mute=1&playsinline=1&controls=1&rel=0`;
+    iframe.title = `How ${weddingData.partnerOne} and ${weddingData.partnerTwo} met`;
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    pauseMusicForPodcast();
+    iframe.addEventListener("load", pauseMusicForPodcast, { once: true });
+    videoPoster.replaceWith(iframe);
+  } else if (videoPoster) {
+    videoPoster.setAttribute("aria-disabled", "true");
+    videoPoster.querySelector(".video_play")?.remove();
+  }
+
+  // Q&A accordion.
+  document.getElementById("qaList")?.addEventListener("click", event => {
+    const button = event.target.closest(".qa_q");
+    if (button) button.parentElement.classList.toggle("open");
+  });
+
+  // Copy bank transfer details without sending payment information anywhere.
+  const copyAccountButton = document.getElementById("copyAccountBtn");
+  copyAccountButton?.addEventListener("click", async () => {
+    try {
+      await copyText(copyAccountButton.dataset.account || "");
+      showTemporaryLabel(copyAccountButton, "Copied!");
+    } catch {
+      showTemporaryLabel(copyAccountButton, "Copy unavailable");
+    }
+  });
+
+  // Copy, share, calendar download, and venue address helpers.
+  const copyText = async text => {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const input = document.createElement("textarea");
+    input.value = text;
+    input.setAttribute("readonly", "");
+    input.style.position = "fixed";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    input.select();
+    const copied = document.execCommand("copy");
+    input.remove();
+    if (!copied) throw new Error("Clipboard access is unavailable.");
+  };
+  const showTemporaryLabel = (button, label) => {
+    if (!button) return;
+    const original = button.textContent;
+    button.textContent = label;
+    window.setTimeout(() => { button.textContent = original; }, 2000);
+  };
+  const copyLinkButton = document.getElementById("copyLinkBtn");
+  copyLinkButton?.addEventListener("click", async () => {
+    try {
+      await copyText(window.location.href);
+      showTemporaryLabel(copyLinkButton, "Copied!");
+    } catch {
+      showTemporaryLabel(copyLinkButton, "Copy unavailable");
+    }
+  });
+  const shareButton = document.getElementById("shareBtn");
+  shareButton?.addEventListener("click", async () => {
+    const shareData = {
+      title: `${weddingData.partnerOne} & ${weddingData.partnerTwo} | ${weddingData.hashtag}`,
+      text: `Join us on ${weddingData.date}`,
+      url: window.location.href,
+    };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else {
+        await copyText(shareData.url);
+        showTemporaryLabel(shareButton, "Link copied");
+      }
+    } catch {
+      showTemporaryLabel(shareButton, "Share unavailable");
+    }
+  });
+  const calendarButton = document.getElementById("addCalBtn");
+  calendarButton?.addEventListener("click", () => {
+    const start = new Date(weddingData.dateTime);
+    if (!Number.isFinite(start.getTime())) return;
+    const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
+    const formatIcsDate = date => date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+    const escapeIcs = value => String(value || "").replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//With the Gospels//Wedding//EN",
+      "CALSCALE:GREGORIAN",
+      "BEGIN:VEVENT",
+      `DTSTAMP:${formatIcsDate(new Date())}`,
+      `DTSTART:${formatIcsDate(start)}`,
+      `DTEND:${formatIcsDate(end)}`,
+      `SUMMARY:${escapeIcs(`${weddingData.partnerOne} & ${weddingData.partnerTwo} Wedding`)}`,
+      `LOCATION:${escapeIcs([weddingData.venue, weddingData.address, weddingData.city].filter(Boolean).join(", "))}`,
+      `DESCRIPTION:${escapeIcs(weddingData.hashtag)}`,
+      "END:VEVENT",
+      "END:VCALENDAR",
+      "",
+    ].join("\r\n");
+    const objectUrl = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = objectUrl;
+    link.download = "wedding.ics";
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+  });
+  const addressButton = document.getElementById("copyAddrBtn");
+  addressButton?.addEventListener("click", async () => {
+    const address = [weddingData.venue, weddingData.address, weddingData.city].filter(Boolean).join(", ");
+    try {
+      await copyText(address);
+      showTemporaryLabel(addressButton, "Copied!");
+    } catch {
+      showTemporaryLabel(addressButton, "Copy unavailable");
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeMobileMenu();
+      if (lightbox.classList.contains("open")) closeLightbox();
+    }
+    if (lightbox.classList.contains("open") && event.key === "ArrowRight") moveLightbox(1);
+    if (lightbox.classList.contains("open") && event.key === "ArrowLeft") moveLightbox(-1);
+  });
+
+  // Scroll reveals, with a no-JS fallback in CSS.
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          observer.unobserve(entry.target);
+        }
       });
-    });
-  });
-
-  const gModal=document.getElementById("giftModal");
-  document.querySelectorAll(".gift_btn").forEach(b=>{
-    b.addEventListener("click", ()=>{
-      document.getElementById("giftModalImg").src=b.dataset.img;
-      document.getElementById("giftModalCat").textContent=b.dataset.cat;
-      document.getElementById("giftModalName").textContent=b.dataset.name;
-      document.getElementById("giftModalPrice").textContent=b.dataset.price;
-      document.getElementById("giftModalDesc").textContent=b.dataset.desc;
-      gModal.classList.add("open");
-    });
-  });
-  document.getElementById("giftModalClose").addEventListener("click", ()=>gModal.classList.remove("open"));
-  document.getElementById("giftConfirm").addEventListener("click", ()=>{
-    alert("Thank you for your generosity!");
-    gModal.classList.remove("open");
-  });
-
-  // Reveal Animations
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting) e.target.classList.add("in");});},{threshold:.12});
-  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(element => observer.observe(element));
+  } else {
+    document.querySelectorAll(".reveal").forEach(element => element.classList.add("in"));
+  }
 });
 </script>
 @endsection

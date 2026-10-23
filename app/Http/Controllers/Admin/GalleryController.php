@@ -45,7 +45,7 @@ class GalleryController extends Controller
             'is_active' => 'nullable|boolean',
         ]);
 
-        $data['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->boolean('is_active');
         $gallery->update($data);
 
         return back()->with('success', 'Gallery item updated!');

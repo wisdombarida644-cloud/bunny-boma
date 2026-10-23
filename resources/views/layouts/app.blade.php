@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ $setting->partner_one ?? 'Benny' }} & {{ $setting->partner_two ?? 'Boma' }} | {{ $setting->hashtag ?? '#TheGospels26' }}</title>
-<meta name="description" content="{{ $setting->partner_one ?? 'Benny' }} & {{ $setting->partner_two ?? 'Boma' }} — Two lives, one beautiful beginning. Join us on {{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-09-26')->format('F j, Y') }}. {{ $setting->hashtag ?? '#TheGospels26' }}">
-<meta property="og:title" content="{{ $setting->partner_one ?? 'Benny' }} & {{ $setting->partner_two ?? 'Boma' }} | {{ $setting->hashtag ?? '#TheGospels26' }}">
-<meta property="og:description" content="The beginning of forever. {{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-09-26')->format('F j, Y') }}">
+<title>{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} | {{ $setting->hashtag ?? '#THEGOSPELS26' }}</title>
+<meta name="description" content="{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} and {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} celebrate on {{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('F j, Y') }} at {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}. {{ $setting->hashtag ?? '#THEGOSPELS26' }}">
+<meta property="og:title" content="{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} | {{ $setting->hashtag ?? '#THEGOSPELS26' }}">
+<meta property="og:description" content="{{ \\Carbon\\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('l, F j, Y') }} at {{ $setting->ceremony_time ?? '11:00 AM' }} prompt. {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->address ?? 'Akpajo' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}">
+<link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +25,7 @@
 --warm:#FCFBF7;
 --char:#1D211E;
 --taupe:#A89D8C;
---champ:#B8A27A;
+--champ:#D4AF37;
 --line:rgba(29,33,30,.12);
 --line2:rgba(29,33,30,.08);
 --serif:"Bodoni Moda", "Cormorant Garamond", serif;
@@ -82,7 +84,7 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .hero_badge_dot{width:6px;height:6px;border-radius:50%;background:#4CAF50;box-shadow:0 0 8px #4CAF50;animation:pulseDot 2s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
 
-.hero_title{font-family:var(--serif);font-size:clamp(52px,9.5vw,128px);line-height:.88;letter-spacing:-.03em;font-weight:400;text-transform:uppercase;text-shadow:0 4px 24px rgba(0,0,0,.3)}
+.hero_title{font-family:var(--serif);font-size:clamp(34px,6.8vw,92px);line-height:.94;letter-spacing:-.04em;font-weight:400;max-width:12em;overflow-wrap:break-word;text-shadow:0 4px 24px rgba(0,0,0,.3)}
 .hero_title em{font-family:var(--serif2);font-style:italic;text-transform:none;font-weight:300;display:block;font-size:.6em;letter-spacing:-.02em;margin:4px 0 4px 6px;color:var(--beige)}
 
 .hero_meta{display:flex;gap:36px;margin-top:28px;align-items:flex-end;flex-wrap:wrap}
@@ -101,9 +103,17 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
   .hero_content{padding:0 24px 48px}
   .hero_controls{right:20px;bottom:32px}
   .hero_scroll{display:none}
-  .hero_title{font-size:clamp(44px,13vw,76px)}
+  .hero_title{font-size:clamp(28px,8.5vw,50px);max-width:10em}
   .hero_meta{gap:20px;margin-top:20px}
 }
+
+/* FAMILIES */
+.families_bar{padding:34px 0;background:var(--deep);color:var(--ivory)}
+.families_inner{max-width:1280px;margin:0 auto;padding:0 48px}
+.families_bar .eyebrow{color:rgba(252,251,247,.68)}
+.families_grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:20px}
+.families_grid p{padding-left:16px;border-left:1px solid var(--beige);font-family:var(--serif2);font-size:clamp(16px,2vw,22px);line-height:1.35;overflow-wrap:anywhere}
+@media(max-width:700px){.families_inner{padding:0 24px}.families_grid{grid-template-columns:1fr;gap:16px}}
 
 /* SECTIONS */
 section{position:relative}
@@ -113,6 +123,7 @@ section{position:relative}
 .h2 i{font-family:var(--serif2);font-style:italic;font-weight:300}
 .body{font-size:15px;line-height:1.9;max-width:36em}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 .reveal.in{opacity:1;transform:translateY(0)}
 
 /* COUNTDOWN */
@@ -133,7 +144,7 @@ section{position:relative}
 /* GOSPELS */
 .gospels{padding:140px 0;background:var(--warm);overflow:hidden}
 .gospels_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.15fr .85fr;gap:80px;align-items:center}
-.gospels_hash{font-family:var(--serif);font-size:clamp(48px,8vw,96px);line-height:.9;letter-spacing:-.03em}
+.gospels_hash{font-family:var(--serif);font-size:clamp(38px,8vw,96px);line-height:.9;letter-spacing:-.03em;overflow-wrap:anywhere}
 .gospels_quote{font-family:var(--serif2);font-size:clamp(22px,3vw,34px);line-height:1.15;font-style:italic;font-weight:300;margin-top:32px;max-width:12em}
 .gospels_text{margin-top:20px;opacity:.8}
 .gospels_img_wrap{position:relative;aspect-ratio:4/5;background:var(--beige);overflow:hidden}
@@ -193,8 +204,12 @@ section{position:relative}
 .moments_nav button:hover{background:var(--char);color:var(--warm)}
 .moments_counter{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:3;color:var(--warm);font-size:11px;letter-spacing:.2em;display:flex;align-items:center;gap:16px;opacity:.9}
 .moments_dots{display:flex;gap:6px}
-.moments_dots span{width:24px;height:2px;background:rgba(252,251,247,.3);transition:background .4s;cursor:pointer}
-.moments_dots span.active{background:var(--warm)}
+.moments_dots button{width:24px;height:3px;padding:0;border:0;background:rgba(252,251,247,.3);transition:background .4s;cursor:pointer}
+.moments_dots button.active{background:var(--warm)}
+.moments_dots button:focus-visible,.moments_nav button:focus-visible{outline:2px solid var(--warm);outline-offset:4px}
+.memories_empty{position:relative;z-index:2;width:min(440px,86vw);padding:36px 32px;background:var(--warm);text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+.memories_empty p{font-family:var(--serif);font-size:22px}
+.memories_empty a{display:inline-block;margin-top:14px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:4px}
 .moments_title{position:absolute;top:32px;left:50%;transform:translateX(-50%);z-index:3;color:var(--warm);text-align:center}
 .moments_title .eyebrow{color:rgba(252,251,247,.7)}
 .moments_title .eyebrow:before{background:rgba(252,251,247,.7)}
@@ -211,6 +226,8 @@ section{position:relative}
 .gallery_item_meta{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(0deg, rgba(0,0,0,.45), transparent);color:white;opacity:0;transition:opacity .4s}
 .gallery_item:hover .gallery_item_meta{opacity:1}
 .gallery_item_meta span{font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.gallery_empty{max-width:1280px;margin:48px auto 0;padding:0 48px;font-family:var(--serif2);font-size:22px;opacity:.65}
+@media(max-width:640px){.gallery_empty{padding:0 24px}}
 @media(max-width:1000px){.gallery_grid{columns:2}}
 @media(max-width:640px){.gallery_grid{columns:1;padding:0 16px}.gallery_head{padding:0 24px}}
 
@@ -291,29 +308,21 @@ section{position:relative}
 .qa_a p{font-size:14px;line-height:1.8}
 @media(max-width:900px){.info_qa{grid-template-columns:1fr}.info_col{padding:32px 24px}.info_col:first-child{border-right:none;border-bottom:1px solid var(--line)}}
 
-/* GIFTS */
-.gifts{padding:120px 0;background:var(--warm)}
-.gifts_inner{max-width:1280px;margin:0 auto;padding:0 48px}
-.gifts_filters{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px;align-items:center}
-.gf_btn{font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--line);opacity:.7;transition:all .3s}
-.gf_btn.active,.gf_btn:hover{opacity:1;background:var(--char);color:var(--warm);border-color:var(--char)}
-.gifts_grid{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.gift_card{border:1px solid var(--line);background:var(--warm);transition:transform .4s var(--ease)}
-.gift_card:hover{transform:translateY(-4px)}
-.gift_img{aspect-ratio:4/3;overflow:hidden;background:var(--beige)}
-.gift_img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
-.gift_card:hover .gift_img img{transform:scale(1.04)}
-.gift_body{padding:18px 18px 20px}
-.gift_cat{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
-.gift_name{font-family:var(--serif);font-size:18px;margin-top:6px;line-height:1.2}
-.gift_desc{font-size:12px;line-height:1.7;opacity:.7;margin-top:8px;min-height:34px}
-.gift_price{font-family:var(--serif);font-size:18px;margin-top:12px}
-.gift_status{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-top:8px;display:inline-block;padding:4px 8px;border:1px solid var(--line)}
-.gift_status.gifted{opacity:.5}
-.gift_btn{margin-top:16px;width:100%;border:1px solid var(--char);padding:12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;transition:all .3s}
-.gift_btn:hover{background:var(--char);color:var(--warm)}
-@media(max-width:1000px){.gifts_grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.gifts_inner{padding:0 24px}.gifts_grid{grid-template-columns:1fr}}
+/* CASH GIFTS */
+.cash_gift{padding:120px 0;background:var(--warm)}
+.cash_gift_inner{max-width:1100px;margin:0 auto;padding:0 48px}
+.cash_gift_intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
+.cash_gift_intro .body{opacity:.72}
+.cash_gift_details{display:grid;grid-template-columns:repeat(3,1fr);margin-top:40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cash_gift_item{display:flex;flex-direction:column;gap:10px;padding:22px 24px;border-right:1px solid var(--line);min-width:0}
+.cash_gift_item:first-child{padding-left:0}
+.cash_gift_item:last-child{border-right:0}
+.cash_gift_item span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;opacity:.55}
+.cash_gift_item strong{font-family:var(--serif);font-size:clamp(16px,2vw,22px);font-weight:400;overflow-wrap:anywhere}
+.cash_gift_inner>.btn_line{margin-top:22px}
+.cash_gift_note{margin-top:22px;max-width:52em;line-height:1.8;white-space:pre-line}
+.cash_gift_disclaimer{margin-top:24px;font-size:11px;line-height:1.7;opacity:.58}
+@media(max-width:700px){.cash_gift{padding:80px 0}.cash_gift_inner{padding:0 24px}.cash_gift_intro{grid-template-columns:1fr;gap:24px}.cash_gift_details{grid-template-columns:1fr}.cash_gift_item,.cash_gift_item:first-child{padding:16px 0;border-right:0;border-bottom:1px solid var(--line)}.cash_gift_item:last-child{border-bottom:0}}
 
 /* RSVP */
 .rsvp{padding:120px 0;background:var(--deep);color:var(--ivory)}
@@ -329,6 +338,9 @@ section{position:relative}
 .rsvp_radio label.active{background:var(--char);color:var(--warm);border-color:var(--char)}
 .rsvp_submit{grid-column:1/-1;margin-top:12px;background:var(--char);color:var(--warm);padding:16px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:opacity .3s}
 .rsvp_submit:hover{opacity:.9}
+.rsvp_whatsapp{display:inline-flex;align-items:center;justify-content:center;margin-top:24px;padding:13px 18px;border:1px solid rgba(252,251,247,.65);color:var(--warm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;transition:background .3s,color .3s}
+.rsvp_whatsapp:hover{background:var(--warm);color:var(--deep)}
+.rsvp_whatsapp:focus-visible{outline:2px solid var(--beige);outline-offset:4px}
 @media(max-width:700px){.rsvp_inner{padding:0 24px}.rsvp_form{grid-template-columns:1fr;padding:24px 20px}}
 
 /* GUESTBOOK */
@@ -337,6 +349,7 @@ section{position:relative}
 .gb_list{display:grid;gap:24px;margin-top:24px}
 .gb_card{border-bottom:1px solid var(--line);padding-bottom:20px}
 .gb_msg{font-family:var(--serif2);font-style:italic;font-size:18px;line-height:1.5}
+.gb_empty{padding:18px;border:1px dashed var(--line);font-size:13px;opacity:.65}
 .gb_name{font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;opacity:.6}
 .gb_form{border:1px solid var(--line);padding:24px;background:var(--warm);align-self:start}
 .gb_form h4{font-family:var(--serif);font-size:20px}
@@ -361,22 +374,43 @@ section{position:relative}
 .footer_bottom{margin-top:32px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
 @media(max-width:700px){.footer_inner{padding:0 24px}.footer_brand{font-size:36px}}
 
-/* MODALS */
-.modal{position:fixed;inset:0;z-index:90;background:rgba(18,24,20,.72);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
-.modal.open{display:flex}
-.modal_box{background:var(--warm);width:min(560px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);position:relative;animation:modalIn .6s var(--ease)}
-@keyframes modalIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.modal_close{position:absolute;top:12px;right:12px;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--warm);z-index:2}
-.modal_content{padding:28px}
-.modal_img{aspect-ratio:16/10;overflow:hidden;background:var(--beige)}
-.modal_img img{width:100%;height:100%;object-fit:cover}
+/* OPTIONAL BACKGROUND MUSIC */
+.music_player{position:fixed;right:22px;bottom:22px;z-index:45;display:flex;align-items:center;gap:12px;max-width:min(440px,calc(100vw - 32px));padding:10px 14px;background:var(--deep);color:var(--warm);border:1px solid rgba(252,251,247,.22);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.music_player audio{display:none}
+.music_toggle{display:flex;align-items:center;gap:8px;flex:none;padding:10px 14px;border:1px solid var(--beige);background:var(--warm);color:var(--deep);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.music_toggle:hover{background:var(--beige)}
+.music_toggle:focus-visible{outline:2px solid var(--warm);outline-offset:4px}
+.music_toggle:disabled{opacity:.55;cursor:not-allowed}
+.music_icon{font-size:17px}
+.music_status{max-width:240px;font-size:10px;line-height:1.4;opacity:.72}
+@media(max-width:640px){.music_player{right:12px;bottom:12px;left:12px;max-width:none;justify-content:space-between;gap:8px}.music_status{max-width:55%;font-size:9px}}
 
 .scroll_prog{position:fixed;top:0;left:0;height:2px;background:var(--deep);width:0;z-index:100;transition:width .1s linear}
 .add_cal{font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid var(--char);padding-bottom:4px;margin-top:12px;display:inline-block}
+.form_flash{position:fixed;top:88px;left:50%;transform:translateX(-50%);width:min(680px,calc(100vw - 32px));padding:14px 18px;z-index:110;box-shadow:0 12px 36px rgba(0,0,0,.14);font-size:13px}
+.form_flash.success{background:#E8F5E9;color:#245B2A;border:1px solid #A5D6A7}
+.form_flash.error{background:#FFEBEE;color:#8E1B1B;border:1px solid #EF9A9A}
+.form_flash ul{padding-left:18px}
+.count_past{grid-column:1/-1;padding:24px;text-align:center;font-family:var(--serif);font-size:clamp(20px,3vw,30px);line-height:1.3}
 </style>
 </head>
 <body>
 <div class="scroll_prog" id="scrollProg"></div>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+
+@if(session('success'))
+  <div class="form_flash success" role="status" aria-live="polite">{{ session('success') }}</div>
+@endif
+@if($errors->any())
+  <div class="form_flash error" role="alert">
+    <strong>We couldn’t submit your response:</strong>
+    <ul>
+      @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
 
 @yield('content')
 

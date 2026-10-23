@@ -3,35 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\WeddingSetting;
 use App\Models\Gallery;
-use App\Models\Gift;
-use App\Models\Rsvp;
 use App\Models\Guestbook;
-use App\Models\Qa;
+use App\Models\Moment;
+use App\Models\Rsvp;
+use App\Models\WeddingSetting;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $setting = WeddingSetting::first();
-        $galleryCount = Gallery::count();
-        $giftCount = Gift::count();
-        $giftedCount = Gift::where('status', 'FULLY GIFTED')->count();
-        $qaCount = Qa::count();
+        $setting = WeddingSetting::firstOrCreate([]);
+        $photoCount = Gallery::count() + Moment::count();
+        $cashGiftConfigured = filled($setting->bank_name)
+            && filled($setting->account_name)
+            && filled($setting->account_number);
         $rsvpCount = Rsvp::count();
         $attendingCount = Rsvp::where('attendance', 'yes')->sum('guests_count');
         $recentGuestbooks = Guestbook::latest()->take(5)->get();
+        $pendingGuestbookCount = Guestbook::where('is_approved', false)->count();
 
         return view('admin.dashboard', compact(
             'setting',
-            'galleryCount',
-            'giftCount',
-            'giftedCount',
-            'qaCount',
+            'photoCount',
+            'cashGiftConfigured',
             'rsvpCount',
             'attendingCount',
-            'recentGuestbooks'
+            'recentGuestbooks',
+            'pendingGuestbookCount'
         ));
     }
 }

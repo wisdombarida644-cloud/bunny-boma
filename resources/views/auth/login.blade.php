@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login — Benny & Boma</title>
+<title>Admin Login — With the Gospels</title>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--deep:#123C32;--warm:#FCFBF7;--char:#1D211E;--line:rgba(29,33,30,.12);--serif:"Bodoni Moda",serif;--sans:"Manrope",sans-serif}
@@ -21,7 +21,7 @@ body{font-family:var(--sans);background:var(--warm);color:var(--char);display:fl
 </head>
 <body>
 <div class="login_box">
-  <div class="logo">B&B</div>
+  <div class="logo">THE GOSPELS</div>
   <div class="sub">Wedding CMS Login</div>
 
   @if($errors->any())
@@ -32,11 +32,11 @@ body{font-family:var(--sans);background:var(--warm);color:var(--char);display:fl
     @csrf
     <div class="field">
       <label>Email Address</label>
-      <input type="email" name="email" required value="admin@bennyandboma.com">
+      <input type="email" name="email" required autocomplete="username" value="{{ old('email') }}">
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" name="password" required value="password">
+      <input type="password" name="password" required autocomplete="current-password">
     </div>
     <button class="btn_submit" type="submit">Sign In</button>
   </form>

@@ -20,14 +20,14 @@
     <span style="font-size:11px;opacity:.6">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('M j, Y') }} — {{ $setting->wedding_time }}</span>
   </div>
   <div class="stat">
-    <span class="stat_label">Gallery Photos</span>
-    <span class="stat_value">{{ $galleryCount }}</span>
-    <span style="font-size:11px;opacity:.6">Active on public grid</span>
+    <span class="stat_label">Photos</span>
+    <span class="stat_value">{{ $photoCount }}</span>
+    <span style="font-size:11px;opacity:.6">Memories and gallery photos</span>
   </div>
   <div class="stat">
-    <span class="stat_label">Gift Registry</span>
-    <span class="stat_value">{{ $giftCount }} Items</span>
-    <span style="font-size:11px;opacity:.6">{{ $giftedCount }} fully gifted</span>
+    <span class="stat_label">Cash Gift Account</span>
+    <span class="stat_value" style="font-size:20px">{{ $cashGiftConfigured ? 'Configured' : 'Not set' }}</span>
+    <span style="font-size:11px;opacity:.6">Update in wedding settings</span>
   </div>
   <div class="stat">
     <span class="stat_label">RSVPs</span>
@@ -43,7 +43,7 @@
       <div style="font-size:14px;line-height:1.8">
         <strong>Venue:</strong> {{ $setting->venue_name }}<br>
         <strong>Address:</strong> {{ $setting->address }}<br>
-        <strong>Arrival Time:</strong> {{ $setting->arrival_time }}<br>
+        @if($setting->arrival_time)<strong>Guest Arrival:</strong> {{ $setting->arrival_time }}<br>@endif
         <strong>Ceremony Start:</strong> {{ $setting->ceremony_time }}<br>
         <strong>Reception Start:</strong> {{ $setting->reception_time }}<br>
         <strong>Hashtag:</strong> {{ $setting->hashtag }}
@@ -52,7 +52,7 @@
   </div>
 
   <div class="card">
-    <div class="card_head"><h3>Recent Guestbook Entries</h3></div>
+    <div class="card_head"><h3>Recent Guestbook Entries</h3><a href="{{ route('admin.guestbook.index') }}">{{ $pendingGuestbookCount }} pending →</a></div>
     <div class="card_body">
       @foreach($recentGuestbooks as $gb)
         <div style="padding:10px 0;border-bottom:1px solid var(--line2)">

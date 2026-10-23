@@ -52,6 +52,13 @@
               <label>Caption</label>
               <input name="caption" value="{{ $g->caption }}" style="padding:6px 8px;font-size:12px">
             </div>
+            <div class="field" style="margin-bottom:8px">
+              <label style="display:flex;align-items:center;gap:8px;letter-spacing:0;text-transform:none">
+                <input type="hidden" name="is_active" value="0">
+                <input type="checkbox" name="is_active" value="1" @checked($g->is_active)>
+                Show on public gallery
+              </label>
+            </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
               <button class="btn" type="submit" style="padding:6px 10px;font-size:11px">Save</button>
             </form>

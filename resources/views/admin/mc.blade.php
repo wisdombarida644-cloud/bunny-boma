@@ -19,10 +19,17 @@
         <div class="field"><label>Website Link</label><input name="website_url" value="{{ old('website_url', $mc->website_url) }}"></div>
         <div class="field">
           <label>Photo</label>
-          <input type="file" name="image" accept="image/*">
+          <input type="file" name="image" accept="image/jpeg,image/png,image/webp">
           @if($mc->image_path)
-            <img src="{{ $mc->image_path }}" style="width:80px;height:100px;object-fit:cover;margin-top:8px;border-radius:4px">
+            <img src="{{ $mc->image_path }}" alt="Current MC portrait" style="width:80px;height:100px;object-fit:cover;margin-top:8px;border-radius:4px">
           @endif
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label style="display:flex;align-items:center;gap:8px;letter-spacing:0;text-transform:none">
+            <input type="hidden" name="is_visible" value="0">
+            <input type="checkbox" name="is_visible" value="1" @checked($mc->is_visible)>
+            Show MC section on the public website
+          </label>
         </div>
       </div>
       <button class="btn btn_primary" type="submit" style="margin-top:16px">Save MC Details</button>
