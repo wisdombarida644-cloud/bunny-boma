@@ -25,11 +25,11 @@ A single-page wedding website and Laravel CMS for Chiamaka Boma Ibekwe and Gospe
 
 ```sh
 composer setup
-php artisan admin:create admin@example.com "Wedding Admin"
+php artisan db:seed --class=AdminUserSeeder
 php artisan serve
 ```
 
-`composer setup` installs PHP and JS dependencies, creates a local SQLite database if needed, runs migrations and the wedding-details seeder, and builds assets. `admin:create` prompts for a new admin password (12+ characters). The default seeders do not create an admin account or add photos.
+`composer setup` installs PHP and JS dependencies, creates a local SQLite database if needed, runs migrations and the wedding-details seeder, and builds assets. The separate `AdminUserSeeder` prompts for the admin email, display name, and a password (at least 12 characters) twice, then asks for confirmation. It creates or resets that account, stores only Laravel's password hash, and never displays the password. It is not part of the default seeders. Share the credentials privately with the couple; do not commit or send a real password in source code or chat. The existing `php artisan admin:create email@example.com "Wedding Admin"` command is also available.
 
 To run tests:
 

@@ -40,11 +40,13 @@ Set the web server document root to the repository's **`public/` directory**. Do
 
    For local or staging only, `php artisan db:seed --class=DemoPhotoSeeder` adds four labelled stock-photo entries to both Gallery Photos and Memories. This is not run by the default seeder. The images are remotely hosted and the entries are active/public; do not run it on the live wedding site unless you want demo photos visible to guests.
 
-5. Create the admin account from the host shell. The command prompts for a password and requires at least 12 characters; it can also reset an existing account with the same email:
+5. Create the couple's admin account from the host shell. This interactive seeder prompts for the email, display name, and password (at least 12 characters) twice, then asks before creating or resetting the account. It never prints the password; share the chosen credentials privately with the couple. In production, `--force` is needed for Laravel's seeding confirmation, but the seeder still asks for its own confirmation:
 
    ```sh
-   php artisan admin:create admin@example.com "Wedding Admin"
+   php artisan db:seed --class=AdminUserSeeder --force
    ```
+
+   The existing `php artisan admin:create email@example.com "Wedding Admin"` command is an alternative.
 
 6. Publish uploaded files and warm Laravel's caches:
 
@@ -66,7 +68,7 @@ The default configuration stores sessions and cache in the database. The sample 
 
 Autoplay is best-effort: the podcast player requests muted autoplay and provides YouTube controls, while browsers may block background-music autoplay until the visitor taps the prominent **Play Music** control. Background music is paused when the podcast embed loads so the two tracks do not compete. Do not promise guaranteed audible autoplay.
 
-RSVP and guestbook endpoints are rate-limited. Guestbook posts start unpublished; review and approve them in **Admin → Guestbook**. Login credentials are created separately with `admin:create`.
+RSVP and guestbook endpoints are rate-limited. Guestbook posts start unpublished; review and approve them in **Admin → Guestbook**. Login credentials are created separately with `AdminUserSeeder` or `admin:create`.
 
 ## Platform-specific setup
 
