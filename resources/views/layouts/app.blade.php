@@ -7,7 +7,7 @@
 <title>{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} | {{ $setting->hashtag ?? '#THEGOSPELS26' }}</title>
 <meta name="description" content="{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} and {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} celebrate on {{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('F j, Y') }} at {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}. {{ $setting->hashtag ?? '#THEGOSPELS26' }}">
 <meta property="og:title" content="{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }} | {{ $setting->hashtag ?? '#THEGOSPELS26' }}">
-<meta property="og:description" content="{{ \\Carbon\\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('l, F j, Y') }} at {{ $setting->ceremony_time ?? '11:00 AM' }} prompt. {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->address ?? 'Akpajo' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}.">
+<meta property="og:description" content="{{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('l, F j, Y') }} at {{ $setting->ceremony_time ?? '11:00 AM' }} prompt. {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->address ?? 'Akpajo' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}">
 <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
