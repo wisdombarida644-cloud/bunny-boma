@@ -38,6 +38,8 @@ Set the web server document root to the repository's **`public/` directory**. Do
 
    The seed data uses Saturday, November 21, 2026 at 11:00 AM prompt, ATWIL EVENT CENTER in Akpajo, Port Harcourt, the November 7 RSVP deadline, the supplied family names, colors, WhatsApp number, and `#THEGOSPELS26`. It does not add sample couple photos, an MC, or guestbook messages. It intentionally does **not** create an admin login. Do not rerun the seeder over a live site expecting it to overwrite admin-managed content.
 
+   For local or staging only, `php artisan db:seed --class=DemoPhotoSeeder` adds four labelled stock-photo entries to both Gallery Photos and Memories. This is not run by the default seeder. The images are remotely hosted and the entries are active/public; do not run it on the live wedding site unless you want demo photos visible to guests.
+
 5. Create the admin account from the host shell. The command prompts for a password and requires at least 12 characters; it can also reset an existing account with the same email:
 
    ```sh

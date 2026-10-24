@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Gallery;
 use App\Models\Guestbook;
+use App\Models\Moment;
 use App\Models\User;
+use Database\Seeders\DemoPhotoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -36,6 +39,30 @@ class ExampleTest extends TestCase
             ->assertSee('Cash gifts')
             ->assertDontSee('Gift Registry')
             ->assertDontSee('dQw4w9WgXcQ');
+    }
+
+    public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void
+    {
+        $this->assertSame(0, Gallery::count());
+        $this->assertSame(0, Moment::count());
+
+        $this->seed(DemoPhotoSeeder::class);
+
+        $this->assertSame(4, Gallery::where('category', 'Demo — replace before launch')->count());
+        $this->assertSame(4, Moment::where('credit_name', 'Demo stock image')->count());
+        $this->assertDatabaseHas('galleries', [
+            'caption' => 'DEMO ONLY — sample stock photo 01 (not the couple)',
+            'is_active' => true,
+        ]);
+        $this->assertDatabaseHas('moments', [
+            'title' => 'DEMO ONLY — sample memory 01',
+            'is_active' => true,
+        ]);
+
+        $this->seed(DemoPhotoSeeder::class);
+
+        $this->assertSame(4, Gallery::where('category', 'Demo — replace before launch')->count());
+        $this->assertSame(4, Moment::where('credit_name', 'Demo stock image')->count());
     }
 
     public function test_admin_can_manage_family_names_rsvp_deadline_and_whatsapp_contact(): void

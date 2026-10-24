@@ -29,7 +29,7 @@ php artisan admin:create admin@example.com "Wedding Admin"
 php artisan serve
 ```
 
-`composer setup` installs PHP and JS dependencies, creates a local SQLite database if needed, runs migrations and the wedding-details seeder, and builds assets. `admin:create` prompts for a new admin password (12+ characters). The seeder does not create an admin account.
+`composer setup` installs PHP and JS dependencies, creates a local SQLite database if needed, runs migrations and the wedding-details seeder, and builds assets. `admin:create` prompts for a new admin password (12+ characters). The default seeders do not create an admin account or add photos.
 
 To run tests:
 
@@ -37,10 +37,20 @@ To run tests:
 php artisan test
 ```
 
+### Optional demo photos
+
+To populate the admin **Gallery Photos** and **Memories** screens in a local or staging database, run:
+
+```sh
+php artisan db:seed --class=DemoPhotoSeeder
+```
+
+This optional seeder is not called by `composer setup` or `DatabaseSeeder`. It creates four clearly labelled demo records in each section, using remotely hosted stock images; it does not download files or test the actual image-upload flow. The records are active and appear on the public website, so do not seed them on the live site unless you intend to show demo photos. To test uploads themselves, sign in as an admin and upload a JPG, PNG, or WebP image up to 10 MB.
+
 ## Deployment
 
 Use a PHP-capable host and set the web document root to `public/`. The root `index.html` is a static prototype; it is not connected to Laravel's database, RSVP, guestbook, or CMS. Review [DEPLOYMENT.md](DEPLOYMENT.md) for provider-neutral setup and release steps. The configured production URL is `https://withthegospels.name.ng`; DNS, hosting, and TLS still need to be set up with the chosen provider.
 
-The seeder contains the confirmed wedding details above and does not add fictional couple photos, MC details, or guestbook notes. Add approved real photos in **Admin → Memories** and **Admin → Gallery Photos**. A podcast URL and music file have not been supplied; background music stays disabled until a file is uploaded. Bank details have not been supplied; add them in **Admin → Wedding Settings** only after confirming the account. Any bank details entered there are public. The website does not process or verify transfers and does not send email.
+`WeddingDatabaseSeeder` contains the confirmed wedding details above and does not add fictional couple photos, MC details, or guestbook notes. Add approved real photos in **Admin → Memories** and **Admin → Gallery Photos**. A podcast URL and music file have not been supplied; background music stays disabled until a file is uploaded. Bank details have not been supplied; add them in **Admin → Wedding Settings** only after confirming the account. Any bank details entered there are public. The website does not process or verify transfers and does not send email.
 
 Podcast and music autoplay are best-effort. Browsers may block audible playback; the podcast requests muted autoplay and exposes YouTube controls. A prominent **Play Music** control provides a manual fallback, and background music pauses when the podcast player loads to prevent overlapping audio.
