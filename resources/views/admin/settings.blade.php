@@ -47,7 +47,8 @@
         <label>Background Music (MP3, WAV, OGG, M4A or AAC; max 20 MB)</label>
         <input type="file" name="background_music_file" accept="audio/mpeg,audio/wav,audio/ogg,audio/mp4,audio/aac,.mp3,.wav,.ogg,.m4a,.aac">
         @if($setting->background_music_path)
-          <div style="font-size:11px;opacity:.7;margin-top:6px">Current track: <a href="{{ $setting->background_music_path }}" target="_blank" rel="noopener">Listen to file</a></div>
+          <div style="font-size:11px;opacity:.7;margin-top:6px">Current track: <a href="{{ $setting->background_music_path }}" target="_blank" rel="noopener">Open audio file</a></div>
+          <audio controls preload="metadata" src="{{ $setting->background_music_path }}" style="display:block;width:min(100%,480px);margin-top:10px">Your browser cannot preview this audio file.</audio>
           <label style="display:flex;align-items:center;gap:8px;margin-top:10px;text-transform:none;letter-spacing:0"><input type="checkbox" name="remove_background_music" value="1"> Remove current background music</label>
         @endif
       </div>

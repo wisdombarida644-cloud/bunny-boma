@@ -38,7 +38,7 @@ Set the web server document root to the repository's **`public/` directory**. Do
 
    The seed data uses Saturday, November 21, 2026 at 11:00 AM prompt, ATWIL EVENT CENTER in Akpajo, Port Harcourt, the November 7 RSVP deadline, the supplied family names, colors, WhatsApp number, and `#THEGOSPELS26`. It does not add sample couple photos, an MC, or guestbook messages. It intentionally does **not** create an admin login. Do not rerun the seeder over a live site expecting it to overwrite admin-managed content.
 
-   For local or staging only, `php artisan db:seed --class=DemoPhotoSeeder` adds four labelled stock-photo entries to both Gallery Photos and Memories. This is not run by the default seeder. The images are remotely hosted and the entries are active/public; do not run it on the live wedding site unless you want demo photos visible to guests.
+   For local or staging only, `php artisan db:seed --class=DemoPhotoSeeder` adds four labelled, inactive stock-photo entries to both Gallery Photos and Memories. This is not run by the default seeder. The images are remotely hosted, and demo-marked rows are excluded from the public site even if activated; never present them as the couple’s own photos.
 
 5. Create the couple's admin account from the host shell. This interactive seeder prompts for the email, display name, and password (at least 12 characters) twice, then asks before creating or resetting the account. It never prints the password; share the chosen credentials privately with the couple. In production, `--force` is needed for Laravel's seeding confirmation, but the seeder still asks for its own confirmation:
 
@@ -56,7 +56,7 @@ Set the web server document root to the repository's **`public/` directory**. Do
    php artisan optimize
    ```
 
-7. Sign in to **Admin → Wedding Settings** to review event details and add the couple's verified cash-gift account details if desired. Bank details are public; verify them carefully. The podcast URL and music file have not been supplied, so add only the couple's approved assets. Upload genuine photos in **Admin → Memories** and **Admin → Gallery Photos** before using those sections as a photo journal.
+7. Sign in to **Admin → Wedding Settings** to review event details and add the couple's verified cash-gift account details if desired. Bank details are public; verify them carefully. The podcast URL and music file have not been supplied, so add only the couple's approved assets. Upload genuine photos in **Admin → Gallery Photos**; the first four active gallery photos rotate in the homepage hero and the full active set appears in the photo journal. **Admin → Memories** controls the separate Memories carousel. Keep `storage/app/public` persistent. New uploads are served through Laravel's `/media/...` route, so they do not depend on a public-storage symlink; legacy `/storage/...` URLs are also supported. `php artisan storage:link` remains recommended for any existing deployment.
 
 Ensure `storage/` and `bootstrap/cache/` are writable by the PHP process. If using SQLite, create `database/database.sqlite` and place it on persistent storage before migrating. Do not regenerate `APP_KEY` on every deployment; changing it invalidates encrypted data and sessions.
 

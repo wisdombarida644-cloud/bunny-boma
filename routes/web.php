@@ -10,7 +10,13 @@ use App\Http\Controllers\Admin\RsvpController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\PublicMediaController;
 use Illuminate\Support\Facades\Route;
+
+// Serve public-disk files through Laravel so uploads work without relying on a web-server symlink.
+Route::get('/media/{path}', [PublicMediaController::class, 'show'])->where('path', '.*')->name('public.media');
+// Keep compatibility with files already stored in the standard Laravel /storage path.
+Route::get('/storage/{path}', [PublicMediaController::class, 'show'])->where('path', '.*')->name('public.storage');
 
 // Public website and submission endpoints.
 Route::get('/', [FrontController::class, 'index'])->name('home');

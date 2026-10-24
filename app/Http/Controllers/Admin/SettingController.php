@@ -94,7 +94,7 @@ class SettingController extends Controller
             if (! $path) {
                 return back()->withErrors(['order_pdf' => 'The PDF could not be saved. Please try again.'])->withInput();
             }
-            $data['order_pdf_path'] = '/storage/'.$path;
+            $data['order_pdf_path'] = '/media/'.$path;
         }
 
         if ($request->hasFile('background_music_file')) {
@@ -103,7 +103,7 @@ class SettingController extends Controller
                 return back()->withErrors(['background_music_file' => 'The audio file could not be saved. Please try again.'])->withInput();
             }
             $this->deleteStoredPublicFile($setting->background_music_path);
-            $data['background_music_path'] = '/storage/'.$path;
+            $data['background_music_path'] = '/media/'.$path;
         } elseif ($request->boolean('remove_background_music')) {
             $this->deleteStoredPublicFile($setting->background_music_path);
             $data['background_music_path'] = null;
@@ -117,8 +117,12 @@ class SettingController extends Controller
 
     private function deleteStoredPublicFile(?string $publicPath): void
     {
-        if ($publicPath && str_starts_with($publicPath, '/storage/')) {
-            Storage::disk('public')->delete(substr($publicPath, strlen('/storage/')));
+        foreach (['/media/', '/storage/'] as $prefix) {
+            if ($publicPath && str_starts_with($publicPath, $prefix)) {
+                Storage::disk('public')->delete(substr($publicPath, strlen($prefix)));
+
+                return;
+            }
         }
     }
 }

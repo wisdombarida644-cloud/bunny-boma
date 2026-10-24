@@ -13,7 +13,7 @@
   </div>
   <div class="nav_right">
     <a href="#rsvp" class="nav_cta">RSVP</a>
-    <button class="nav_burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav_burger" id="burger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -39,10 +39,11 @@
 
 <header class="hero" id="home">
   <div class="hero_slides" id="heroSlides">
-    <img class="hero_slide active" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1520854221256-17451ccdf07b?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
-    <img class="hero_slide" src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration">
+    @forelse($galleries->take(4) as $gallery)
+      <img class="hero_slide{{ $loop->first ? ' active' : '' }}" src="{{ $gallery->image_path }}" alt="{{ $gallery->caption ?: 'Wedding photo shared by the couple' }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+    @empty
+      <div class="hero_empty" aria-hidden="true"></div>
+    @endforelse
   </div>
   <div class="hero_overlay"></div>
   <div class="hero_content">
@@ -60,12 +61,13 @@
     </div>
   </div>
   <div class="hero_controls">
-    <div class="hero_dots" id="heroDots">
-      <button class="active" aria-label="Slide 1"></button>
-      <button aria-label="Slide 2"></button>
-      <button aria-label="Slide 3"></button>
-      <button aria-label="Slide 4"></button>
-    </div>
+    @if($galleries->take(4)->count() > 1)
+      <div class="hero_dots" id="heroDots" role="group" aria-label="Homepage photos">
+        @foreach($galleries->take(4) as $gallery)
+          <button type="button" class="{{ $loop->first ? 'active' : '' }}" aria-label="Show homepage photo {{ $loop->iteration }}"></button>
+        @endforeach
+      </div>
+    @endif
     <div class="hero_scroll">Scroll — Discover Our Story</div>
   </div>
 </header>
@@ -126,7 +128,11 @@
     </div>
     <div class="gospels_img_wrap reveal">
       <div class="gospels_behind"></div>
-      <img src="https://images.unsplash.com/photo-1520854221256-17451ccdf07b?q=80&w=1000&auto=format&fit=crop" alt="Editorial" loading="lazy">
+      @if($galleries->isNotEmpty())
+        <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
+      @else
+        <div class="photo_placeholder"><span>Couple’s photos will appear here after upload.</span></div>
+      @endif
     </div>
   </div>
 </section>
@@ -149,8 +155,20 @@
       </div>
     </div>
     <div class="story_image reveal">
-      <div class="story_image_main"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1600&auto=format&fit=crop" alt="Love story main" loading="lazy"></div>
-      <div class="story_image_side"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop" alt="Love story side" loading="lazy"></div>
+      <div class="story_image_main">
+        @if($galleries->isNotEmpty())
+          <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
+        @else
+          <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
+        @endif
+      </div>
+      <div class="story_image_side">
+        @if($galleries->count() > 1)
+          <img src="{{ $galleries->get(1)->image_path }}" alt="{{ $galleries->get(1)->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
+        @else
+          <div class="photo_placeholder"><span>More photos will appear here.</span></div>
+        @endif
+      </div>
     </div>
     <div class="timeline" id="timeline">
       @foreach($timelines as $t)
@@ -168,7 +186,12 @@
   <div class="how_inner">
     <div class="video_frame reveal" id="videoFrame">
       <div class="video_poster" id="videoPoster" @if($weddingData['podcastUrl']) role="button" tabindex="0" aria-label="Play the couple’s story video" @else aria-disabled="true" tabindex="-1" @endif>
-        <img src="https://images.unsplash.com/photo-1529634597503-139d3726fed5?q=80&w=1200&auto=format&fit=crop" alt="How we met poster">
+        @if($galleries->isNotEmpty())
+          @php($storyPoster = $galleries->get(2) ?? $galleries->first())
+          <img src="{{ $storyPoster->image_path }}" alt="{{ $storyPoster->caption ?: 'Photo shared by the couple' }}" loading="lazy">
+        @else
+          <div class="photo_placeholder"><span>The couple’s story will appear here when added.</span></div>
+        @endif
         @if($weddingData['podcastUrl'])
           <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
         @endif
@@ -268,12 +291,9 @@
 
 <section class="venue" id="venue">
   <div class="venue_inner reveal">
-    <div class="venue_map">
-      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop" alt="Decorative map illustration; use the location link for directions">
-      <div class="venue_map_overlay"></div>
-      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--warm);padding:12px 16px;border:1px solid var(--line);font-size:10px;letter-spacing:.18em;text-transform:uppercase">
-        {{ $setting->venue_name }} • {{ $setting->city }}
-      </div>
+    <div class="venue_map" role="img" aria-label="Venue location card; use View location for directions">
+      <div class="venue_map_pattern" aria-hidden="true"></div>
+      <div class="venue_map_label">{{ $setting->venue_name }} • {{ $setting->city }}</div>
     </div>
     <div class="venue_info">
       <div class="eyebrow">Venue</div>
@@ -448,7 +468,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeMenu = document.getElementById("closeMenu");
   const progress = document.getElementById("scrollProg");
 
-  const closeMobileMenu = () => menu?.classList.remove("open");
+  const setMobileMenuOpen = isOpen => {
+    menu?.classList.toggle("open", isOpen);
+    burger?.setAttribute("aria-expanded", String(isOpen));
+    burger?.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    document.body.classList.toggle("menu-open", isOpen);
+  };
+  const closeMobileMenu = () => setMobileMenuOpen(false);
   const updateScroll = () => {
     nav?.classList.toggle("scrolled", window.scrollY > 60);
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -456,7 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   window.addEventListener("scroll", updateScroll, { passive: true });
   updateScroll();
-  burger?.addEventListener("click", () => menu?.classList.add("open"));
+  burger?.addEventListener("click", () => setMobileMenuOpen(!menu?.classList.contains("open")));
   closeMenu?.addEventListener("click", closeMobileMenu);
   document.querySelectorAll("[data-close]").forEach(link => link.addEventListener("click", closeMobileMenu));
 
@@ -616,11 +642,10 @@ document.addEventListener("DOMContentLoaded", () => {
     backgroundMusic.addEventListener("play", updateMusicState);
     backgroundMusic.addEventListener("pause", updateMusicState);
     backgroundMusic.addEventListener("error", () => {
-      musicStatus.textContent = "The background music file could not be loaded.";
-      musicToggle.disabled = true;
+      musicStatus.textContent = "The uploaded track could not be reached. Please verify it in Wedding Settings.";
     });
     backgroundMusic.play().catch(() => {
-      musicStatus.textContent = "Autoplay was blocked. Tap Play Music to start.";
+      if (!backgroundMusic.error) musicStatus.textContent = "Autoplay was blocked. Tap Play Music to start.";
     });
     musicToggle.addEventListener("click", async () => {
       musicPauseReason = null;
@@ -631,7 +656,9 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await backgroundMusic.play();
       } catch {
-        musicStatus.textContent = "Music could not start. Please check your browser's media settings.";
+        musicStatus.textContent = backgroundMusic.error
+          ? "The uploaded track could not be reached. Please verify it in Wedding Settings."
+          : "Music could not start. Please check your browser's media settings.";
       }
     });
   }

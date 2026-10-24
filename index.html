@@ -34,13 +34,16 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{background:var(--warm);color:var(--char);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.menu-open{overflow:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;background:none;border:none;cursor:pointer}
 ::selection{background:var(--deep);color:var(--ivory)}
 /* NAV */
-.nav{position:fixed;inset:0 0 auto 0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:50;transition:background .6s var(--ease), border-color .6s var(--ease)}
-.nav.scrolled{background:rgba(252,251,247,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{position:fixed;inset:0 0 auto 0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:50;color:var(--char);transition:background .6s var(--ease), border-color .6s var(--ease),color .3s ease}
+.nav:not(.scrolled){color:var(--warm);text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.nav.scrolled{background:rgba(252,251,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);text-shadow:none}
+.nav:not(.scrolled) .nav_links a:after{background:var(--warm)}
 .nav_logo{font-family:var(--serif);font-size:22px;letter-spacing:.08em;font-weight:500;line-height:1}
 .nav_links{display:flex;gap:32px;align-items:center}
 .nav_links a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;opacity:.8;position:relative;padding:4px 0}
@@ -48,9 +51,13 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .nav_links a:hover:after{width:100%}
 .nav_right{display:flex;gap:18px;align-items:center}
 .nav_cta{font-size:10px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line);padding:10px 18px;transition:all .4s}
+.nav:not(.scrolled) .nav_cta{border-color:rgba(252,251,247,.72);color:var(--warm)}
 .nav_cta:hover{background:var(--char);color:var(--warm);border-color:var(--char)}
-.nav_burger{display:none;width:28px;height:18px;flex-direction:column;justify-content:space-between}
-.nav_burger span{display:block;height:1px;background:var(--char);transition:all .4s var(--ease)}
+.nav_burger{display:none;width:44px;height:44px;align-items:center;flex-direction:column;justify-content:center;gap:5px;border:1px solid transparent;border-radius:5px}
+.nav_burger span{display:block;width:22px;height:2px;background:var(--char);transition:all .4s var(--ease);border-radius:2px}
+.nav:not(.scrolled) .nav_burger{border-color:rgba(252,251,247,.65);background:rgba(18,60,50,.48)}
+.nav:not(.scrolled) .nav_burger span{background:var(--warm)}
+.nav.scrolled .nav_burger span{background:var(--char)}
 /* MOBILE MENU */
 .mobile_menu{position:fixed;inset:0;z-index:60;background:var(--warm);transform:translateY(-100%);transition:transform .8s var(--ease2);display:flex;flex-direction:column}
 .mobile_menu.open{transform:translateY(0)}
@@ -60,9 +67,8 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .mobile_menu_links a span{font-size:10px;font-family:var(--sans);letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-right:16px;vertical-align:middle}
 .mobile_menu_foot{padding:24px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
 /* HERO */
-.hero{position:relative;height:100vh;min-height:720px;overflow:hidden;background:var(--char)}
-.hero_img{position:absolute;inset:0;width:100%;height:120%;top:-10%;object-fit:cover;transform-origin:center;will-change:transform}
-.hero_overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(18,60,50,.28) 0%, rgba(18,60,50,.12) 40%, rgba(18,60,50,.55) 100%)}
+.hero{position:relative;height:100vh;min-height:720px;overflow:hidden;background:linear-gradient(135deg,#103b32 0%,#1b5547 52%,#0b2c25 100%)}
+.hero_overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 76% 24%,rgba(232,221,204,.12),transparent 35%),linear-gradient(180deg,rgba(18,60,50,.16) 0%,rgba(18,60,50,.2) 40%,rgba(18,24,20,.55) 100%)}
 .hero_content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 64px;color:var(--warm)}
 .hero_eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.85;margin-bottom:24px;display:flex;align-items:center;gap:12px}
 .hero_eyebrow:before{content:"";width:32px;height:1px;background:currentColor}
@@ -114,6 +120,8 @@ section{position:relative}
 .gospels_img_wrap{position:relative;aspect-ratio:4/5;background:var(--beige);overflow:hidden}
 .gospels_img_wrap img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
 .gospels_img_wrap:hover img{transform:scale(1.04)}
+.photo_placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:220px;padding:28px;text-align:center;color:var(--deep);background:radial-gradient(ellipse at 70% 20%,rgba(212,175,55,.14),transparent 42%),linear-gradient(135deg,#e8ddcc,#f7f4ee);border:1px solid rgba(18,60,50,.12)}
+.photo_placeholder span{max-width:22em;font-size:10px;line-height:1.8;letter-spacing:.18em;text-transform:uppercase}
 .gospels_behind{position:absolute;left:-24px;top:-24px;width:100%;height:100%;border:1px solid var(--line);pointer-events:none}
 @media(max-width:900px){.gospels{padding:80px 0}.gospels_inner{grid-template-columns:1fr;padding:0 24px;gap:40px}.gospels_img_wrap{aspect-ratio:16/12}}
 /* STORY */
@@ -125,8 +133,10 @@ section{position:relative}
 .story_image{margin-top:80px;display:grid;grid-template-columns:1.6fr .8fr;gap:24px;align-items:end}
 .story_image_main{aspect-ratio:16/10;overflow:hidden;background:var(--beige)}
 .story_image_main img{width:100%;height:100%;object-fit:cover}
+.story_image_main .photo_placeholder{min-height:0;height:100%}
 .story_image_side{aspect-ratio:3/4;overflow:hidden;background:var(--beige);margin-bottom:40px}
 .story_image_side img{width:100%;height:100%;object-fit:cover}
+.story_image_side .photo_placeholder{min-height:0;height:100%;padding:18px}
 .timeline{margin-top:80px;border-top:1px solid var(--char);display:grid;grid-template-columns:repeat(5,1fr)}
 .tl_item{padding:20px 16px 0;border-right:1px solid var(--line)}
 .tl_item:last-child{border-right:none}
@@ -139,7 +149,7 @@ section{position:relative}
 .video_frame{position:relative;aspect-ratio:16/11;background:var(--char);overflow:hidden}
 .video_frame video,.video_frame iframe{width:100%;height:100%;object-fit:cover;border:none}
 .video_poster{position:absolute;inset:0;cursor:pointer}
-.video_poster img{width:100%;height:100%;object-fit:cover}
+.video_poster img,.video_poster .photo_placeholder{width:100%;height:100%;object-fit:cover;min-height:0}
 .video_play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.18);transition:transform .4s var(--ease)}
 .video_poster:hover .video_play{transform:translate(-50%,-50%) scale(1.08)}
 .how_text h3{font-family:var(--serif);font-size:clamp(28px,4vw,52px);line-height:.95}
@@ -213,9 +223,9 @@ section{position:relative}
 /* VENUE */
 .venue{padding:100px 0;background:var(--ivory)}
 .venue_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:0;align-items:stretch;border:1px solid var(--line)}
-.venue_map{position:relative;background:var(--beige);min-height:520px;overflow:hidden}
-.venue_map img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.venue_map_overlay{position:absolute;inset:0;background:rgba(18,60,50,.08)}
+.venue_map{position:relative;background:#e8ddcc;min-height:520px;overflow:hidden}
+.venue_map_pattern{position:absolute;inset:0;opacity:.62;background-color:#e8ddcc;background-image:linear-gradient(27deg,transparent 46%,rgba(18,60,50,.18) 47%,rgba(18,60,50,.18) 49%,transparent 50%),linear-gradient(152deg,transparent 43%,rgba(18,60,50,.14) 44%,rgba(18,60,50,.14) 46%,transparent 47%),repeating-linear-gradient(0deg,transparent 0 54px,rgba(18,60,50,.08) 55px 57px),repeating-linear-gradient(90deg,transparent 0 72px,rgba(18,60,50,.08) 73px 75px)}
+.venue_map_label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 32px);padding:14px 18px;background:var(--warm);border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.12);text-align:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
 .venue_info{padding:48px;background:var(--warm);display:flex;flex-direction:column;justify-content:center}
 .venue_name{font-family:var(--serif);font-size:36px;line-height:.95;margin-top:12px}
 .venue_addr{margin-top:16px;font-size:14px;line-height:1.8;opacity:.8}
@@ -292,8 +302,7 @@ section{position:relative}
 .gb_form h4{font-family:var(--serif);font-size:20px}
 @media(max-width:900px){.gb_inner{grid-template-columns:1fr;padding:0 24px}}
 /* CLOSING */
-.closing{position:relative;height:92vh;min-height:600px;background:var(--char);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--warm)}
-.closing_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.6}
+.closing{position:relative;height:92vh;min-height:600px;background:linear-gradient(135deg,#103b32 0%,#1b5547 52%,#0b2c25 100%);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--warm)}
 .closing_overlay{position:absolute;inset:0;background:linear-gradient(0deg, rgba(18,60,50,.7), rgba(18,60,50,.2))}
 .closing_content{position:relative;z-index:2;padding:0 24px;max-width:720px}
 .closing_content h2{font-family:var(--serif);font-size:clamp(32px,5vw,64px);line-height:.9;letter-spacing:-.02em;font-weight:300}
@@ -322,7 +331,7 @@ section{position:relative}
 /* UTIL */
 .scroll_prog{position:fixed;top:0;left:0;height:2px;background:var(--deep);width:0;z-index:100;transition:width .1s linear}
 .add_cal{font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid var(--char);padding-bottom:4px;margin-top:12px;display:inline-block}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.hero_img{transform:none!important;height:100%;top:0}.reveal{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -340,7 +349,7 @@ section{position:relative}
   </div>
   <div class="nav_right">
     <a href="#rsvp" class="nav_cta">RSVP</a>
-    <button class="nav_burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav_burger" id="burger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -362,7 +371,6 @@ section{position:relative}
 </div>
 
 <header class="hero" id="home">
-  <img class="hero_img" id="heroImg" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000&auto=format&fit=crop" alt="Wedding celebration" loading="eager" onerror="this.style.display='none'">
   <div class="hero_overlay"></div>
   <div class="hero_content">
     <div class="hero_eyebrow">The beginning of forever</div>
@@ -425,7 +433,7 @@ section{position:relative}
     </div>
     <div class="gospels_img_wrap reveal">
       <div class="gospels_behind"></div>
-      <img src="https://images.unsplash.com/photo-1520854221256-17451ccdf07b?q=80&w=1000&auto=format&fit=crop" alt="Wedding editorial" loading="lazy" onerror="this.parentElement.style.background='var(--beige)'">
+      <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
     </div>
   </div>
 </section>
@@ -440,8 +448,8 @@ section{position:relative}
       <div class="story_copy reveal" id="storyCopy"></div>
     </div>
     <div class="story_image reveal">
-      <div class="story_image_main"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1600&auto=format&fit=crop" alt="Love story main" loading="lazy"></div>
-      <div class="story_image_side"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop" alt="Love story side" loading="lazy"></div>
+      <div class="story_image_main"><div class="photo_placeholder"><span>Real wedding photos will be added by the couple.</span></div></div>
+      <div class="story_image_side"><div class="photo_placeholder"><span>Shared by the couple</span></div></div>
     </div>
     <div class="timeline" id="timeline"></div>
   </div>
@@ -451,7 +459,7 @@ section{position:relative}
   <div class="how_inner">
     <div class="video_frame reveal" id="videoFrame">
       <div class="video_poster" id="videoPoster">
-        <img src="https://images.unsplash.com/photo-1529634597503-139d3726fed5?q=80&w=1200&auto=format&fit=crop" alt="Podcast player preview">
+        <div class="photo_placeholder"><span>The couple’s story video will appear here when they add it.</span></div>
       </div>
     </div>
     <div class="how_text reveal">
@@ -496,7 +504,7 @@ section{position:relative}
 
 <section class="venue" id="venue">
   <div class="venue_inner reveal">
-    <div class="venue_map"><img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop" alt="Map image placeholder"><div class="venue_map_overlay"></div><div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--warm);padding:12px 16px;border:1px solid var(--line);font-size:10px;letter-spacing:.18em;text-transform:uppercase">ATWIL EVENT CENTER • PORT HARCOURT</div></div>
+    <div class="venue_map" role="img" aria-label="Venue location card; use View location for directions"><div class="venue_map_pattern" aria-hidden="true"></div><div class="venue_map_label">ATWIL EVENT CENTER • PORT HARCOURT</div></div>
     <div class="venue_info"><div class="eyebrow">Venue</div><div class="venue_name" id="venueName"></div><div class="venue_addr" id="venueAddr"></div><div class="venue_actions"><a class="btn_line" id="viewMapBtn" href="#" target="_blank">View location</a><button class="btn_line" id="copyAddrBtn">Copy address</button></div><div style="margin-top:28px;font-size:12px;line-height:1.7;opacity:.7">The ceremony begins at 11:00 AM prompt. The reception follows.</div></div>
   </div>
 </section>
@@ -548,7 +556,6 @@ section{position:relative}
 </section>
 
 <section class="closing">
-  <img class="closing_img" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2000&auto=format&fit=crop" alt="Closing">
   <div class="closing_overlay"></div>
   <div class="closing_content reveal"><h2>And so,<br>our next chapter<br><em>begins.</em></h2><div class="closing_hash">THE GOSPELS — #THEGOSPELS26</div><div class="closing_thanks">Thank you for being part of our celebration.</div></div>
 </section>
@@ -635,16 +642,20 @@ const $$ = s=>[...document.querySelectorAll(s)];
 // NAV
 function initializeNavigation(){
   const nav=$("#nav"), burger=$("#burger"), menu=$("#mobileMenu"), close=$("#closeMenu"), prog=$("#scrollProg");
+  const setMenuOpen=(isOpen)=>{
+    menu.classList.toggle("open",isOpen);
+    burger.setAttribute("aria-expanded",String(isOpen));
+    burger.setAttribute("aria-label",isOpen?"Close menu":"Open menu");
+    document.body.classList.toggle("menu-open",isOpen);
+  };
   const onScroll=()=>{
     nav.classList.toggle("scrolled", window.scrollY>60);
     prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)*100)+"%";
-    const heroImg=$("#heroImg");
-    if(heroImg && window.scrollY<window.innerHeight) heroImg.style.transform=`translateY(${window.scrollY*0.25}px) scale(1.06)`;
   };
   window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
-  burger.addEventListener("click", ()=>menu.classList.add("open"));
-  close.addEventListener("click", ()=>menu.classList.remove("open"));
-  $$("[data-close]").forEach(a=>a.addEventListener("click", ()=>menu.classList.remove("open")));
+  burger.addEventListener("click", ()=>setMenuOpen(!menu.classList.contains("open")));
+  close.addEventListener("click", ()=>setMenuOpen(false));
+  $$("[data-close]").forEach(a=>a.addEventListener("click", ()=>setMenuOpen(false)));
 }
 
 // COUNTDOWN

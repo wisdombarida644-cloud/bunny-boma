@@ -32,7 +32,7 @@ class MemoryController extends Controller
         }
 
         Moment::create([
-            'image_path' => '/storage/'.$imagePath,
+            'image_path' => '/media/'.$imagePath,
             'title' => $data['title'] ?? null,
             'caption' => $data['caption'] ?? null,
             'credit_name' => $data['credit_name'] ?? null,
@@ -64,7 +64,7 @@ class MemoryController extends Controller
             }
 
             $this->deleteUploadedImage($moment->image_path);
-            $data['image_path'] = '/storage/'.$imagePath;
+            $data['image_path'] = '/media/'.$imagePath;
         }
 
         $moment->update($data);
@@ -82,8 +82,12 @@ class MemoryController extends Controller
 
     private function deleteUploadedImage(?string $imagePath): void
     {
-        if ($imagePath && str_starts_with($imagePath, '/storage/')) {
-            Storage::disk('public')->delete(substr($imagePath, strlen('/storage/')));
+        foreach (['/media/', '/storage/'] as $prefix) {
+            if ($imagePath && str_starts_with($imagePath, $prefix)) {
+                Storage::disk('public')->delete(substr($imagePath, strlen($prefix)));
+
+                return;
+            }
         }
     }
 }

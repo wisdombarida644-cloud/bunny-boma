@@ -41,7 +41,7 @@ class McController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('mc', 'public');
-            $data['image_path'] = '/storage/' . $path;
+            $data['image_path'] = '/media/'.$path;
         }
 
         $mc->update($data);

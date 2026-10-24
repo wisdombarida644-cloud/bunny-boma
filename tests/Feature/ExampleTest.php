@@ -8,6 +8,7 @@ use App\Models\Moment;
 use App\Models\User;
 use Database\Seeders\DemoPhotoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -38,7 +39,8 @@ class ExampleTest extends TestCase
             ->assertSee('#THEGOSPELS26')
             ->assertSee('Cash gifts')
             ->assertDontSee('Gift Registry')
-            ->assertDontSee('dQw4w9WgXcQ');
+            ->assertDontSee('dQw4w9WgXcQ')
+            ->assertDontSee('images.unsplash.com');
     }
 
     public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void
@@ -52,17 +54,57 @@ class ExampleTest extends TestCase
         $this->assertSame(4, Moment::where('credit_name', 'Demo stock image')->count());
         $this->assertDatabaseHas('galleries', [
             'caption' => 'DEMO ONLY — sample stock photo 01 (not the couple)',
-            'is_active' => true,
+            'is_active' => false,
         ]);
         $this->assertDatabaseHas('moments', [
             'title' => 'DEMO ONLY — sample memory 01',
-            'is_active' => true,
+            'is_active' => false,
         ]);
 
         $this->seed(DemoPhotoSeeder::class);
 
         $this->assertSame(4, Gallery::where('category', 'Demo — replace before launch')->count());
         $this->assertSame(4, Moment::where('credit_name', 'Demo stock image')->count());
+
+        Gallery::where('category', 'Demo — replace before launch')->update(['is_active' => true]);
+        Moment::where('credit_name', 'Demo stock image')->update(['is_active' => true]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Our memory album is taking shape.')
+            ->assertDontSee('DEMO ONLY — sample stock photo')
+            ->assertDontSee('images.unsplash.com');
+    }
+
+    public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void
+    {
+        Gallery::create([
+            'image_path' => '/media/gallery/chiamaka-gospel.jpg',
+            'category' => 'Wedding',
+            'caption' => 'Couple photo',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('src="/media/gallery/chiamaka-gospel.jpg"', false)
+            ->assertSee('Couple photo');
+    }
+
+    public function test_public_storage_fallback_serves_uploaded_audio_and_images(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('audio/wedding-track.mp3', 'audio-test-data');
+        Storage::disk('public')->put('gallery/couple-photo.jpg', 'image-test-data');
+
+        $this->get('/media/audio/wedding-track.mp3')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'audio/mpeg');
+        $this->get('/storage/gallery/couple-photo.jpg')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/jpeg');
+        $this->get('/media/private/secret.mp3')->assertNotFound();
     }
 
     public function test_admin_can_manage_family_names_rsvp_deadline_and_whatsapp_contact(): void

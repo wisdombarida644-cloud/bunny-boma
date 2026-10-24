@@ -45,7 +45,7 @@ class DemoPhotoSeeder extends Seeder
                     'image_path' => $photo['image'],
                     'category' => 'Demo — replace before launch',
                     'sort_order' => $sortOrder,
-                    'is_active' => true,
+                    'is_active' => false,
                 ]
             );
 
@@ -56,7 +56,7 @@ class DemoPhotoSeeder extends Seeder
                     'caption' => 'Stock image for admin testing only. This is not a photo of Chiamaka and Gospel.',
                     'credit_name' => 'Demo stock image',
                     'sort_order' => $sortOrder,
-                    'is_active' => true,
+                    'is_active' => false,
                 ]
             );
         }

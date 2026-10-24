@@ -20,8 +20,18 @@ class FrontController extends Controller
         // Allow the site to render after migrations even before optional demo content is seeded.
         $setting = WeddingSetting::firstOrCreate([]);
         $timelines = Timeline::orderBy('sort_order', 'asc')->get();
-        $moments = Moment::where('is_active', true)->orderBy('sort_order', 'asc')->get();
-        $galleries = Gallery::where('is_active', true)->orderBy('sort_order', 'asc')->get();
+        $moments = Moment::where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('credit_name')->orWhere('credit_name', '!=', 'Demo stock image');
+            })
+            ->orderBy('sort_order', 'asc')
+            ->get();
+        $galleries = Gallery::where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('category')->orWhere('category', '!=', 'Demo — replace before launch');
+            })
+            ->orderBy('sort_order', 'asc')
+            ->get();
         $mc = Mc::where('is_visible', true)->first();
         $qas = Qa::where('is_published', true)->orderBy('sort_order', 'asc')->get();
         $infos = Info::orderBy('sort_order', 'asc')->get();

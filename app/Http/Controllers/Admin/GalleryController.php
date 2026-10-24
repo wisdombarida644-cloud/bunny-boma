@@ -25,7 +25,7 @@ class GalleryController extends Controller
             foreach ($request->file('photos') as $file) {
                 $path = $file->store('gallery', 'public');
                 Gallery::create([
-                    'image_path' => '/storage/' . $path,
+                    'image_path' => '/media/'.$path,
                     'category' => $request->input('category', 'Pre-Wedding'),
                     'caption' => $file->getClientOriginalName(),
                     'sort_order' => Gallery::count() + 1,
