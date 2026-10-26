@@ -12,6 +12,7 @@ use App\Models\Rsvp;
 use App\Models\Timeline;
 use App\Models\WeddingSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
@@ -105,28 +106,44 @@ class FrontController extends Controller
 
     public function rsvpStore(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
         ]);
 
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Please provide your name and phone number.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            return redirect()->to(route('home').'#rsvp')
+                ->withErrors($validator)
+                ->withInput($request->only('name', 'phone'));
+        }
+
+        $validated = $validator->validated();
         $rsvp = Rsvp::create([
             'name' => $validated['name'],
             'phone' => $validated['phone'],
-            'email' => null,
+            // Keep compatibility with older production databases where email is still NOT NULL.
+            'email' => '',
             'guests_count' => 1,
             'attendance' => 'yes',
         ]);
 
-        if ($request->wantsJson()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'RSVP received successfully!',
+                'message' => 'Your RSVP has been received. Thank you!',
                 'rsvp' => $rsvp,
             ]);
         }
 
-        return back()->with('success', 'Thank you for your RSVP!');
+        return redirect()->to(route('home').'#rsvp')
+            ->with('rsvp_success', 'Your RSVP has been received. Thank you!');
     }
 
     public function guestbookStore(Request $request)

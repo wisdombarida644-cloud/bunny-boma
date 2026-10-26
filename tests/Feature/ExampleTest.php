@@ -151,25 +151,44 @@ class ExampleTest extends TestCase
     public function test_rsvp_requires_and_saves_only_name_and_phone(): void
     {
         $this->from(route('home'))
-            ->followingRedirects()
             ->post(route('rsvp.store'), [
                 'name' => 'Ada Guest',
                 'phone' => '+2348000000000',
             ])
-            ->assertOk()
-            ->assertSee('Thank you for your RSVP!');
+            ->assertRedirect(route('home').'#rsvp')
+            ->assertSessionHas('rsvp_success', 'Your RSVP has been received. Thank you!');
 
         $this->assertDatabaseHas('rsvps', [
             'name' => 'Ada Guest',
             'phone' => '+2348000000000',
-            'email' => null,
+            'email' => '',
             'guests_count' => 1,
             'attendance' => 'yes',
         ]);
 
-        $this->post(route('rsvp.store'), ['name' => 'No Phone'])
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Your RSVP has been received. Thank you!');
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('admin.rsvps.index'))
+            ->assertOk()
+            ->assertSee('Ada Guest')
+            ->assertSee('+2348000000000');
+
+        $this->from(route('home'))
+            ->post(route('rsvp.store'), ['name' => 'No Phone'])
+            ->assertRedirect(route('home').'#rsvp')
             ->assertSessionHasErrors('phone');
-        $this->post(route('rsvp.store'), ['phone' => '+2348000000000'])
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('No Phone')
+            ->assertSee('aria-invalid="true"', false);
+
+        $this->from(route('home'))
+            ->post(route('rsvp.store'), ['phone' => '+2348000000000'])
+            ->assertRedirect(route('home').'#rsvp')
             ->assertSessionHasErrors('name');
     }
 

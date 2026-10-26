@@ -340,8 +340,12 @@ section{position:relative}
 /* RSVP */
 .rsvp{padding:120px 0;background:var(--deep);color:var(--ivory)}
 .rsvp_inner{max-width:960px;margin:0 auto;padding:0 48px;text-align:center}
+.rsvp_confirmation{max-width:640px;margin:20px auto 0;padding:14px 18px;background:#E8F5E9;color:#245B2A;text-align:center;border:1px solid #A5D6A7;font-size:13px}
 .rsvp_form{margin-top:48px;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:20px;background:var(--warm);color:var(--char);padding:32px;border:1px solid rgba(255,255,255,.08)}
 .rsvp_field{display:flex;flex-direction:column;gap:8px}
+.rsvp_field_error{font-size:11px;line-height:1.45;color:#9B1C1C}
+.rsvp_field input[aria-invalid="true"]{border-color:#9B1C1C}
+.rsvp_submit:disabled{opacity:.6;cursor:wait}
 .rsvp_field.full{grid-column:1/-1}
 .rsvp_field label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
 .rsvp_field input,.rsvp_field select,.rsvp_field textarea{border:none;border-bottom:1px solid var(--line);padding:12px 0;font-family:var(--sans);font-size:14px;background:transparent;outline:none;transition:border-color .3s}

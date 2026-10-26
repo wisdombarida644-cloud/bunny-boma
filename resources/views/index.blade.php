@@ -398,11 +398,22 @@
   <div class="rsvp_inner">
     <div class="eyebrow" style="color:rgba(252,251,247,.6)">RSVP</div>
     <h2 class="h2" style="color:var(--warm);margin-top:12px">Will you celebrate<br><i>with us?</i></h2>
+    @if(session('rsvp_success'))
+      <p class="rsvp_confirmation" role="status" aria-live="polite">{{ session('rsvp_success') }}</p>
+    @endif
     <p class="body" style="margin:16px auto 0;opacity:.7;color:var(--ivory)">Kindly respond by {{ $weddingData['rsvpDeadline'] ?? 'November 7, 2026' }}.</p>
     <form class="rsvp_form" id="rsvpForm" action="{{ route('rsvp.store') }}" method="POST">
       @csrf
-      <div class="rsvp_field"><label for="rsvpName">Full name</label><input id="rsvpName" required name="name" value="{{ old('name') }}" placeholder="Your full name" autocomplete="name" maxlength="255"></div>
-      <div class="rsvp_field"><label for="rsvpPhone">Phone number</label><input id="rsvpPhone" required type="tel" name="phone" value="{{ old('phone') }}" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50"></div>
+      <div class="rsvp_field">
+        <label for="rsvpName">Full name</label>
+        <input id="rsvpName" required name="name" value="{{ old('name') }}" placeholder="Your full name" autocomplete="name" maxlength="255" aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}" @if($errors->has('name')) aria-describedby="rsvpNameError" @endif>
+        @error('name')<small class="rsvp_field_error" id="rsvpNameError">{{ $message }}</small>@enderror
+      </div>
+      <div class="rsvp_field">
+        <label for="rsvpPhone">Phone number</label>
+        <input id="rsvpPhone" required type="tel" name="phone" value="{{ old('phone') }}" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50" aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}" @if($errors->has('phone')) aria-describedby="rsvpPhoneError" @endif>
+        @error('phone')<small class="rsvp_field_error" id="rsvpPhoneError">{{ $message }}</small>@enderror
+      </div>
       <button class="rsvp_submit" type="submit">Confirm my RSVP</button>
     </form>
     @if($weddingData['whatsappUrl'])
@@ -485,6 +496,18 @@ document.addEventListener("DOMContentLoaded", () => {
   burger?.addEventListener("click", () => setMobileMenuOpen(!menu?.classList.contains("open")));
   closeMenu?.addEventListener("click", closeMobileMenu);
   document.querySelectorAll("[data-close]").forEach(link => link.addEventListener("click", closeMobileMenu));
+
+  const rsvpForm = document.getElementById("rsvpForm");
+  const rsvpSubmit = rsvpForm?.querySelector("button[type=submit]");
+  rsvpForm?.addEventListener("submit", event => {
+    if (!rsvpForm.checkValidity() || !rsvpSubmit) return;
+    if (rsvpSubmit.disabled) {
+      event.preventDefault();
+      return;
+    }
+    rsvpSubmit.disabled = true;
+    rsvpSubmit.textContent = "Submitting…";
+  });
 
   // Hero slideshow.
   const heroSlides = [...document.querySelectorAll(".hero_slide")];
