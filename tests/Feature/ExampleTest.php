@@ -31,6 +31,8 @@ class ExampleTest extends TestCase
             ->assertSee(asset('site.webmanifest'))
             ->assertSee(asset('images/og-wedding.jpg'))
             ->assertSee(asset('images/hero-love-bg.jpg'))
+            ->assertSee('hero_backdrop_image is-active', false)
+            ->assertSee('Cross-fade the supplied romantic backdrop', false)
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
             ->assertSee('Gospel Abina-Aziba MacBenneth Isikpi')
@@ -300,5 +302,10 @@ class ExampleTest extends TestCase
             'id' => $entry->id,
             'is_approved' => true,
         ]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Ada Guest')
+            ->assertSee('A note awaiting review.');
     }
 }

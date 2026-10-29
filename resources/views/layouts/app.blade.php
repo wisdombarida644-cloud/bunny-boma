@@ -110,9 +110,11 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 
 /* HERO — an editorial portrait stack with a still centre frame and drifting side photographs */
 .hero{position:relative;isolation:isolate;min-height:740px;height:min(100svh,980px);overflow:hidden;background:var(--warm)}
-.hero_backdrop{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.hero_backdrop img{width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:saturate(.78);opacity:.74;transform:scale(1.025)}
-.hero_backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(252,251,247,.96) 0%,rgba(252,251,247,.89) 38%,rgba(252,251,247,.66) 70%,rgba(252,251,247,.46) 100%),linear-gradient(0deg,rgba(252,251,247,.26),rgba(252,251,247,.26))}
+.hero_backdrop{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--warm)}
+.hero_backdrop_image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:saturate(.9) blur(3px);opacity:0;transform:scale(1.035);transition:opacity 1.8s var(--ease),transform 8s var(--ease);will-change:opacity,transform}
+.hero_backdrop_image.is-active{opacity:1;transform:scale(1.12) translate3d(-.8%,-.4%,0)}
+.hero_backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(252,251,247,.62) 0%,rgba(252,251,247,.49) 38%,rgba(252,251,247,.27) 70%,rgba(252,251,247,.14) 100%),linear-gradient(0deg,rgba(252,251,247,.18),rgba(252,251,247,.18))}
+@media(prefers-reduced-motion:reduce){.hero_backdrop_image,.hero_backdrop_image.is-active{transition:none;transform:none}}
 .hero:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 80% 8%,rgba(212,175,55,.11),transparent 31%),radial-gradient(ellipse at 15% 92%,rgba(18,60,50,.08),transparent 36%)}
 .hero:after{content:"";position:absolute;right:0;top:0;width:30%;height:100%;z-index:1;pointer-events:none;opacity:.22;background-image:radial-gradient(var(--deep2) .7px,transparent .7px);background-size:14px 14px;mask-image:linear-gradient(90deg,transparent,black)}
 .hero_inner{position:relative;z-index:2;width:min(1440px,100%);height:100%;min-height:inherit;margin:0 auto;padding:112px clamp(28px,6vw,92px) 72px;display:grid;grid-template-columns:minmax(300px,.9fr) minmax(450px,1.1fr);gap:clamp(28px,4.5vw,76px);align-items:center}
@@ -500,8 +502,8 @@ section{position:relative}
 :root[data-theme="dark"] .venue,
 :root[data-theme="dark"] .info_qa,
 :root[data-theme="dark"] .guestbook{background:#202823}
-:root[data-theme="dark"] .hero_backdrop img{filter:saturate(.58) brightness(.62)}
-:root[data-theme="dark"] .hero_backdrop:after{background:linear-gradient(90deg,rgba(20,26,22,.95) 0%,rgba(20,26,22,.89) 38%,rgba(20,26,22,.73) 70%,rgba(20,26,22,.6) 100%),linear-gradient(0deg,rgba(20,26,22,.3),rgba(20,26,22,.3))}
+:root[data-theme="dark"] .hero_backdrop_image{filter:saturate(.7) brightness(.74) blur(3px)}
+:root[data-theme="dark"] .hero_backdrop:after{background:linear-gradient(90deg,rgba(20,26,22,.64) 0%,rgba(20,26,22,.52) 38%,rgba(20,26,22,.36) 70%,rgba(20,26,22,.24) 100%),linear-gradient(0deg,rgba(20,26,22,.18),rgba(20,26,22,.18))}
 :root[data-theme="dark"] .hero_visual_note{color:var(--beige)}
 :root[data-theme="dark"] .hero_badge{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.34);color:var(--beige)}
 :root[data-theme="dark"] .hero_title em,

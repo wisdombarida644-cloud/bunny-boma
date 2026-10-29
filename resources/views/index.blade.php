@@ -45,8 +45,9 @@
 
 @php($heroPhotos = $galleries->take(4)->values())
 <header class="hero" id="home">
-  <div class="hero_backdrop" aria-hidden="true">
-    <img src="{{ asset('images/hero-love-bg.jpg') }}" alt="" fetchpriority="high">
+  <div class="hero_backdrop" data-fallback-src="{{ asset('images/og-wedding.jpg') }}" aria-hidden="true">
+    <img class="hero_backdrop_image is-active" src="{{ asset('images/hero-love-bg.jpg') }}" alt="" fetchpriority="high">
+    <img class="hero_backdrop_image" alt="">
   </div>
   <div class="hero_inner">
     <div class="hero_content">
@@ -570,6 +571,49 @@ document.addEventListener("DOMContentLoaded", () => {
   // Keep the central portrait still; the side frames gently cycle through the first four uploads.
   const heroPhotos = weddingData.heroPhotos || [];
   const reduceMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
+
+  // Cross-fade the supplied romantic backdrop through real, active Gallery uploads.
+  const backgroundLayers = Array.from(document.querySelectorAll(".hero_backdrop_image"));
+  const galleryBackgrounds = (weddingData.gallery || [])
+    .slice(0, 8)
+    .map(photo => photo.image_path)
+    .filter(path => typeof path === "string" && path.trim() !== "");
+  const rawBackgrounds = [
+    backgroundLayers[0]?.getAttribute("src"),
+    document.querySelector(".hero_backdrop")?.dataset.fallbackSrc,
+    ...galleryBackgrounds,
+  ].filter(Boolean);
+  const backgroundSlides = Array.from(new Set(rawBackgrounds.map(source => {
+    try { return new URL(source, document.baseURI).href; } catch (_) { return null; }
+  }).filter(Boolean)));
+
+  if (backgroundSlides.length > 1 && backgroundLayers.length > 1 && !reduceMotion) {
+    let activeSlideIndex = 0;
+    let activeLayerIndex = 0;
+    window.setInterval(() => {
+      const nextSlideIndex = (activeSlideIndex + 1) % backgroundSlides.length;
+      const nextLayerIndex = 1 - activeLayerIndex;
+      const incoming = backgroundLayers[nextLayerIndex];
+      const outgoing = backgroundLayers[activeLayerIndex];
+      let settled = false;
+      const finishSwap = loaded => {
+        if (settled) return;
+        settled = true;
+        incoming.onload = null;
+        incoming.onerror = null;
+        activeSlideIndex = nextSlideIndex;
+        if (!loaded) return;
+        incoming.classList.add("is-active");
+        outgoing.classList.remove("is-active");
+        activeLayerIndex = nextLayerIndex;
+      };
+      incoming.onload = () => finishSwap(true);
+      incoming.onerror = () => finishSwap(false);
+      incoming.src = backgroundSlides[nextSlideIndex];
+      if (incoming.complete && incoming.naturalWidth > 0) finishSwap(true);
+    }, 7500);
+  }
+
   if (heroPhotos.length > 3 && !reduceMotion) {
     const sidePhotos = heroPhotos.slice(1);
     const nextIndex = { value: 0 };
