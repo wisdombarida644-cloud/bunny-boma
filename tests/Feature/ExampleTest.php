@@ -26,6 +26,7 @@ class ExampleTest extends TestCase
             ->assertSee('Leave a wish for the couple')
             ->assertSee('themeToggle', false)
             ->assertSee(asset('images/og-wedding.jpg'))
+            ->assertSee(asset('images/hero-love-bg.jpg'))
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
             ->assertSee('Gospel Abina-Aziba MacBenneth Isikpi')

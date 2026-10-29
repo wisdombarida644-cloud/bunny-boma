@@ -45,6 +45,9 @@
 
 @php($heroPhotos = $galleries->take(4)->values())
 <header class="hero" id="home">
+  <div class="hero_backdrop" aria-hidden="true">
+    <img src="{{ asset('images/hero-love-bg.jpg') }}" alt="" fetchpriority="high">
+  </div>
   <div class="hero_inner">
     <div class="hero_content">
       <div class="hero_badge"><span class="hero_badge_dot" aria-hidden="true"></span>The Beginning of Forever</div>

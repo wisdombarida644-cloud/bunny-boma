@@ -1,6 +1,6 @@
 # Chiamaka & Gospel Wedding Website
 
-A single-page wedding website and Laravel CMS for Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi. The database-backed public site includes the family invitation, wedding details, Memories carousel, photo journal, name-and-phone RSVP, moderated Wishes board, persistent light/dark theme toggle, and optional cash-gift bank-transfer details. Its homepage hero uses an editorial stack of couple-uploaded photos, with a still centre portrait and gently drifting side frames. Admin users manage wedding settings, memories and gallery photos, podcast/music, Q&A, wishes moderation, and RSVP exports.
+A single-page wedding website and Laravel CMS for Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi. The database-backed public site includes the family invitation, wedding details, Memories carousel, photo journal, name-and-phone RSVP, moderated Wishes board, persistent light/dark theme toggle, and optional cash-gift bank-transfer details. Its homepage hero layers a softly veiled romantic photo backdrop beneath an editorial stack of couple-uploaded photos, with a still centre portrait and gently drifting side frames. Admin users manage wedding settings, memories and gallery photos, podcast/music, Q&A, wishes moderation, and RSVP exports.
 
 ## Confirmed event details
 
