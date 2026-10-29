@@ -33,6 +33,10 @@ class FrontController extends Controller
             })
             ->orderBy('sort_order', 'asc')
             ->get();
+        $ogImagePath = $galleries->first()?->image_path ?: 'images/og-wedding.jpg';
+        $ogImageUrl = preg_match('~^https?://~i', $ogImagePath)
+            ? $ogImagePath
+            : asset(ltrim($ogImagePath, '/'));
         $mc = Mc::where('is_visible', true)->first();
         $qas = Qa::where('is_published', true)->orderBy('sort_order', 'asc')->get();
         $infos = Info::orderBy('sort_order', 'asc')->get();
@@ -78,6 +82,10 @@ class FrontController extends Controller
             'mapsUrl' => $setting->maps_url ?: 'https://maps.google.com/?q=ATWIL+EVENT+CENTER+Akpajo+Port+Harcourt',
             'dressColors' => $dressColors,
             'podcastUrl' => $podcastVideoUrl,
+            'heroPhotos' => $galleries->take(4)->map(fn (Gallery $gallery) => [
+                'image_path' => $gallery->image_path,
+                'caption' => $gallery->caption,
+            ])->values()->all(),
             'moments' => $moments->map(fn (Moment $moment) => [
                 'image_path' => $moment->image_path,
                 'title' => $moment->title,
@@ -100,7 +108,8 @@ class FrontController extends Controller
             'qas',
             'infos',
             'guestbooks',
-            'weddingData'
+            'weddingData',
+            'ogImageUrl'
         ));
     }
 
@@ -120,7 +129,7 @@ class FrontController extends Controller
             }
 
             return redirect()->to(route('home').'#rsvp')
-                ->withErrors($validator)
+                ->withErrors($validator, 'rsvp')
                 ->withInput($request->only('name', 'phone'));
         }
 
@@ -148,26 +157,41 @@ class FrontController extends Controller
 
     public function guestbookStore(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'message' => 'required|string|max:2000',
         ]);
 
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Please provide your name and a wish for the couple.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            return redirect()->to(route('home').'#wishes')
+                ->withErrors($validator, 'wishes')
+                ->withInput($request->only('name', 'message'));
+        }
+
+        $validated = $validator->validated();
         $entry = Guestbook::create([
             'name' => $validated['name'],
             'message' => $validated['message'],
             'is_approved' => false,
         ]);
 
-        if ($request->wantsJson()) {
+        if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Your note was received and will appear after approval.',
+                'message' => 'Your wish has been received and will appear after approval.',
                 'entry' => $entry,
             ]);
         }
 
-        return back()->with('success', 'Thank you for your note. It will appear in the guestbook after approval.');
+        return redirect()->to(route('home').'#wishes')
+            ->with('success', 'Thank you for your wish. It will be shared after approval.');
     }
 
     private function safeYoutubeEmbedUrl(?string $url): ?string

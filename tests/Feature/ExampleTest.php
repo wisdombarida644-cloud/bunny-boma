@@ -22,6 +22,10 @@ class ExampleTest extends TestCase
             ->assertSee('The Beginning of Forever')
             ->assertSee('Will you celebrate')
             ->assertSee('Memories')
+            ->assertSee('Wishes')
+            ->assertSee('Leave a wish for the couple')
+            ->assertSee('themeToggle', false)
+            ->assertSee(asset('images/og-wedding.jpg'))
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
             ->assertSee('Gospel Abina-Aziba MacBenneth Isikpi')
@@ -89,6 +93,7 @@ class ExampleTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('src="/media/gallery/chiamaka-gospel.jpg"', false)
+            ->assertSee(asset('/media/gallery/chiamaka-gospel.jpg'))
             ->assertSee('Couple photo');
     }
 
@@ -179,7 +184,7 @@ class ExampleTest extends TestCase
         $this->from(route('home'))
             ->post(route('rsvp.store'), ['name' => 'No Phone'])
             ->assertRedirect(route('home').'#rsvp')
-            ->assertSessionHasErrors('phone');
+            ->assertSessionHasErrorsIn('rsvp', ['phone']);
 
         $this->get(route('home'))
             ->assertOk()
@@ -189,7 +194,7 @@ class ExampleTest extends TestCase
         $this->from(route('home'))
             ->post(route('rsvp.store'), ['phone' => '+2348000000000'])
             ->assertRedirect(route('home').'#rsvp')
-            ->assertSessionHasErrors('name');
+            ->assertSessionHasErrorsIn('rsvp', ['name']);
     }
 
     public function test_cash_gift_details_are_managed_in_settings_and_shown_publicly(): void
@@ -238,12 +243,14 @@ class ExampleTest extends TestCase
             ->assertSee('Thank you for celebrating with us.');
     }
 
-    public function test_guestbook_notes_require_approval_before_publication(): void
+    public function test_guest_wishes_require_approval_before_publication(): void
     {
         $this->post(route('guestbook.store'), [
             'name' => 'Ada Guest',
             'message' => 'Congratulations to you both.',
-        ])->assertRedirect()->assertSessionHas('success');
+        ])
+            ->assertRedirect(route('home').'#wishes')
+            ->assertSessionHas('success', 'Thank you for your wish. It will be shared after approval.');
 
         $entry = Guestbook::where('name', 'Ada Guest')->firstOrFail();
         $this->assertFalse((bool) $entry->is_approved);

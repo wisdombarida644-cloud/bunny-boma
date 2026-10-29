@@ -9,9 +9,14 @@
     <a href="#wedding">Our Wedding</a>
     <a href="#memories">Memories</a>
     <a href="#qa">Q&A</a>
+    <a href="#wishes">Wishes</a>
     <a href="#cash-gift">Cash Gift</a>
   </div>
   <div class="nav_right">
+    <button class="theme_toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+      <svg class="theme_icon_moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 14.1A8.7 8.7 0 0 1 9.9 3.2a8.8 8.8 0 1 0 10.9 10.9Z"/></svg>
+      <svg class="theme_icon_sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+    </button>
     <a href="#rsvp" class="nav_cta">RSVP</a>
     <button class="nav_burger" id="burger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -28,8 +33,9 @@
     <a href="#wedding" data-close><span>03</span>Our Wedding</a>
     <a href="#memories" data-close><span>04</span>Memories</a>
     <a href="#qa" data-close><span>05</span>Q&A</a>
-    <a href="#cash-gift" data-close><span>06</span>Cash Gift</a>
-    <a href="#rsvp" data-close><span>07</span>RSVP</a>
+    <a href="#wishes" data-close><span>06</span>Wishes</a>
+    <a href="#cash-gift" data-close><span>07</span>Cash Gift</a>
+    <a href="#rsvp" data-close><span>08</span>RSVP</a>
   </div>
   <div class="mobile_menu_foot">
     <span>{{ $setting->hashtag ?? '#THEGOSPELS26' }}</span>
@@ -37,39 +43,58 @@
   </div>
 </div>
 
+@php($heroPhotos = $galleries->take(4)->values())
 <header class="hero" id="home">
-  <div class="hero_slides" id="heroSlides">
-    @forelse($galleries->take(4) as $gallery)
-      <img class="hero_slide{{ $loop->first ? ' active' : '' }}" src="{{ $gallery->image_path }}" alt="{{ $gallery->caption ?: 'Wedding photo shared by the couple' }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}">
-    @empty
-      <div class="hero_empty" aria-hidden="true"></div>
-    @endforelse
-  </div>
-  <div class="hero_overlay"></div>
-  <div class="hero_content">
-    <div class="hero_badge">
-      <span class="hero_badge_dot"></span>
-      The Beginning of Forever
-    </div>
-    <h1 class="hero_title">{{ $setting->partner_one }} <em>&</em> {{ $setting->partner_two }}</h1>
-    <div class="hero_meta">
-      <div class="hero_date">
-        {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}<br>
-        {{ $setting->venue_name }} • {{ $setting->city }}
+  <div class="hero_inner">
+    <div class="hero_content">
+      <div class="hero_badge"><span class="hero_badge_dot" aria-hidden="true"></span>The Beginning of Forever</div>
+      <p class="hero_kicker">A celebration of love &amp; family</p>
+      <h1 class="hero_title"><span class="hero_name">{{ $setting->partner_one }}</span><em>&amp;</em><span class="hero_name">{{ $setting->partner_two }}</span></h1>
+      <p class="hero_intro">Two lives, one beautiful story. Join us as we celebrate the start of forever.</p>
+      <div class="hero_meta">
+        <div class="hero_date">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}<br>{{ $setting->venue_name }} · {{ $setting->city }}</div>
+        <div class="hero_hash">{{ $setting->hashtag }}</div>
       </div>
-      <div class="hero_hash">{{ $setting->hashtag }}</div>
+      <a class="hero_story_link" href="#story">Discover our story <span aria-hidden="true">↘</span></a>
+    </div>
+
+    <div class="hero_visual" role="group" aria-label="Wedding portraits">
+      @if($heroPhotos->get(1))
+      <figure class="hero_photo hero_photo--left" aria-hidden="true">
+        <img data-hero-slot="left" src="{{ $heroPhotos->get(1)->image_path }}" alt="" loading="lazy">
+        <figcaption><span data-hero-caption="left">{{ $heroPhotos->get(1)->caption ?: 'A favourite moment' }}</span><small data-hero-count="left">02 / {{ str_pad((string) $heroPhotos->count(), 2, '0', STR_PAD_LEFT) }}</small></figcaption>
+      </figure>
+      @endif
+
+      @if($heroPhotos->first())
+      <figure class="hero_photo hero_photo--center">
+        <img src="{{ $heroPhotos->first()->image_path }}" alt="{{ $heroPhotos->first()->caption ?: 'Portrait of the couple' }}" loading="eager" fetchpriority="high">
+        <figcaption><span>THE TWO OF US</span><small>01 / {{ str_pad((string) $heroPhotos->count(), 2, '0', STR_PAD_LEFT) }}</small></figcaption>
+      </figure>
+      @else
+      <div class="hero_photo hero_photo--center hero_photo--placeholder" aria-label="Wedding photo placeholder">
+        <div class="hero_placeholder_art">
+          <span class="hero_placeholder_monogram">{{ substr($setting->partner_one, 0, 1) }}&amp;{{ substr($setting->partner_two, 0, 1) }}</span>
+          <span class="hero_placeholder_label">Our story begins here</span>
+        </div>
+      </div>
+      @endif
+
+      @if($heroPhotos->get(2))
+      <figure class="hero_photo hero_photo--right" aria-hidden="true">
+        <img data-hero-slot="right" src="{{ $heroPhotos->get(2)->image_path }}" alt="" loading="lazy">
+        <figcaption><span data-hero-caption="right">{{ $heroPhotos->get(2)->caption ?: 'A favourite moment' }}</span><small data-hero-count="right">03 / {{ str_pad((string) $heroPhotos->count(), 2, '0', STR_PAD_LEFT) }}</small></figcaption>
+      </figure>
+      @endif
+
+      <div class="hero_date_stamp" aria-label="Wedding date {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}">
+        <span>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('M j') }}</span>
+        <small>Save our date · {{ \Carbon\Carbon::parse($setting->wedding_date)->format('Y') }}</small>
+      </div>
+      <div class="hero_visual_note" aria-hidden="true">Portraits of forever</div>
     </div>
   </div>
-  <div class="hero_controls">
-    @if($galleries->take(4)->count() > 1)
-      <div class="hero_dots" id="heroDots" role="group" aria-label="Homepage photos">
-        @foreach($galleries->take(4) as $gallery)
-          <button type="button" class="{{ $loop->first ? 'active' : '' }}" aria-label="Show homepage photo {{ $loop->iteration }}"></button>
-        @endforeach
-      </div>
-    @endif
-    <div class="hero_scroll">Scroll — Discover Our Story</div>
-  </div>
+  <a class="hero_scroll" href="#story"><span>Scroll to discover</span></a>
 </header>
 
 @if(filled($setting->family_one) || filled($setting->family_two))
@@ -406,13 +431,13 @@
       @csrf
       <div class="rsvp_field">
         <label for="rsvpName">Full name</label>
-        <input id="rsvpName" required name="name" value="{{ old('name') }}" placeholder="Your full name" autocomplete="name" maxlength="255" aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}" @if($errors->has('name')) aria-describedby="rsvpNameError" @endif>
-        @error('name')<small class="rsvp_field_error" id="rsvpNameError">{{ $message }}</small>@enderror
+        <input id="rsvpName" required name="name" value="{{ $errors->hasBag('rsvp') ? old('name') : '' }}" placeholder="Your full name" autocomplete="name" maxlength="255" aria-invalid="{{ $errors->hasBag('rsvp') && $errors->getBag('rsvp')->has('name') ? 'true' : 'false' }}" @if($errors->hasBag('rsvp') && $errors->getBag('rsvp')->has('name')) aria-describedby="rsvpNameError" @endif>
+        @error('name', 'rsvp')<small class="rsvp_field_error" id="rsvpNameError">{{ $message }}</small>@enderror
       </div>
       <div class="rsvp_field">
         <label for="rsvpPhone">Phone number</label>
-        <input id="rsvpPhone" required type="tel" name="phone" value="{{ old('phone') }}" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50" aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}" @if($errors->has('phone')) aria-describedby="rsvpPhoneError" @endif>
-        @error('phone')<small class="rsvp_field_error" id="rsvpPhoneError">{{ $message }}</small>@enderror
+        <input id="rsvpPhone" required type="tel" name="phone" value="{{ $errors->hasBag('rsvp') ? old('phone') : '' }}" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50" aria-invalid="{{ $errors->hasBag('rsvp') && $errors->getBag('rsvp')->has('phone') ? 'true' : 'false' }}" @if($errors->hasBag('rsvp') && $errors->getBag('rsvp')->has('phone')) aria-describedby="rsvpPhoneError" @endif>
+        @error('phone', 'rsvp')<small class="rsvp_field_error" id="rsvpPhoneError">{{ $message }}</small>@enderror
       </div>
       <button class="rsvp_submit" type="submit">Confirm my RSVP</button>
     </form>
@@ -422,23 +447,35 @@
   </div>
 </section>
 
-<section class="guestbook" id="guestbook">
+<section class="guestbook" id="wishes" aria-labelledby="wishesHeading">
   <div class="gb_inner">
-    <div><div class="eyebrow">Guestbook</div><h2 class="h2" style="margin-top:12px;font-size:36px">Leave us<br><i>a note</i></h2></div>
     <div>
-      <div class="gb_list" id="gbList">
+      <div class="eyebrow">Wishes from our people</div>
+      <h2 class="h2" id="wishesHeading" style="margin-top:12px;font-size:36px">Send us<br><i>your wishes</i></h2>
+      <p class="gb_intro">Leave a blessing, a memory, or a few kind words for the couple.</p>
+    </div>
+    <div>
+      <div class="gb_list" id="wishesList">
         @forelse($guestbooks as $gb)
-        <div class="gb_card"><div class="gb_msg">"{{ $gb->message }}"</div><div class="gb_name">— {{ $gb->name }}</div></div>
+        <article class="gb_card"><div class="gb_msg">“{{ $gb->message }}”</div><div class="gb_name">— {{ $gb->name }}</div></article>
         @empty
-        <p class="gb_empty" role="status">Be the first to leave a message. Notes appear here after approval.</p>
+        <p class="gb_empty" role="status">Be the first to send a wish. Approved wishes will appear here.</p>
         @endforelse
       </div>
-      <form class="gb_form" id="gbForm" action="{{ route('guestbook.store') }}" method="POST">
+      <form class="gb_form" id="wishForm" action="{{ route('guestbook.store') }}" method="POST">
         @csrf
-        <h4>Write a message</h4>
-        <div class="rsvp_field" style="margin-top:16px"><label>Your name</label><input name="name" value="{{ old('name') }}" required maxlength="255" placeholder="Name" autocomplete="name"></div>
-        <div class="rsvp_field" style="margin-top:12px"><label>Message</label><textarea name="message" rows="3" maxlength="2000" required placeholder="May your home always be...">{{ old('message') }}</textarea></div>
-        <button class="btn_line" style="width:100%;margin-top:16px;justify-content:center" type="submit">Post note</button>
+        <h4>Leave a wish for the couple</h4>
+        <div class="rsvp_field" style="margin-top:16px">
+          <label for="wishName">Your name</label>
+          <input id="wishName" name="name" value="{{ $errors->hasBag('wishes') ? old('name') : '' }}" required maxlength="255" placeholder="Name" autocomplete="name" aria-invalid="{{ $errors->hasBag('wishes') && $errors->getBag('wishes')->has('name') ? 'true' : 'false' }}" @if($errors->hasBag('wishes') && $errors->getBag('wishes')->has('name')) aria-describedby="wishNameError" @endif>
+          @error('name', 'wishes')<small class="gb_error" id="wishNameError">{{ $message }}</small>@enderror
+        </div>
+        <div class="rsvp_field" style="margin-top:12px">
+          <label for="wishMessage">Your wish</label>
+          <textarea id="wishMessage" name="message" rows="3" maxlength="2000" required placeholder="May your home always be..." aria-invalid="{{ $errors->hasBag('wishes') && $errors->getBag('wishes')->has('message') ? 'true' : 'false' }}" @if($errors->hasBag('wishes') && $errors->getBag('wishes')->has('message')) aria-describedby="wishMessageError" @endif>{{ $errors->hasBag('wishes') ? old('message') : '' }}</textarea>
+          @error('message', 'wishes')<small class="gb_error" id="wishMessageError">{{ $message }}</small>@enderror
+        </div>
+        <button class="btn_line gb_submit" style="width:100%;margin-top:16px;justify-content:center" type="submit">Send your wish</button>
       </form>
     </div>
   </div>
@@ -451,7 +488,7 @@
       <div>
         <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
         <div class="footer_nav">
-          <a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
+          <a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#wishes">Wishes</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
         </div>
       </div>
     </div>
@@ -478,6 +515,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const menu = document.getElementById("mobileMenu");
   const closeMenu = document.getElementById("closeMenu");
   const progress = document.getElementById("scrollProg");
+  const themeToggle = document.getElementById("themeToggle");
+  const setTheme = theme => {
+    document.documentElement.dataset.theme = theme;
+    const isDark = theme === "dark";
+    themeToggle?.setAttribute("aria-pressed", String(isDark));
+    themeToggle?.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    themeToggle?.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
+  };
+  let savedTheme = "light";
+  try {
+    savedTheme = localStorage.getItem("the-gospels-theme") === "dark" ? "dark" : "light";
+  } catch (_) {}
+  setTheme(savedTheme);
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    try { localStorage.setItem("the-gospels-theme", nextTheme); } catch (_) {}
+  });
 
   const setMobileMenuOpen = isOpen => {
     menu?.classList.toggle("open", isOpen);
@@ -509,20 +564,27 @@ document.addEventListener("DOMContentLoaded", () => {
     rsvpSubmit.textContent = "Submitting…";
   });
 
-  // Hero slideshow.
-  const heroSlides = [...document.querySelectorAll(".hero_slide")];
-  const heroDots = [...document.querySelectorAll("#heroDots button")];
-  let heroIndex = 0;
-  if (heroSlides.length > 1) {
-    const changeHeroSlide = index => {
-      heroSlides[heroIndex]?.classList.remove("active");
-      heroDots[heroIndex]?.classList.remove("active");
-      heroIndex = (index + heroSlides.length) % heroSlides.length;
-      heroSlides[heroIndex].classList.add("active");
-      heroDots[heroIndex]?.classList.add("active");
+  // Keep the central portrait still; the side frames gently cycle through the first four uploads.
+  const heroPhotos = weddingData.heroPhotos || [];
+  const reduceMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
+  if (heroPhotos.length > 3 && !reduceMotion) {
+    const sidePhotos = heroPhotos.slice(1);
+    const nextIndex = { value: 0 };
+    const setSidePhoto = (side, photo, photoIndex) => {
+      const image = document.querySelector(`[data-hero-slot="${side}"]`);
+      const caption = document.querySelector(`[data-hero-caption="${side}"]`);
+      const count = document.querySelector(`[data-hero-count="${side}"]`);
+      if (!image || !photo) return;
+      image.src = photo.image_path;
+      if (caption) caption.textContent = photo.caption || "A favourite moment";
+      if (count) count.textContent = `${String(photoIndex + 1).padStart(2, "0")} / ${String(heroPhotos.length).padStart(2, "0")}`;
     };
-    heroDots.forEach((button, index) => button.addEventListener("click", () => changeHeroSlide(index)));
-    window.setInterval(() => changeHeroSlide(heroIndex + 1), 5000);
+    window.setInterval(() => {
+      nextIndex.value = (nextIndex.value + 1) % sidePhotos.length;
+      setSidePhoto("left", sidePhotos[nextIndex.value], heroPhotos.indexOf(sidePhotos[nextIndex.value]));
+      const rightIndex = (nextIndex.value + 1) % sidePhotos.length;
+      setSidePhoto("right", sidePhotos[rightIndex], heroPhotos.indexOf(sidePhotos[rightIndex]));
+    }, 8500);
   }
 
   // Event countdown uses the wedding's configured timezone, not the visitor's local timezone.
