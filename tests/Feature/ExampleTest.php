@@ -267,7 +267,9 @@ class ExampleTest extends TestCase
             ->get(route('admin.memories.index'))
             ->assertOk()
             ->assertSee('Add a memory photo')
-            ->assertSee('public Memories carousel');
+            ->assertSee('public Memories carousel')
+            ->assertSee('adminMenuToggle', false)
+            ->assertSee('sidebarBackdrop', false);
     }
 
     public function test_admin_can_approve_a_guestbook_note(): void
