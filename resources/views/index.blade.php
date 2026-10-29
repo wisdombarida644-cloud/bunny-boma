@@ -45,9 +45,11 @@
 
 @php($heroPhotos = $galleries->take(4)->values())
 <header class="hero" id="home">
-  <div class="hero_backdrop" data-fallback-src="{{ asset('images/og-wedding.jpg') }}" aria-hidden="true">
-    <img class="hero_backdrop_image is-active" src="{{ asset('images/hero-love-bg.jpg') }}" alt="" fetchpriority="high">
+  <div class="hero_backdrop" aria-hidden="true">
+    @if($heroBackgroundPhotos->first())
+    <img class="hero_backdrop_image is-active" src="{{ $heroBackgroundPhotos->first()->image_path }}" alt="" fetchpriority="high">
     <img class="hero_backdrop_image" alt="">
+    @endif
   </div>
   <div class="hero_inner">
     <div class="hero_content">
@@ -572,23 +574,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroPhotos = weddingData.heroPhotos || [];
   const reduceMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
 
-  // Cross-fade the supplied romantic backdrop through real, active Gallery uploads.
+  // Only cross-fade real files uploaded to the server through Admin → Gallery Photos.
   const backgroundLayers = Array.from(document.querySelectorAll(".hero_backdrop_image"));
-  const galleryBackgrounds = (weddingData.gallery || [])
-    .slice(0, 8)
-    .map(photo => photo.image_path)
-    .filter(path => typeof path === "string" && path.trim() !== "");
-  const rawBackgrounds = [
-    backgroundLayers[0]?.getAttribute("src"),
-    document.querySelector(".hero_backdrop")?.dataset.fallbackSrc,
-    ...galleryBackgrounds,
-  ].filter(Boolean);
-  const backgroundSlides = Array.from(new Set(rawBackgrounds.map(source => {
-    try { return new URL(source, document.baseURI).href; } catch (_) { return null; }
-  }).filter(Boolean)));
+  const backgroundSlides = Array.from(new Set((weddingData.heroBackgroundPhotos || [])
+    .filter(path => typeof path === "string" && path.trim() !== "")
+    .map(source => {
+      try { return new URL(source, document.baseURI).href; } catch (_) { return null; }
+    })
+    .filter(Boolean)));
 
   if (backgroundSlides.length > 1 && backgroundLayers.length > 1 && !reduceMotion) {
-    let activeSlideIndex = 0;
+    let activeSlideIndex = Math.max(0, backgroundSlides.indexOf(backgroundLayers[0]?.src));
     let activeLayerIndex = 0;
     window.setInterval(() => {
       const nextSlideIndex = (activeSlideIndex + 1) % backgroundSlides.length;

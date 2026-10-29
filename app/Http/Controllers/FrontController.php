@@ -33,6 +33,11 @@ class FrontController extends Controller
             })
             ->orderBy('sort_order', 'asc')
             ->get();
+        $heroBackgroundPhotos = $galleries
+            ->filter(fn (Gallery $gallery) => str_starts_with($gallery->image_path, '/media/gallery/')
+                || str_starts_with($gallery->image_path, '/storage/gallery/'))
+            ->take(8)
+            ->values();
         $ogImagePath = $galleries->first()?->image_path ?: 'images/og-wedding.jpg';
         $ogImageUrl = preg_match('~^https?://~i', $ogImagePath)
             ? $ogImagePath
@@ -82,6 +87,7 @@ class FrontController extends Controller
             'mapsUrl' => $setting->maps_url ?: 'https://maps.google.com/?q=ATWIL+EVENT+CENTER+Akpajo+Port+Harcourt',
             'dressColors' => $dressColors,
             'podcastUrl' => $podcastVideoUrl,
+            'heroBackgroundPhotos' => $heroBackgroundPhotos->pluck('image_path')->all(),
             'heroPhotos' => $galleries->take(4)->map(fn (Gallery $gallery) => [
                 'image_path' => $gallery->image_path,
                 'caption' => $gallery->caption,
@@ -104,6 +110,7 @@ class FrontController extends Controller
             'timelines',
             'moments',
             'galleries',
+            'heroBackgroundPhotos',
             'mc',
             'qas',
             'infos',

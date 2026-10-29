@@ -30,9 +30,8 @@ class ExampleTest extends TestCase
             ->assertSee(asset('apple-touch-icon.png'))
             ->assertSee(asset('site.webmanifest'))
             ->assertSee(asset('images/og-wedding.jpg'))
-            ->assertSee(asset('images/hero-love-bg.jpg'))
-            ->assertSee('hero_backdrop_image is-active', false)
-            ->assertSee('Cross-fade the supplied romantic backdrop', false)
+            ->assertDontSee('hero-love-bg.jpg')
+            ->assertDontSee('hero_backdrop_image is-active', false)
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
             ->assertSee('Gospel Abina-Aziba MacBenneth Isikpi')
@@ -89,6 +88,9 @@ class ExampleTest extends TestCase
 
     public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void
     {
+        Storage::fake('public');
+        Storage::disk('public')->put('gallery/chiamaka-gospel.jpg', 'fake-image-data');
+
         Gallery::create([
             'image_path' => '/media/gallery/chiamaka-gospel.jpg',
             'category' => 'Wedding',
@@ -99,9 +101,25 @@ class ExampleTest extends TestCase
 
         $this->get('/')
             ->assertOk()
+            ->assertSee('class="hero_backdrop_image is-active" src="/media/gallery/chiamaka-gospel.jpg"', false)
             ->assertSee('src="/media/gallery/chiamaka-gospel.jpg"', false)
             ->assertSee(asset('/media/gallery/chiamaka-gospel.jpg'))
             ->assertSee('Couple photo');
+    }
+
+    public function test_hero_background_ignores_non_server_gallery_urls(): void
+    {
+        Gallery::create([
+            'image_path' => 'https://images.example.test/couple.jpg',
+            'category' => 'Wedding',
+            'caption' => 'Remote photo',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('class="hero_backdrop_image', false);
     }
 
     public function test_public_storage_fallback_serves_uploaded_audio_and_images(): void
