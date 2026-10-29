@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    <IfModule mod_mime.c>
+        AddType application/manifest+json .webmanifest
+    </IfModule>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="title desc">
+  <title id="title">The Gospels</title>
+  <desc id="desc">Forest green and gold TG wedding monogram.</desc>
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#17483D"/>
+      <stop offset="1" stop-color="#0D3029"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F0D991"/>
+      <stop offset=".48" stop-color="#D4AF37"/>
+      <stop offset="1" stop-color="#A9852E"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#field)"/>
+  <circle cx="256" cy="256" r="219" fill="none" stroke="url(#gold)" stroke-width="5"/>
+  <circle cx="256" cy="256" r="202" fill="none" stroke="#E8DDCC" stroke-opacity=".34" stroke-width="2"/>
+  <path d="M256 64l7.3 17.7L281 89l-17.7 7.3L256 114l-7.3-17.7L231 89l17.7-7.3L256 64Z" fill="url(#gold)"/>
+  <text x="256" y="294" text-anchor="middle" font-family="'Bodoni Moda','Cormorant Garamond',Georgia,'Times New Roman',serif" font-size="177" font-weight="600" letter-spacing="-11" fill="#FCFBF7">TG</text>
+  <path d="M177 327h158" fill="none" stroke="url(#gold)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M256 344c-12-13-29-22-29-37 0-9 7-16 16-16 6 0 11 3 13 9 3-6 8-9 14-9 9 0 16 7 16 16 0 15-18 24-30 37Z" transform="translate(0 8) scale(.72) translate(99 124)" fill="url(#gold)"/>
+  <text x="256" y="405" text-anchor="middle" font-family="Manrope,Arial,sans-serif" font-size="20" font-weight="500" letter-spacing="7" fill="#E8DDCC">THE GOSPELS</text>
+</svg>

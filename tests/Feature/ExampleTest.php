@@ -25,6 +25,10 @@ class ExampleTest extends TestCase
             ->assertSee('Wishes')
             ->assertSee('Leave a wish for the couple')
             ->assertSee('themeToggle', false)
+            ->assertSee(asset('favicon.svg'))
+            ->assertSee(asset('favicon-32x32.png'))
+            ->assertSee(asset('apple-touch-icon.png'))
+            ->assertSee(asset('site.webmanifest'))
             ->assertSee(asset('images/og-wedding.jpg'))
             ->assertSee(asset('images/hero-love-bg.jpg'))
             ->assertSee('Our memory album is taking shape.')
@@ -263,10 +267,16 @@ class ExampleTest extends TestCase
     {
         $this->get('/admin')->assertRedirect(route('login'));
         $this->get(route('admin.memories.index'))->assertRedirect(route('login'));
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee(asset('favicon.svg'))
+            ->assertSee(asset('apple-touch-icon.png'));
 
         $this->actingAs(User::factory()->create())
             ->get(route('admin.memories.index'))
             ->assertOk()
+            ->assertSee(asset('favicon.svg'))
+            ->assertSee(asset('site.webmanifest'))
             ->assertSee('Add a memory photo')
             ->assertSee('public Memories carousel')
             ->assertSee('adminMenuToggle', false)

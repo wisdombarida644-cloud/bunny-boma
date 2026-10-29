@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@include('layouts.partials.brand-icons')
 <title>Wedding CMS — {{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500&display=swap" rel="stylesheet">
 <style>
@@ -16,7 +17,8 @@ input,textarea,select{font-family:inherit}
 /* SIDEBAR */
 .sidebar{flex:0 0 260px;width:260px;background:var(--warm);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:auto;overscroll-behavior:contain;z-index:30}
 .sb_top{padding:24px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
-.sb_logo{width:36px;height:36px;background:var(--deep);color:var(--warm);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;letter-spacing:.08em;border-radius:6px}
+.sb_logo{width:40px;height:40px;flex:none;border-radius:50%;overflow:hidden}
+.sb_logo img{width:100%;height:100%;object-fit:cover}
 .sb_title{line-height:1.1;flex:1;min-width:0}
 .sb_title b{display:block;font-size:13px;letter-spacing:.02em;overflow-wrap:anywhere}
 .sb_title span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
@@ -44,7 +46,8 @@ input,textarea,select{font-family:inherit}
 .top_title{font-size:14px;font-weight:600;letter-spacing:.02em;overflow-wrap:anywhere}
 .top_right{display:flex;align-items:center;gap:12px;flex:none}
 .top_status{font-size:11px;opacity:.6;white-space:nowrap}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--beige);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--beige);display:flex;align-items:center;justify-content:center;flex:none;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
 .content{padding:32px 28px;max-width:1240px;width:100%;min-width:0}
 .content h1{overflow-wrap:anywhere}
 .card{background:var(--warm);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:20px;min-width:0}
@@ -104,7 +107,7 @@ input,textarea,select{font-family:inherit}
 </head>
 <body>
 <aside class="sidebar" id="adminSidebar" aria-label="Admin navigation">
-  <div class="sb_top"><div class="sb_logo">TG</div><div class="sb_title"><b>{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }}</b><span>Wedding CMS</span></div><button class="sidebar_close" id="sidebarClose" type="button" aria-label="Close navigation">×</button></div>
+  <div class="sb_top"><div class="sb_logo"><img src="{{ asset('favicon.svg') }}" alt=""></div><div class="sb_title"><b>{{ $setting->partner_one ?? 'Chiamaka Boma Ibekwe' }} & {{ $setting->partner_two ?? 'Gospel Abina-Aziba MacBenneth Isikpi' }}</b><span>Wedding CMS</span></div><button class="sidebar_close" id="sidebarClose" type="button" aria-label="Close navigation">×</button></div>
   <nav class="sb_nav">
     <div class="sb_section">Overview</div>
     <a class="sb_link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">● Dashboard</a>
@@ -133,7 +136,7 @@ input,textarea,select{font-family:inherit}
       <button class="admin_menu_toggle" id="adminMenuToggle" type="button" aria-label="Open navigation" aria-controls="adminSidebar" aria-expanded="false"><span></span><span></span><span></span></button>
       <div class="top_title">@yield('page_title', 'Wedding Dashboard')</div>
     </div>
-    <div class="top_right"><div class="top_status">Published • {{ $setting->hashtag ?? '#THEGOSPELS26' }}</div><div class="avatar" aria-label="Admin account">TG</div></div>
+    <div class="top_right"><div class="top_status">Published • {{ $setting->hashtag ?? '#THEGOSPELS26' }}</div><div class="avatar" aria-hidden="true"><img src="{{ asset('favicon.svg') }}" alt=""></div></div>
   </div>
   <div class="content">
     @if(session('success'))

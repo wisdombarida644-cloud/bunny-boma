@@ -2,7 +2,7 @@
 
 @section('content')
 <nav class="nav" id="nav">
-  <a href="#home" class="nav_logo">{{ substr($setting->partner_one ?? 'B', 0, 1) }}&{{ substr($setting->partner_two ?? 'B', 0, 1) }}</a>
+  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('favicon.svg') }}" alt=""></a>
   <div class="nav_links" id="navLinks">
     <a href="#home">Home</a>
     <a href="#story">Our Story</a>
@@ -24,7 +24,7 @@
 
 <div class="mobile_menu" id="mobileMenu">
   <div class="mobile_menu_top">
-    <div class="nav_logo">{{ substr($setting->partner_one ?? 'B', 0, 1) }}&{{ substr($setting->partner_two ?? 'B', 0, 1) }}</div>
+    <div class="nav_logo"><img src="{{ asset('favicon.svg') }}" alt="The Gospels"></div>
     <button id="closeMenu" aria-label="Close">✕</button>
   </div>
   <div class="mobile_menu_links">
@@ -487,7 +487,7 @@
 <footer class="footer">
   <div class="footer_inner">
     <div class="footer_top">
-      <div class="footer_brand">THE<br>GOSPELS</div>
+      <div class="footer_brand"><img src="{{ asset('favicon.svg') }}" alt="" aria-hidden="true"><span>THE<br>GOSPELS</span></div>
       <div>
         <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
         <div class="footer_nav">
