@@ -38,7 +38,6 @@ try {
 <style>
 @font-face{font-family:"Alex Brush";src:url("{{ asset('fonts/alex-brush-400.woff2') }}") format("woff2");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"Alice";src:url("{{ asset('fonts/alice-400.woff2') }}") format("woff2");font-style:normal;font-weight:400;font-display:swap}
-@font-face{font-family:"Catchy Mager";src:url("{{ asset('fonts/catchy-mager-subset.ttf') }}") format("truetype");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"Fahkwang";src:url("{{ asset('fonts/fahkwang-300.woff2') }}") format("woff2");font-style:normal;font-weight:300;font-display:swap}
 @font-face{font-family:"Fahkwang";src:url("{{ asset('fonts/fahkwang-400.woff2') }}") format("woff2");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"Fahkwang";src:url("{{ asset('fonts/fahkwang-500.woff2') }}") format("woff2");font-style:normal;font-weight:500;font-display:swap}
@@ -57,7 +56,7 @@ try {
 --line:rgba(43,62,50,.14);
 --line2:rgba(43,62,50,.08);
 --serif:"Alice", Georgia, serif;
---serif2:"Catchy Mager", "Alice", Georgia, serif;
+--serif2:"Alice", Georgia, serif;
 --script:"Alex Brush", cursive;
 --sans:"Fahkwang", sans-serif;
 --ease:cubic-bezier(.25,.1,.25,1);

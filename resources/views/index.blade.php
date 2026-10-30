@@ -45,7 +45,7 @@
 
 @php
   $heroPhotos = $heroBackgroundPhotos->take(8)->values();
-  $heroSidePhotos = $heroPhotos->take(3)->values();
+  $heroSidePhotos = $heroPhotos->take(2)->values();
   $heroSidePhotosReversed = $heroSidePhotos->reverse()->values();
   $partnerOneParts = preg_split('/\s+/u', trim((string) ($setting->partner_one ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
   $partnerTwoParts = preg_split('/\s+/u', trim((string) ($setting->partner_two ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
@@ -70,8 +70,8 @@
     <div class="hero_panel hero_panel--center">
       @if($heroPhotos->isNotEmpty())
         <div class="hero_center_stack">
-          @foreach($heroPhotos as $index => $photo)
-            <img class="hero_center_image {{ $index === 0 ? 'is-active' : '' }}" data-hero-center-slide @if($index === 0) src="{{ $photo->image_path }}" fetchpriority="high" loading="eager" @else data-hero-src="{{ $photo->image_path }}" fetchpriority="low" loading="lazy" @endif alt="" decoding="async">
+          @foreach($heroPhotos as $photo)
+            <img class="hero_center_image {{ $loop->first ? 'is-active' : '' }}" data-hero-center-slide @if($loop->first) src="{{ $photo->image_path }}" fetchpriority="high" loading="eager" @else data-hero-src="{{ $photo->image_path }}" fetchpriority="low" loading="lazy" @endif alt="" decoding="async">
           @endforeach
           <div class="hero_center_empty" data-hero-image-fallback hidden>
             <span class="hero_empty_monogram">{{ substr($setting->partner_one ?? 'C', 0, 1) }}<i>&amp;</i>{{ substr($setting->partner_two ?? 'G', 0, 1) }}</span>
@@ -603,6 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroCenterSlides = Array.from(document.querySelectorAll("[data-hero-center-slide]"));
   const heroImageFallback = document.querySelector("[data-hero-image-fallback]");
   let activeHeroSlide = Math.max(heroCenterSlides.findIndex(slide => slide.classList.contains("is-active")), 0);
+  heroCenterSlides.forEach((slide, index) => slide.classList.toggle("is-active", index === activeHeroSlide));
   let heroSlideLoading = false;
   heroCenterSlides[0]?.addEventListener("error", () => {
     heroCenterSlides[0].remove();

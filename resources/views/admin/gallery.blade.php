@@ -6,7 +6,7 @@
 <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
   <div>
     <h1 style="font-family:var(--serif);font-size:28px">Gallery Photos</h1>
-    <p style="font-size:12px;opacity:.65;margin-top:6px">The first active photo anchors the center portrait; up to three active photos frame the desktop hero. Mobile shows one photo at a time, and the full active set appears in the photo journal.</p>
+    <p style="font-size:12px;opacity:.65;margin-top:6px">The first active photo anchors the center portrait; up to two active photos frame the desktop hero. Mobile shows one photo at a time, and the full active set appears in the photo journal.</p>
   </div>
 </div>
 
