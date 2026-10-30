@@ -38,10 +38,7 @@ class FrontController extends Controller
                 || str_starts_with($gallery->image_path, '/storage/gallery/'))
             ->take(8)
             ->values();
-        $ogImagePath = $galleries->first()?->image_path ?: 'images/og-wedding.jpg';
-        $ogImageUrl = preg_match('~^https?://~i', $ogImagePath)
-            ? $ogImagePath
-            : asset(ltrim($ogImagePath, '/'));
+        $ogImageUrl = asset('images/og-wedding-couple.jpg');
         $mc = Mc::where('is_visible', true)->first();
         $qas = Qa::where('is_published', true)->orderBy('sort_order', 'asc')->get();
         $infos = Info::orderBy('sort_order', 'asc')->get();

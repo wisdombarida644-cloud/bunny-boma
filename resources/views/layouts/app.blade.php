@@ -18,10 +18,13 @@ try {
 <meta property="og:description" content="{{ \Carbon\Carbon::parse($setting->wedding_date ?? '2026-11-21')->format('l, F j, Y') }} at {{ $setting->ceremony_time ?? '11:00 AM' }} prompt. {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }}, {{ $setting->address ?? 'Akpajo' }}, {{ $setting->city ?? 'Port Harcourt, Rivers State' }}.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ rtrim(config('app.url'), '/') }}">
-<meta property="og:image" content="{{ $ogImageUrl ?? asset('images/og-wedding.jpg') }}">
+<meta property="og:image" content="{{ $ogImageUrl ?? asset('images/og-wedding-couple.jpg') }}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{{ ($setting->partner_one ?? 'The couple').' and '.($setting->partner_two ?? '') }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{{ $ogImageUrl ?? asset('images/og-wedding.jpg') }}">
+<meta name="twitter:image" content="{{ $ogImageUrl ?? asset('images/og-wedding-couple.jpg') }}">
 <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
 
 <link rel="preload" href="{{ asset('fonts/alex-brush-400.woff2') }}" as="font" type="font/woff2" crossorigin>
