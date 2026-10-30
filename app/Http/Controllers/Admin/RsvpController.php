@@ -10,31 +10,43 @@ class RsvpController extends Controller
     public function index()
     {
         $rsvps = Rsvp::latest()->get();
-        $totalAttending = Rsvp::where('attendance', 'yes')->sum('guests_count');
-        $totalDeclined = Rsvp::where('attendance', 'no')->count();
-        return view('admin.rsvps', compact('rsvps', 'totalAttending', 'totalDeclined'));
+
+        return view('admin.rsvps', compact('rsvps'));
     }
 
     public function export()
     {
         $rsvps = Rsvp::latest()->get();
-        $filename = "rsvps_" . date('Y-m-d') . ".csv";
+        $filename = 'rsvps_'.date('Y-m-d').'.csv';
 
         $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'no-cache, must-revalidate',
+            'Expires' => '0',
         ];
 
         $callback = function () use ($rsvps) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['ID', 'Name', 'Email', 'Phone', 'Guests', 'Attendance', 'Message', 'Submitted At']);
+            fputcsv($file, ['ID', 'Name', 'Phone', 'Submitted At']);
 
-            foreach ($rsvps as $r) {
-                fputcsv($file, [$r->id, $r->name, $r->email, $r->phone, $r->guests_count, $r->attendance, $r->message, $r->created_at]);
+            $safeCell = static function (?string $value): string {
+                $value ??= '';
+
+                // Prevent spreadsheet programs from interpreting guest-submitted cells as formulas.
+                return preg_match('/^[\x00-\x20]*[=+\-@]/', $value) ? "'{$value}" : $value;
+            };
+
+            foreach ($rsvps as $rsvp) {
+                fputcsv($file, [
+                    $rsvp->id,
+                    $safeCell($rsvp->name),
+                    $safeCell($rsvp->phone),
+                    $rsvp->created_at?->toDateTimeString(),
+                ]);
             }
+
             fclose($file);
         };
 

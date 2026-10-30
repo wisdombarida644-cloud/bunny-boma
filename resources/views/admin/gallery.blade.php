@@ -3,8 +3,11 @@
 @section('page_title', 'Gallery Photo Manager')
 
 @section('admin_content')
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-  <h1 style="font-family:var(--serif);font-size:28px">Gallery Photos</h1>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+  <div>
+    <h1 style="font-family:var(--serif);font-size:28px">Gallery Photos</h1>
+    <p style="font-size:12px;opacity:.65;margin-top:6px">Active photos appear in the public photo journal; the first four also rotate in the homepage hero.</p>
+  </div>
 </div>
 
 <div class="card">
@@ -35,7 +38,7 @@
 </div>
 
 <div class="card">
-  <div class="card_head"><h3>Active Photos ({{ $galleries->count() }})</h3></div>
+  <div class="card_head"><h3>Gallery Photos ({{ $galleries->count() }})</h3></div>
   <div class="card_body">
     <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px">
       @foreach($galleries as $g)
@@ -51,6 +54,13 @@
             <div class="field">
               <label>Caption</label>
               <input name="caption" value="{{ $g->caption }}" style="padding:6px 8px;font-size:12px">
+            </div>
+            <div class="field" style="margin-bottom:8px">
+              <label style="display:flex;align-items:center;gap:8px;letter-spacing:0;text-transform:none">
+                <input type="hidden" name="is_active" value="0">
+                <input type="checkbox" name="is_active" value="1" @checked($g->is_active)>
+                Show on public gallery
+              </label>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
               <button class="btn" type="submit" style="padding:6px 10px;font-size:11px">Save</button>

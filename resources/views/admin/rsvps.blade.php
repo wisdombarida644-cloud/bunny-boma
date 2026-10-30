@@ -3,15 +3,12 @@
 @section('page_title', 'RSVP Submissions')
 
 @section('admin_content')
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-  <h1 style="font-family:var(--serif);font-size:28px">Guest RSVPs</h1>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+  <div>
+    <h1 style="font-family:var(--serif);font-size:28px">Guest RSVPs</h1>
+    <p style="font-size:12px;opacity:.6;margin-top:4px">{{ $rsvps->count() }} submissions with the guest's name and phone number.</p>
+  </div>
   <a class="btn btn_primary" href="{{ route('admin.rsvps.export') }}">Export CSV</a>
-</div>
-
-<div class="grid4" style="margin-bottom:20px">
-  <div class="stat"><span class="stat_label">Total Submissions</span><span class="stat_value">{{ $rsvps->count() }}</span></div>
-  <div class="stat"><span class="stat_label">Attending Guests</span><span class="stat_value">{{ $totalAttending }}</span></div>
-  <div class="stat"><span class="stat_label">Declined</span><span class="stat_value">{{ $totalDeclined }}</span></div>
 </div>
 
 <div class="card">
@@ -21,32 +18,26 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Email</th>
           <th>Phone</th>
-          <th>Guests</th>
-          <th>Attendance</th>
-          <th>Message</th>
-          <th>Date</th>
+          <th>Date received</th>
         </tr>
       </thead>
       <tbody>
         @forelse($rsvps as $r)
         <tr>
           <td><strong>{{ $r->name }}</strong></td>
-          <td>{{ $r->email }}</td>
-          <td>{{ $r->phone ?? '—' }}</td>
-          <td>{{ $r->guests_count }}</td>
           <td>
-            <span class="badge" style="background: {{ $r->attendance === 'yes' ? '#E8F5E9' : '#FFEBEE' }}">
-              {{ strtoupper($r->attendance) }}
-            </span>
+            @if($r->phone)
+              <a href="tel:{{ preg_replace('/[^0-9+]/', '', $r->phone) }}">{{ $r->phone }}</a>
+            @else
+              —
+            @endif
           </td>
-          <td>{{ $r->message ?? '—' }}</td>
-          <td>{{ $r->created_at->format('M j, Y H:i') }}</td>
+          <td>{{ $r->created_at?->format('M j, Y H:i') ?? '—' }}</td>
         </tr>
         @empty
         <tr>
-          <td colspan="7" style="text-align:center;padding:24px;opacity:.6">No RSVPs submitted yet.</td>
+          <td colspan="3" style="text-align:center;padding:24px;opacity:.6">No RSVPs submitted yet.</td>
         </tr>
         @endforelse
       </tbody>

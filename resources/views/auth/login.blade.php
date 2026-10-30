@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login — Benny & Boma</title>
+@include('layouts.partials.brand-icons')
+<title>Admin Login — With the Gospels</title>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--deep:#123C32;--warm:#FCFBF7;--char:#1D211E;--line:rgba(29,33,30,.12);--serif:"Bodoni Moda",serif;--sans:"Manrope",sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:var(--warm);color:var(--char);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
 .login_box{width:100%;max-width:400px;background:var(--warm);border:1px solid var(--line);padding:40px;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.06)}
-.logo{font-family:var(--serif);font-size:36px;text-align:center;margin-bottom:8px}
+.logo{display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--serif);font-size:22px;letter-spacing:.04em;text-align:center;margin-bottom:8px}
+.logo img{width:84px;height:84px;border-radius:50%}
 .sub{text-align:center;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:32px}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
 .field label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
@@ -21,7 +23,7 @@ body{font-family:var(--sans);background:var(--warm);color:var(--char);display:fl
 </head>
 <body>
 <div class="login_box">
-  <div class="logo">B&B</div>
+  <div class="logo"><img src="{{ asset('favicon.svg') }}" alt=""><span>THE GOSPELS</span></div>
   <div class="sub">Wedding CMS Login</div>
 
   @if($errors->any())
@@ -32,11 +34,11 @@ body{font-family:var(--sans);background:var(--warm);color:var(--char);display:fl
     @csrf
     <div class="field">
       <label>Email Address</label>
-      <input type="email" name="email" required value="admin@bennyandboma.com">
+      <input type="email" name="email" required autocomplete="username" value="{{ old('email') }}">
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" name="password" required value="password">
+      <input type="password" name="password" required autocomplete="current-password">
     </div>
     <button class="btn_submit" type="submit">Sign In</button>
   </form>
