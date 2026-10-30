@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Gallery;
 use App\Models\Guestbook;
+use App\Models\Mc;
 use App\Models\Moment;
 use App\Models\User;
 use Database\Seeders\DemoPhotoSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -193,6 +195,44 @@ class ExampleTest extends TestCase
             ->assertHeader('Content-Type', 'image/jpeg')
             ->assertHeader('Cache-Control', 'public, max-age=31536000, immutable');
         $this->get('/media/private/secret.mp3')->assertNotFound();
+    }
+
+    public function test_admin_can_save_an_mc_with_an_uploaded_photo(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create();
+        $temporaryImage = tempnam(sys_get_temp_dir(), 'mc-upload-');
+        file_put_contents($temporaryImage, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC'));
+
+        try {
+            $this->actingAs($admin)
+                ->post(route('admin.mc.update'), [
+                    'name' => 'Wisdom Barida',
+                    'role' => 'Master of Ceremonies',
+                    'bio' => 'A moment to remember.',
+                    'instagram_url' => 'https://www.instagram.com/wisdom/',
+                    'x_url' => 'https://x.com/wisdom',
+                    'website_url' => null,
+                    'is_visible' => '1',
+                    'image' => new UploadedFile($temporaryImage, 'mc.png', 'image/png', UPLOAD_ERR_OK, true),
+                ])
+                ->assertRedirect()
+                ->assertSessionHas('success', 'MC details updated!');
+        } finally {
+            if (is_file($temporaryImage)) {
+                unlink($temporaryImage);
+            }
+        }
+
+        $mc = Mc::firstOrFail();
+        $this->assertSame('Wisdom Barida', $mc->name);
+        $this->assertStringStartsWith('/media/mc/', $mc->image_path);
+        $this->assertDatabaseHas('mcs', [
+            'id' => $mc->id,
+            'image_path' => $mc->image_path,
+            'is_visible' => true,
+        ]);
+        Storage::disk('public')->assertExists(substr($mc->image_path, strlen('/media/')));
     }
 
     public function test_admin_can_manage_family_names_rsvp_deadline_and_whatsapp_contact(): void

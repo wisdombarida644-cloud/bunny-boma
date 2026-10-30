@@ -44,6 +44,9 @@ class McController extends Controller
             $data['image_path'] = '/media/'.$path;
         }
 
+        // `image` is a request-only upload field; the mcs table stores its path in `image_path`.
+        unset($data['image']);
+
         $mc->update($data);
 
         return back()->with('success', 'MC details updated!');
