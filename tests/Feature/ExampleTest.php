@@ -19,7 +19,7 @@ class ExampleTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('The Beginning of Forever')
+            ->assertDontSee('The Beginning of Forever')
             ->assertSee('Will you celebrate')
             ->assertSee('Memories')
             ->assertSee('Wishes')
@@ -27,6 +27,7 @@ class ExampleTest extends TestCase
             ->assertSee('themeToggle', false)
             ->assertSee(asset('favicon.svg'))
             ->assertSee(asset('favicon-32x32.png'))
+            ->assertSee(asset('images/thegospels-wordmark.jpg'))
             ->assertSee(asset('apple-touch-icon.png'))
             ->assertSee(asset('site.webmanifest'))
             ->assertSee(asset('images/og-wedding-couple.jpg'))
@@ -41,6 +42,10 @@ class ExampleTest extends TestCase
             ->assertDontSee('hero-love-bg.jpg')
             ->assertDontSee('class="hero_backdrop"', false)
             ->assertSee('hero_triptych', false)
+            ->assertSee('hero_panel--left', false)
+            ->assertSee('hero_panel--center', false)
+            ->assertSee('hero_panel--right', false)
+            ->assertDontSee('hero_photo_stage', false)
             ->assertSee('hero_center_empty', false)
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
@@ -108,23 +113,45 @@ class ExampleTest extends TestCase
             'sort_order' => 1,
             'is_active' => true,
         ]);
+        Storage::disk('public')->put('gallery/second-couple-photo.jpg', 'fake-image-data');
+        Gallery::create([
+            'image_path' => '/media/gallery/second-couple-photo.jpg',
+            'category' => 'Wedding',
+            'caption' => 'Another couple photo',
+            'sort_order' => 2,
+            'is_active' => true,
+        ]);
 
-        $this->get('/')
+        $response = $this->get('/')
             ->assertOk()
             ->assertSee('class="hero_center_image is-active" data-hero-center-slide src="/media/gallery/chiamaka-gospel.jpg"', false)
             ->assertSee('<meta property="og:image" content="'.asset('images/og-wedding-couple.jpg').'">', false)
             ->assertSee('<meta property="og:image:width" content="1200">', false)
             ->assertSee('<meta property="og:image:height" content="630">', false)
-            ->assertSee('class="hero_track hero_track--up"', false)
-            ->assertSee('class="hero_track hero_track--down"', false)
-            ->assertSee('class="hero_track_group"', false)
-            ->assertSee('class="hero_photo_tile" src="/media/gallery/chiamaka-gospel.jpg"', false)
             ->assertSee('decoding="async"', false)
             ->assertSee('loading="eager"', false)
             ->assertSee('fetchpriority="high"', false)
-            ->assertSee('src="/media/gallery/chiamaka-gospel.jpg"', false)
-            ->assertSee(asset('/media/gallery/chiamaka-gospel.jpg'))
-            ->assertSee('Couple photo');
+            ->assertSee('<link rel="preload" as="image" href="/media/gallery/chiamaka-gospel.jpg" fetchpriority="high">', false)
+            ->assertSee('Couple photo')
+            ->assertSee('class="hero_triptych"', false)
+            ->assertSee('class="hero_track hero_track--up"', false)
+            ->assertSee('class="hero_track hero_track--down"', false)
+            ->assertSee('hero_photo_tile', false)
+            ->assertSee('data-hero-src="/media/gallery/second-couple-photo.jpg"', false);
+
+        $heroStart = strpos($response->getContent(), '<header class="hero"');
+        $heroEnd = $heroStart === false ? false : strpos($response->getContent(), '</header>', $heroStart);
+        $this->assertNotFalse($heroStart);
+        $this->assertNotFalse($heroEnd);
+        $heroMarkup = substr($response->getContent(), $heroStart, $heroEnd - $heroStart);
+        $this->assertSame(2, substr_count($heroMarkup, 'data-hero-center-slide'));
+        preg_match_all('/<img class="hero_center_image[^\"]*" data-hero-center-slide src="[^\"]+"/', $heroMarkup, $eagerCenterSlides);
+        $this->assertCount(1, $eagerCenterSlides[0]);
+        $this->assertStringContainsString('data-hero-src="/media/gallery/second-couple-photo.jpg"', $heroMarkup);
+        $themeCss = file_get_contents(public_path('css/invitation-theme.css'));
+        $this->assertIsString($themeCss);
+        $this->assertStringContainsString('.hero_triptych{grid-template-columns:minmax(0,1fr);gap:0}', $themeCss);
+        $this->assertStringContainsString('.hero_panel--left,.hero_panel--right{display:none}', $themeCss);
     }
 
     public function test_hero_background_ignores_non_server_gallery_urls(): void
@@ -159,10 +186,12 @@ class ExampleTest extends TestCase
 
         $this->get('/media/audio/wedding-track.mp3')
             ->assertOk()
-            ->assertHeader('Content-Type', 'audio/mpeg');
+            ->assertHeader('Content-Type', 'audio/mpeg')
+            ->assertHeader('Cache-Control', 'public, max-age=3600');
         $this->get('/storage/gallery/couple-photo.jpg')
             ->assertOk()
-            ->assertHeader('Content-Type', 'image/jpeg');
+            ->assertHeader('Content-Type', 'image/jpeg')
+            ->assertHeader('Cache-Control', 'public, max-age=31536000, immutable');
         $this->get('/media/private/secret.mp3')->assertNotFound();
     }
 

@@ -26,6 +26,10 @@ try {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ $ogImageUrl ?? asset('images/og-wedding-couple.jpg') }}">
 <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
+<link rel="preload" as="image" href="{{ asset('images/thegospels-wordmark.jpg') }}" fetchpriority="high">
+@if(isset($heroBackgroundPhotos) && $heroBackgroundPhotos->isNotEmpty())
+<link rel="preload" as="image" href="{{ $heroBackgroundPhotos->first()->image_path }}" fetchpriority="high">
+@endif
 
 <link rel="preload" href="{{ asset('fonts/alex-brush-400.woff2') }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ asset('fonts/alice-400.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -121,7 +125,7 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .mobile_menu_links a span{font-size:10px;font-family:var(--sans);letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-right:16px;vertical-align:middle}
 .mobile_menu_foot{padding:24px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
 
-/* HERO — an editorial portrait stack with a still centre frame and drifting side photographs */
+/* HERO — uploaded-photo triptych on desktop; mobile uses the center portrait */
 .hero{position:relative;isolation:isolate;min-height:740px;height:min(100svh,980px);overflow:hidden;background:var(--warm)}
 .hero_backdrop{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--warm)}
 .hero_backdrop_image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;filter:saturate(.9) blur(3px);opacity:0;transform:scale(1.035);transition:opacity 1.8s var(--ease),transform 8s var(--ease);will-change:opacity,transform}
@@ -132,8 +136,6 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .hero:after{content:"";position:absolute;right:0;top:0;width:30%;height:100%;z-index:1;pointer-events:none;opacity:.22;background-image:radial-gradient(var(--deep2) .7px,transparent .7px);background-size:14px 14px;mask-image:linear-gradient(90deg,transparent,black)}
 .hero_inner{position:relative;z-index:2;width:min(1440px,100%);height:100%;min-height:inherit;margin:0 auto;padding:112px clamp(28px,6vw,92px) 72px;display:grid;grid-template-columns:minmax(300px,.9fr) minmax(450px,1.1fr);gap:clamp(28px,4.5vw,76px);align-items:center}
 .hero_content{position:relative;z-index:5;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;height:auto;padding:0;color:var(--char)}
-.hero_badge{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(18,60,50,.07);border:1px solid rgba(18,60,50,.17);border-radius:30px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:26px;width:fit-content;color:var(--deep)}
-.hero_badge_dot{width:7px;height:7px;border-radius:50%;background:#A78A37;box-shadow:0 0 0 4px rgba(212,175,55,.14)}
 .hero_kicker{margin-bottom:12px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--taupe);font-weight:500}
 .hero_title{max-width:7.5em;font-family:var(--serif);font-size:clamp(42px,5.2vw,74px);line-height:.95;letter-spacing:-.045em;font-weight:400;overflow-wrap:anywhere}
 .hero_title .hero_name{display:block}
@@ -184,7 +186,6 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 }
 @media(max-width:520px){
   .hero_inner{padding:96px 20px 64px}
-  .hero_badge{margin-bottom:20px;font-size:8px}
   .hero_title{font-size:clamp(38px,10vw,54px);max-width:8em}
   .hero_intro{font-size:12px;margin-top:16px}
   .hero_meta{gap:16px;margin-top:20px}
@@ -518,7 +519,6 @@ section{position:relative}
 :root[data-theme="dark"] .hero_backdrop_image{filter:saturate(.7) brightness(.74) blur(3px)}
 :root[data-theme="dark"] .hero_backdrop:after{background:linear-gradient(90deg,rgba(20,26,22,.64) 0%,rgba(20,26,22,.52) 38%,rgba(20,26,22,.36) 70%,rgba(20,26,22,.24) 100%),linear-gradient(0deg,rgba(20,26,22,.18),rgba(20,26,22,.18))}
 :root[data-theme="dark"] .hero_visual_note{color:var(--beige)}
-:root[data-theme="dark"] .hero_badge{background:rgba(212,175,55,.1);border-color:rgba(212,175,55,.34);color:var(--beige)}
 :root[data-theme="dark"] .hero_title em,
 :root[data-theme="dark"] .hero_hash,
 :root[data-theme="dark"] .hero_story_link{color:var(--beige)}

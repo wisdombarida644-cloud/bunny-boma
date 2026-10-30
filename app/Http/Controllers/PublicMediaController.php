@@ -52,7 +52,9 @@ class PublicMediaController extends Controller
         $headers = [
             'Content-Type' => $contentType,
             'X-Content-Type-Options' => 'nosniff',
-            'Cache-Control' => 'public, max-age=3600',
+            'Cache-Control' => str_starts_with($contentType, 'image/')
+                ? 'public, max-age=31536000, immutable'
+                : 'public, max-age=3600',
         ];
 
         if (config('filesystems.disks.public.driver') === 'local') {

@@ -2,7 +2,7 @@
 
 @section('content')
 <nav class="nav" id="nav">
-  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('favicon.svg') }}" alt=""></a>
+  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="" width="900" height="251" fetchpriority="high"></a>
   <div class="nav_links" id="navLinks">
     <a href="#home">Home</a>
     <a href="#story">Our Story</a>
@@ -24,7 +24,7 @@
 
 <div class="mobile_menu" id="mobileMenu">
   <div class="mobile_menu_top">
-    <div class="nav_logo"><img src="{{ asset('favicon.svg') }}" alt="The Gospels"></div>
+    <div class="nav_logo"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="The Gospels logo" width="900" height="251"></div>
     <button id="closeMenu" aria-label="Close">✕</button>
   </div>
   <div class="mobile_menu_links">
@@ -60,7 +60,7 @@
           @for($repeat = 0; $repeat < 2; $repeat++)
             <div class="hero_track_group">
               @foreach($heroSidePhotos as $photo)
-                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" @if($repeat === 0) loading="eager" @else loading="lazy" @endif @if($repeat === 0 && $loop->first) fetchpriority="high" @endif>
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="low">
               @endforeach
             </div>
           @endfor
@@ -71,8 +71,12 @@
       @if($heroPhotos->isNotEmpty())
         <div class="hero_center_stack">
           @foreach($heroPhotos as $index => $photo)
-            <img class="hero_center_image {{ $index === 0 ? 'is-active' : '' }}" data-hero-center-slide src="{{ $photo->image_path }}" alt="" decoding="async" @if($index === 0) fetchpriority="high" loading="eager" @else loading="lazy" @endif>
+            <img class="hero_center_image {{ $index === 0 ? 'is-active' : '' }}" data-hero-center-slide @if($index === 0) src="{{ $photo->image_path }}" fetchpriority="high" loading="eager" @else data-hero-src="{{ $photo->image_path }}" fetchpriority="low" loading="lazy" @endif alt="" decoding="async">
           @endforeach
+          <div class="hero_center_empty" data-hero-image-fallback hidden>
+            <span class="hero_empty_monogram">{{ substr($setting->partner_one ?? 'C', 0, 1) }}<i>&amp;</i>{{ substr($setting->partner_two ?? 'G', 0, 1) }}</span>
+            <span class="hero_empty_label">Our story begins here</span>
+          </div>
         </div>
       @else
         <div class="hero_center_empty">
@@ -87,7 +91,7 @@
           @for($repeat = 0; $repeat < 2; $repeat++)
             <div class="hero_track_group">
               @foreach($heroSidePhotosReversed as $photo)
-                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" @if($repeat === 0) loading="eager" @else loading="lazy" @endif @if($repeat === 0 && $loop->first) fetchpriority="high" @endif>
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="low">
               @endforeach
             </div>
           @endfor
@@ -99,7 +103,6 @@
 
   <div class="hero_inner">
     <div class="hero_content">
-      <div class="hero_badge"><span class="hero_badge_dot" aria-hidden="true"></span>The Beginning of Forever</div>
       <p class="hero_kicker">A celebration of love &amp; family</p>
       <h1 class="hero_title">
         <span class="hero_name hero_name--one">
@@ -273,7 +276,7 @@
   @if($moments->isNotEmpty())
   <div class="moments_card_wrap">
     <div class="moments_card" id="momentsCard">
-      <img id="momentsImg" src="{{ $moments->first()->image_path }}" alt="{{ $moments->first()->title ?: 'Wedding memory' }}">
+      <img id="momentsImg" src="{{ $moments->first()->image_path }}" alt="{{ $moments->first()->title ?: 'Wedding memory' }}" loading="lazy" decoding="async">
       <div class="moments_card_caption">
         <h4 id="momentsTitle">{{ $moments->first()->title }}</h4>
         <p id="momentsCaption">{{ $moments->first()->caption }}</p>
@@ -385,7 +388,7 @@
 @if($mc)
 <section class="mc" id="mc">
   <div class="mc_inner">
-    <div class="mc_img reveal"><img src="{{ $mc->image_path }}" alt="{{ $mc->name }}"></div>
+    <div class="mc_img reveal"><img src="{{ $mc->image_path }}" alt="{{ $mc->name }}" loading="lazy" decoding="async"></div>
     <div class="reveal">
       <div class="mc_role">{{ $mc->role }}</div>
       <div class="mc_name">{{ $mc->name }}</div>
@@ -515,7 +518,7 @@
 <footer class="footer">
   <div class="footer_inner">
     <div class="footer_top">
-      <div class="footer_brand"><img src="{{ asset('favicon.svg') }}" alt="" aria-hidden="true"><span>THE<br>GOSPELS</span></div>
+      <div class="footer_brand"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="The Gospels logo" width="900" height="251" loading="lazy" decoding="async"></div>
       <div>
         <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
         <div class="footer_nav">
@@ -595,17 +598,52 @@ document.addEventListener("DOMContentLoaded", () => {
     rsvpSubmit.textContent = "Submitting…";
   });
 
-  // The side panels drift in opposite directions; the centre portrait cross-fades between server uploads.
+  // The desktop hero keeps its triptych; center slides load only as the carousel advances.
   const reduceMotion = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
   const heroCenterSlides = Array.from(document.querySelectorAll("[data-hero-center-slide]"));
+  const heroImageFallback = document.querySelector("[data-hero-image-fallback]");
+  let activeHeroSlide = Math.max(heroCenterSlides.findIndex(slide => slide.classList.contains("is-active")), 0);
+  let heroSlideLoading = false;
+  heroCenterSlides[0]?.addEventListener("error", () => {
+    heroCenterSlides[0].remove();
+    heroImageFallback?.removeAttribute("hidden");
+  }, { once: true });
+  const showHeroSlide = nextIndex => {
+    const nextSlide = heroCenterSlides[nextIndex];
+    if (!nextSlide || nextSlide.dataset.heroFailed === "true" || heroSlideLoading || nextIndex === activeHeroSlide) return;
+    const activate = () => {
+      heroCenterSlides[activeHeroSlide]?.classList.remove("is-active");
+      nextSlide.classList.add("is-active");
+      heroImageFallback?.setAttribute("hidden", "");
+      activeHeroSlide = nextIndex;
+      heroSlideLoading = false;
+    };
+    const fail = () => {
+      nextSlide.dataset.heroFailed = "true";
+      heroSlideLoading = false;
+    };
+    if (nextSlide.complete && nextSlide.naturalWidth) {
+      activate();
+      return;
+    }
+    heroSlideLoading = true;
+    nextSlide.addEventListener("load", activate, { once: true });
+    nextSlide.addEventListener("error", fail, { once: true });
+    if (!nextSlide.hasAttribute("src") && nextSlide.dataset.heroSrc) {
+      nextSlide.src = nextSlide.dataset.heroSrc;
+      delete nextSlide.dataset.heroSrc;
+    }
+  };
   if (heroCenterSlides.length > 1 && !reduceMotion) {
-    let activeHeroSlide = 0;
     window.setInterval(() => {
-      if (document.hidden) return;
-      const nextHeroSlide = (activeHeroSlide + 1) % heroCenterSlides.length;
-      heroCenterSlides[nextHeroSlide].classList.add("is-active");
-      heroCenterSlides[activeHeroSlide].classList.remove("is-active");
-      activeHeroSlide = nextHeroSlide;
+      if (document.hidden || heroSlideLoading) return;
+      for (let step = 1; step < heroCenterSlides.length; step++) {
+        const nextHeroSlide = (activeHeroSlide + step) % heroCenterSlides.length;
+        if (heroCenterSlides[nextHeroSlide].dataset.heroFailed !== "true") {
+          showHeroSlide(nextHeroSlide);
+          break;
+        }
+      }
     }, 5600);
   }
 
@@ -654,8 +692,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const dots = document.getElementById("momDots");
     let index = 0;
 
-    bg.innerHTML = moments.map((moment, i) => `<img src="${moment.image_path}" alt="" class="${i === 0 ? "active" : ""}">`).join("");
-    const backgroundImages = [...bg.children];
+    bg.replaceChildren();
+    const backgroundImages = [document.createElement("img"), document.createElement("img")];
+    backgroundImages.forEach(backgroundImage => {
+      backgroundImage.alt = "";
+      backgroundImage.loading = "lazy";
+      backgroundImage.decoding = "async";
+      backgroundImage.setAttribute("fetchpriority", "low");
+      bg.appendChild(backgroundImage);
+    });
+    let activeBackgroundIndex = -1;
+    let backgroundRequest = 0;
+    let backgroundStarted = false;
+    const showMomentBackground = () => {
+      if (!backgroundStarted) return;
+      const imagePath = moments[index].image_path;
+      const activeImage = activeBackgroundIndex >= 0 ? backgroundImages[activeBackgroundIndex] : null;
+      if (activeImage?.getAttribute("src") === imagePath) return;
+      const targetIndex = activeBackgroundIndex === 0 ? 1 : 0;
+      const target = backgroundImages[targetIndex];
+      const requestId = ++backgroundRequest;
+      target.classList.remove("active");
+      target.onload = () => {
+        if (requestId !== backgroundRequest) return;
+        target.classList.add("active");
+        if (activeBackgroundIndex >= 0) backgroundImages[activeBackgroundIndex].classList.remove("active");
+        activeBackgroundIndex = targetIndex;
+      };
+      target.onerror = () => {
+        if (requestId === backgroundRequest) target.classList.remove("active");
+      };
+      target.src = imagePath;
+      if (target.complete && target.naturalWidth) target.onload();
+    };
+    const startMomentBackground = () => {
+      if (backgroundStarted) return;
+      backgroundStarted = true;
+      showMomentBackground();
+    };
     const renderMoment = () => {
       const moment = moments[index];
       image.src = moment.image_path;
@@ -664,7 +738,7 @@ document.addEventListener("DOMContentLoaded", () => {
       caption.textContent = moment.caption || "";
       credit.textContent = moment.credit_name || "";
       counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(moments.length).padStart(2, "0")}`;
-      backgroundImages.forEach((item, i) => item.classList.toggle("active", i === index));
+      showMomentBackground();
       dots.innerHTML = moments.map((_, i) => `<button type="button" class="${i === index ? "active" : ""}" data-index="${i}" aria-label="Show moment ${i + 1}"></button>`).join("");
     };
 
@@ -683,6 +757,16 @@ document.addEventListener("DOMContentLoaded", () => {
       renderMoment();
     });
     renderMoment();
+    if ("IntersectionObserver" in window) {
+      const momentsBackgroundObserver = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        startMomentBackground();
+        momentsBackgroundObserver.disconnect();
+      }, { rootMargin: "400px 0px" });
+      momentsBackgroundObserver.observe(bg);
+    } else {
+      startMomentBackground();
+    }
   }
 
   // Accessible gallery lightbox with previous/next, keyboard, and backdrop support.
