@@ -168,7 +168,10 @@ body{
 }
 @media(max-width:760px){
   .hero{height:100svh;min-height:660px}
-  .hero_triptych{grid-template-columns:.82fr 1.2fr .82fr;gap:2px}
+  .hero_triptych{grid-template-columns:minmax(0,1fr);gap:0}
+  .hero_panel--left,.hero_panel--right{display:none}
+  .hero_panel--center{border-radius:0}
+  .hero_center_image,.hero_center_image.is-active{transition:none;transform:none}
   .hero_inner{padding:128px 14px 102px}
   .hero_content{max-width:700px}
   .hero_badge{margin-bottom:12px;padding:8px 12px;font-size:9px;letter-spacing:.14em}
