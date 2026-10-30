@@ -60,7 +60,7 @@
           @for($repeat = 0; $repeat < 2; $repeat++)
             <div class="hero_track_group">
               @foreach($heroSidePhotos as $photo)
-                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="low">
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="auto">
               @endforeach
             </div>
           @endfor
@@ -91,7 +91,7 @@
           @for($repeat = 0; $repeat < 2; $repeat++)
             <div class="hero_track_group">
               @foreach($heroSidePhotosReversed as $photo)
-                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="low">
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" loading="lazy" fetchpriority="auto">
               @endforeach
             </div>
           @endfor
@@ -103,28 +103,16 @@
 
   <div class="hero_inner">
     <div class="hero_content">
-      <p class="hero_kicker">A celebration of love &amp; family</p>
-      <h1 class="hero_title">
-        <span class="hero_name hero_name--one">
-          <span class="hero_first_name">{{ $partnerOneFirst }}</span>
-          @if(count($partnerOneParts))<span class="hero_remainder">{{ implode(' ', $partnerOneParts) }}</span>@endif
-        </span>
-        <em class="hero_ampersand" aria-label="and">&amp;</em>
-        <span class="hero_name hero_name--two">
-          <span class="hero_first_name">{{ $partnerTwoFirst }}</span>
-          @if(count($partnerTwoParts))<span class="hero_remainder">{{ implode(' ', $partnerTwoParts) }}</span>@endif
-        </span>
+      <p class="hero_kicker">WE ARE GETTING MARRIED</p>
+      <h1 class="hero_title" aria-label="{{ $partnerOneFirst }} and {{ $partnerTwoFirst }}">
+        <span class="hero_name">{{ $partnerOneFirst }}</span>
+        <em class="hero_ampersand" aria-hidden="true">&amp;</em>
+        <span class="hero_name">{{ $partnerTwoFirst }}</span>
       </h1>
-      <p class="hero_intro">Two lives, one beautiful story. Join us as we celebrate the start of forever.</p>
       <div class="hero_meta">
-        <span class="hero_date">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('l') }}</span>
-        <span class="hero_meta_dot" aria-hidden="true">·</span>
-        <span class="hero_date">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</span>
-      </div>
-      <p class="hero_venue_line">{{ $setting->venue_name }} <span aria-hidden="true">·</span> {{ $setting->city }}</p>
-      <div class="hero_footer_line">
-        <span class="hero_hash">{{ $setting->hashtag }}</span>
-        <a class="hero_story_link" href="#story">Discover our story <span aria-hidden="true">↘</span></a>
+        <time datetime="{{ \Carbon\Carbon::parse($setting->wedding_date)->toDateString() }}">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('d · m · Y') }}</time>
+        <span class="hero_meta_dot" aria-hidden="true">•</span>
+        <span class="hero_meta_city">{{ $setting->city ?? 'Port Harcourt' }}</span>
       </div>
     </div>
   </div>

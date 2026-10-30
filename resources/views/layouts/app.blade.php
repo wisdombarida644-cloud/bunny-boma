@@ -29,6 +29,9 @@ try {
 <link rel="preload" as="image" href="{{ asset('images/thegospels-wordmark.jpg') }}" fetchpriority="high">
 @if(isset($heroBackgroundPhotos) && $heroBackgroundPhotos->isNotEmpty())
 <link rel="preload" as="image" href="{{ $heroBackgroundPhotos->first()->image_path }}" fetchpriority="high">
+@if($heroBackgroundPhotos->count() > 1)
+<link rel="preload" as="image" href="{{ $heroBackgroundPhotos->get(1)->image_path }}" fetchpriority="high" media="(min-width: 761px)">
+@endif
 @endif
 
 <link rel="preload" href="{{ asset('fonts/alex-brush-400.woff2') }}" as="font" type="font/woff2" crossorigin>
