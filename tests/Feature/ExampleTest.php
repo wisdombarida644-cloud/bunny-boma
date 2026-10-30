@@ -37,6 +37,7 @@ class ExampleTest extends TestCase
             ->assertSee(asset('fonts/alice-400.woff2'))
             ->assertSee(asset('fonts/fahkwang-400.woff2'))
             ->assertSee(asset('css/invitation-theme.css'))
+            ->assertSee(asset('css/invitation-theme.css').'?v=', false)
             ->assertDontSee('hero_floral', false)
             ->assertDontSee('invitation-floral', false)
             ->assertDontSee('hero_bamboo', false)
@@ -195,6 +196,40 @@ class ExampleTest extends TestCase
             ->assertHeader('Content-Type', 'image/jpeg')
             ->assertHeader('Cache-Control', 'public, max-age=31536000, immutable');
         $this->get('/media/private/secret.mp3')->assertNotFound();
+    }
+
+    public function test_admin_can_save_an_optimized_replacement_for_an_existing_gallery_photo(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create();
+        Storage::disk('public')->put('gallery/original.jpg', 'original-backup');
+        $gallery = Gallery::create([
+            'image_path' => '/media/gallery/original.jpg',
+            'category' => 'Wedding',
+            'caption' => 'Couple photo',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+        $temporaryImage = tempnam(sys_get_temp_dir(), 'gallery-upload-');
+        file_put_contents($temporaryImage, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC'));
+
+        try {
+            $this->actingAs($admin)
+                ->postJson(route('admin.gallery.optimize', $gallery), [
+                    'image' => new UploadedFile($temporaryImage, 'optimized.png', 'image/png', UPLOAD_ERR_OK, true),
+                ])
+                ->assertOk()
+                ->assertJsonStructure(['image_path']);
+        } finally {
+            if (is_file($temporaryImage)) {
+                unlink($temporaryImage);
+            }
+        }
+
+        $gallery->refresh();
+        $this->assertStringStartsWith('/media/gallery/optimized/', $gallery->image_path);
+        Storage::disk('public')->assertExists(substr($gallery->image_path, strlen('/media/')));
+        Storage::disk('public')->assertExists('gallery/original.jpg');
     }
 
     public function test_admin_can_save_an_mc_with_an_uploaded_photo(): void

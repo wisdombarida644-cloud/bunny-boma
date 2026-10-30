@@ -538,7 +538,7 @@ section{position:relative}
 :root[data-theme="dark"] .music_toggle{background:var(--ivory);color:var(--deep)}
 :root[data-theme="dark"] .music_toggle:focus-visible{outline-color:var(--beige)}
 </style>
-<link rel="stylesheet" href="{{ asset('css/invitation-theme.css') }}">
+<link rel="stylesheet" href="{{ asset('css/invitation-theme.css') }}?v={{ filemtime(public_path('css/invitation-theme.css')) }}">
 </head>
 <body>
 <div class="scroll_prog" id="scrollProg"></div>

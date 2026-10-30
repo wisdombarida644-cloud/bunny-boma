@@ -37,6 +37,23 @@ class GalleryController extends Controller
         return back()->with('success', 'Photos uploaded successfully!');
     }
 
+    public function optimize(Request $request, Gallery $gallery)
+    {
+        $data = $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
+        ]);
+
+        $path = $data['image']->store('gallery/optimized', 'public');
+
+        if (! $path) {
+            return response()->json(['message' => 'The optimized photo could not be saved.'], 500);
+        }
+
+        $gallery->update(['image_path' => '/media/'.$path]);
+
+        return response()->json(['image_path' => $gallery->image_path]);
+    }
+
     public function update(Request $request, Gallery $gallery)
     {
         $data = $request->validate([

@@ -41,6 +41,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::post('/gallery/{gallery}/optimize', [GalleryController::class, 'optimize'])->name('gallery.optimize');
     Route::put('/gallery/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
     Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 

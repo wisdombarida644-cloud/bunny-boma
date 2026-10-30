@@ -30,7 +30,7 @@
         <div class="field">
           <label>Choose Photos</label>
           <input type="file" name="photos[]" multiple accept="image/*" required data-gallery-upload-files>
-          <small>Large photos are resized and converted for faster loading before upload.</small>
+          <small>The browser saves a maximum 1920-pixel WebP version when it is smaller than the original.</small>
         </div>
       </div>
       <button class="btn btn_primary" type="submit">Upload Photos</button>
@@ -40,12 +40,17 @@
 </div>
 
 <div class="card">
-  <div class="card_head"><h3>Gallery Photos ({{ $galleries->count() }})</h3></div>
+  <div class="card_head">
+    <h3>Gallery Photos ({{ $galleries->count() }})</h3>
+    <button class="btn" type="button" data-optimize-gallery-photos>Optimize existing photos</button>
+  </div>
   <div class="card_body">
+    <p style="font-size:12px;opacity:.7;margin-bottom:12px">One-time cleanup for older large uploads. Original files are left untouched in storage.</p>
+    <p data-gallery-optimization-status role="status" aria-live="polite" style="margin-bottom:14px;font-size:12px"></p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px">
       @foreach($galleries as $g)
-      <div style="border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--warm)">
-        <img src="{{ $g->image_path }}" alt="{{ $g->caption ?: 'Uploaded gallery photo' }}" loading="lazy" decoding="async" style="width:100%;aspect-ratio:4/3;object-fit:cover">
+      <div style="border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--warm)" @if((str_starts_with((string) $g->image_path, '/media/gallery/') || str_starts_with((string) $g->image_path, '/storage/gallery/')) && !str_contains((string) $g->image_path, '/optimized/')) data-gallery-optimize-url="{{ route('admin.gallery.optimize', $g) }}" @endif>
+        <img src="{{ $g->image_path }}" alt="{{ $g->caption ?: 'Uploaded gallery photo' }}" loading="lazy" decoding="async" data-gallery-photo-image style="width:100%;aspect-ratio:4/3;object-fit:cover">
         <div style="padding:12px">
           <form action="{{ route('admin.gallery.update', $g) }}" method="POST">
             @csrf @method('PUT')
@@ -132,6 +137,98 @@
     } else {
       form.submit();
     }
+  });
+})();
+
+(() => {
+  const button = document.querySelector('[data-optimize-gallery-photos]');
+  const status = document.querySelector('[data-gallery-optimization-status]');
+  const token = document.querySelector('[data-gallery-upload-form] input[name="_token"]')?.value;
+  if (!button || !status) return;
+
+  const photos = Array.from(document.querySelectorAll('[data-gallery-optimize-url]'));
+  if (!photos.length) {
+    button.disabled = true;
+    status.textContent = 'No older server-hosted photos need optimization.';
+    return;
+  }
+  if (!token || typeof window.createImageBitmap !== 'function') {
+    button.disabled = true;
+    status.textContent = 'This browser cannot optimize the existing photos. Try a recent version of Chrome, Edge, Firefox, or Safari.';
+    return;
+  }
+
+  const optimizePhoto = async row => {
+    const image = row.querySelector('[data-gallery-photo-image]');
+    const sourceResponse = await fetch(image.currentSrc || image.src, { credentials: 'same-origin' });
+    if (!sourceResponse.ok) throw new Error('Could not read the original photo.');
+    const sourceBlob = await sourceResponse.blob();
+    const bitmap = await window.createImageBitmap(sourceBlob);
+    const scale = Math.min(1, 1920 / Math.max(bitmap.width, bitmap.height));
+    const width = Math.max(1, Math.round(bitmap.width * scale));
+    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    if (!context) {
+      bitmap.close?.();
+      throw new Error('Could not prepare the photo.');
+    }
+    context.drawImage(bitmap, 0, 0, width, height);
+    bitmap.close?.();
+    const optimizedBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', .82));
+    if (!optimizedBlob || optimizedBlob.type !== 'image/webp' || optimizedBlob.size >= sourceBlob.size) {
+      row.removeAttribute('data-gallery-optimize-url');
+      return false;
+    }
+
+    const payload = new FormData();
+    payload.append('image', new File([optimizedBlob], `gallery-${Date.now()}.webp`, { type: 'image/webp' }));
+    const uploadResponse = await fetch(row.dataset.galleryOptimizeUrl, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+      body: payload,
+    });
+    const result = await uploadResponse.json().catch(() => ({}));
+    if (!uploadResponse.ok || !result.image_path) throw new Error(result.message || 'The optimized photo could not be saved.');
+
+    image.src = result.image_path;
+    image.removeAttribute('srcset');
+    row.removeAttribute('data-gallery-optimize-url');
+    return true;
+  };
+
+  button.addEventListener('click', async () => {
+    const pendingPhotos = Array.from(document.querySelectorAll('[data-gallery-optimize-url]'));
+    if (!pendingPhotos.length) {
+      button.disabled = true;
+      status.textContent = 'No older server-hosted photos need optimization.';
+      return;
+    }
+
+    button.disabled = true;
+    const originalLabel = button.textContent;
+    button.textContent = 'Optimizing…';
+    let optimized = 0;
+    let skipped = 0;
+    let failed = 0;
+
+    for (let index = 0; index < pendingPhotos.length; index++) {
+      status.textContent = `Optimizing photo ${index + 1} of ${pendingPhotos.length}…`;
+      try {
+        if (await optimizePhoto(pendingPhotos[index])) optimized++;
+        else skipped++;
+      } catch (error) {
+        failed++;
+        console.error('Photo optimization failed:', error);
+      }
+    }
+
+    button.textContent = originalLabel;
+    button.disabled = !document.querySelector('[data-gallery-optimize-url]');
+    status.textContent = `Finished: ${optimized} optimized, ${skipped} already small, ${failed} failed. Source files were not deleted.`;
   });
 })();
 </script>

@@ -605,10 +605,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeHeroSlide = Math.max(heroCenterSlides.findIndex(slide => slide.classList.contains("is-active")), 0);
   heroCenterSlides.forEach((slide, index) => slide.classList.toggle("is-active", index === activeHeroSlide));
   let heroSlideLoading = false;
-  heroCenterSlides[0]?.addEventListener("error", () => {
-    heroCenterSlides[0].remove();
+  let requestHeroSlide = null;
+  const showHeroFallback = () => {
+    const failedSlide = heroCenterSlides[0];
+    if (failedSlide) {
+      failedSlide.dataset.heroFailed = "true";
+      failedSlide.remove();
+    }
     heroImageFallback?.removeAttribute("hidden");
-  }, { once: true });
+    const backupIndex = heroCenterSlides.findIndex((slide, index) => index > 0 && slide.dataset.heroFailed !== "true");
+    if (backupIndex >= 0) requestHeroSlide?.(backupIndex);
+  };
+  heroCenterSlides[0]?.addEventListener("error", showHeroFallback, { once: true });
+  if (heroCenterSlides[0]?.complete && !heroCenterSlides[0].naturalWidth) showHeroFallback();
   const showHeroSlide = nextIndex => {
     const nextSlide = heroCenterSlides[nextIndex];
     if (!nextSlide || nextSlide.dataset.heroFailed === "true" || heroSlideLoading || nextIndex === activeHeroSlide) return;
@@ -622,6 +631,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const fail = () => {
       nextSlide.dataset.heroFailed = "true";
       heroSlideLoading = false;
+      const activeSlide = heroCenterSlides[activeHeroSlide];
+      if (!activeSlide?.isConnected || activeSlide.dataset.heroFailed === "true") {
+        const backupIndex = heroCenterSlides.findIndex((slide, index) => index > 0 && slide.dataset.heroFailed !== "true");
+        if (backupIndex >= 0) requestHeroSlide?.(backupIndex);
+      }
     };
     if (nextSlide.complete && nextSlide.naturalWidth) {
       activate();
@@ -635,6 +649,11 @@ document.addEventListener("DOMContentLoaded", () => {
       delete nextSlide.dataset.heroSrc;
     }
   };
+  requestHeroSlide = showHeroSlide;
+  if (heroCenterSlides[0]?.dataset.heroFailed === "true") {
+    const backupIndex = heroCenterSlides.findIndex((slide, index) => index > 0 && slide.dataset.heroFailed !== "true");
+    if (backupIndex >= 0) showHeroSlide(backupIndex);
+  }
   if (heroCenterSlides.length > 1 && !reduceMotion) {
     window.setInterval(() => {
       if (document.hidden || heroSlideLoading) return;
