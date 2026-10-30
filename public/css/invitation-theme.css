@@ -52,9 +52,6 @@ body{
 .hero_empty_label{position:relative;font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:rgba(241,235,221,.76)}
 .hero_atmosphere{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(10,25,19,.42) 0%,rgba(10,25,19,.08) 29%,rgba(10,25,19,.14) 48%,rgba(10,25,19,.7) 100%),linear-gradient(90deg,rgba(10,25,19,.18),transparent 28%,transparent 72%,rgba(10,25,19,.18))}
 .hero_atmosphere:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 58%,transparent 12%,rgba(11,27,20,.11) 78%)}
-.hero_floral{position:absolute;z-index:4;top:58px;height:auto;pointer-events:none;opacity:.88;filter:drop-shadow(0 7px 18px rgba(8,20,15,.24))}
-.hero_floral--left{left:-60px;width:clamp(210px,27vw,380px)}
-.hero_floral--right{right:-70px;width:clamp(260px,32vw,460px);transform:scaleX(-1)}
 .hero_bamboo{position:absolute;z-index:4;inset:auto 0 -1px;width:100%;height:clamp(120px,17vw,220px);max-width:none;object-fit:fill;object-position:center bottom;pointer-events:none;opacity:.93;filter:drop-shadow(0 -4px 12px rgba(10,25,19,.22))}
 .hero_inner{position:relative;z-index:5;width:min(1500px,100%);height:100%;min-height:inherit;margin:0 auto;padding:136px clamp(22px,5vw,84px) 112px;display:flex;align-items:center;justify-content:center}
 .hero_content{position:relative;z-index:5;width:100%;max-width:1180px;height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;color:var(--ivory);text-align:center}
@@ -165,7 +162,6 @@ body{
 }
 @media(max-width:960px){
   .nav{height:72px;padding:0 20px}
-  .hero_floral{top:48px;width:clamp(200px,35vw,330px)}
 }
 @media(max-width:760px){
   .hero{height:100svh;min-height:660px}
@@ -184,9 +180,6 @@ body{
   .hero_footer_line{gap:15px;margin-top:15px}
   .hero_hash{font-size:13px}
   .hero_story_link{font-size:8px;letter-spacing:.12em}
-  .hero_floral{top:48px;width:min(53vw,260px);opacity:.8}
-  .hero_floral--left{left:-44px}
-  .hero_floral--right{right:-44px}
   .hero_bamboo{height:clamp(112px,27vw,165px)}
   .hero_scroll{bottom:16px;font-size:7px}
 }

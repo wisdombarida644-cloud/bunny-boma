@@ -92,8 +92,6 @@
     </div>
   </div>
   <div class="hero_atmosphere" aria-hidden="true"></div>
-  <img class="hero_floral hero_floral--left" src="{{ asset('images/invitation-floral-corner.webp') }}" alt="" aria-hidden="true">
-  <img class="hero_floral hero_floral--right" src="{{ asset('images/invitation-floral-bouquet.webp') }}" alt="" aria-hidden="true">
   <img class="hero_bamboo" src="{{ asset('images/bamboo-leaves.svg') }}" alt="" aria-hidden="true">
 
   <div class="hero_inner">
