@@ -56,11 +56,13 @@
   <div class="hero_triptych" aria-hidden="true">
     <div class="hero_panel hero_panel--left">
       @if($heroSidePhotos->isNotEmpty())
-        <div class="hero_track hero_track--up" style="--hero-track-item-height:{{ number_format(100 / max($heroSidePhotos->count() * 2, 1), 4, '.', '') }}%">
+        <div class="hero_track hero_track--up" style="--hero-photo-count:{{ $heroSidePhotos->count() }}">
           @for($repeat = 0; $repeat < 2; $repeat++)
-            @foreach($heroSidePhotos as $photo)
-              <img src="{{ $photo->image_path }}" alt="" loading="lazy">
-            @endforeach
+            <div class="hero_track_group">
+              @foreach($heroSidePhotos as $photo)
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" @if($repeat === 0) loading="eager" @else loading="lazy" @endif @if($repeat === 0 && $loop->first) fetchpriority="high" @endif>
+              @endforeach
+            </div>
           @endfor
         </div>
       @endif
@@ -69,7 +71,7 @@
       @if($heroPhotos->isNotEmpty())
         <div class="hero_center_stack">
           @foreach($heroPhotos as $index => $photo)
-            <img class="hero_center_image {{ $index === 0 ? 'is-active' : '' }}" data-hero-center-slide src="{{ $photo->image_path }}" alt="" @if($index === 0) fetchpriority="high" loading="eager" @else loading="lazy" @endif>
+            <img class="hero_center_image {{ $index === 0 ? 'is-active' : '' }}" data-hero-center-slide src="{{ $photo->image_path }}" alt="" decoding="async" @if($index === 0) fetchpriority="high" loading="eager" @else loading="lazy" @endif>
           @endforeach
         </div>
       @else
@@ -81,18 +83,19 @@
     </div>
     <div class="hero_panel hero_panel--right">
       @if($heroSidePhotosReversed->isNotEmpty())
-        <div class="hero_track hero_track--down" style="--hero-track-item-height:{{ number_format(100 / max($heroSidePhotosReversed->count() * 2, 1), 4, '.', '') }}%">
+        <div class="hero_track hero_track--down" style="--hero-photo-count:{{ $heroSidePhotosReversed->count() }}">
           @for($repeat = 0; $repeat < 2; $repeat++)
-            @foreach($heroSidePhotosReversed as $photo)
-              <img src="{{ $photo->image_path }}" alt="" loading="lazy">
-            @endforeach
+            <div class="hero_track_group">
+              @foreach($heroSidePhotosReversed as $photo)
+                <img class="hero_photo_tile" src="{{ $photo->image_path }}" alt="" decoding="async" @if($repeat === 0) loading="eager" @else loading="lazy" @endif @if($repeat === 0 && $loop->first) fetchpriority="high" @endif>
+              @endforeach
+            </div>
           @endfor
         </div>
       @endif
     </div>
   </div>
   <div class="hero_atmosphere" aria-hidden="true"></div>
-  <img class="hero_bamboo" src="{{ asset('images/bamboo-leaves.svg') }}" alt="" aria-hidden="true">
 
   <div class="hero_inner">
     <div class="hero_content">
