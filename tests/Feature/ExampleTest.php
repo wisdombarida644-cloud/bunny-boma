@@ -29,7 +29,6 @@ class ExampleTest extends TestCase
             ->assertSee('themeToggle', false)
             ->assertSee(asset('favicon.svg'))
             ->assertSee(asset('favicon-32x32.png'))
-            ->assertSee(asset('images/thegospels-wordmark.jpg'))
             ->assertSee(asset('apple-touch-icon.png'))
             ->assertSee(asset('site.webmanifest'))
             ->assertSee(asset('images/og-wedding-couple.jpg'))
@@ -68,7 +67,8 @@ class ExampleTest extends TestCase
             ->assertSee('Gold')
             ->assertSee('White')
             ->assertSee('#THEGOSPELS26')
-            ->assertSee('Cash gifts')
+            ->assertSee('Registry')
+            ->assertDontSee('<section class="mc"', false)
             ->assertDontSee('Gift Registry')
             ->assertDontSee('dQw4w9WgXcQ')
             ->assertDontSee('images.unsplash.com');
@@ -113,17 +113,24 @@ class ExampleTest extends TestCase
         $heroEnd = strpos($html, '</header>');
         $countdownStart = strpos($html, '<section class="countdown_sec countdown_strip" id="countdownSec"');
         $countdownEnd = strpos($html, '</section>', $countdownStart);
-        $loveStoryStart = strpos($html, '<section class="how" id="howWeMet">');
+        $loveStoryStart = strpos($html, '<section class="how story_feature" id="howWeMet"');
         $memoriesStart = strpos($html, '<section class="moments_cine" id="memories"');
+        $galleryStart = strpos($html, '<section class="gallery_mason" id="gallery"');
+        $dayStart = strpos($html, '<section class="wedding day_section" id="wedding"');
 
         $this->assertNotFalse($heroEnd);
         $this->assertNotFalse($countdownStart);
         $this->assertNotFalse($countdownEnd);
         $this->assertNotFalse($loveStoryStart);
         $this->assertNotFalse($memoriesStart);
+        $this->assertNotFalse($galleryStart);
+        $this->assertNotFalse($dayStart);
         $this->assertGreaterThan($heroEnd, $countdownStart);
         $this->assertGreaterThan($countdownEnd, $loveStoryStart);
-        $this->assertGreaterThan($loveStoryStart, $memoriesStart);
+        $this->assertGreaterThan($loveStoryStart, $galleryStart);
+        $this->assertGreaterThan($galleryStart, $memoriesStart);
+        $this->assertGreaterThan($memoriesStart, $dayStart);
+        $this->assertStringNotContainsString('<section class="mc"', $html);
         $this->assertStringContainsString('id="countGrid"', $html);
         $this->assertStringContainsString('THE MOMENT<br><em>it all began</em>', $html);
         $this->assertStringContainsString('id="videoPoster"', $html);

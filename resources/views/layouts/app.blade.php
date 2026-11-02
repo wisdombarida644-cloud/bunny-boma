@@ -26,7 +26,7 @@ try {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ $ogImageUrl ?? asset('images/og-wedding-couple.jpg') }}">
 <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
-<link rel="preload" as="image" href="{{ asset('images/thegospels-wordmark.jpg') }}" fetchpriority="high">
+<link rel="preload" as="image" href="{{ asset('favicon.svg') }}" fetchpriority="high">
 @if(isset($heroBackgroundPhotos) && $heroBackgroundPhotos->isNotEmpty())
 <link rel="preload" as="image" href="{{ $heroBackgroundPhotos->first()->image_path }}" fetchpriority="high">
 @if($heroBackgroundPhotos->count() > 1)

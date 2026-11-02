@@ -2,15 +2,15 @@
 
 @section('content')
 <nav class="nav" id="nav">
-  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="" width="900" height="251" fetchpriority="high"></a>
+  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('favicon.svg') }}" alt="" width="512" height="512" fetchpriority="high"></a>
   <div class="nav_links" id="navLinks">
-    <a href="#home">Home</a>
     <a href="#howWeMet">Our Story</a>
-    <a href="#wedding">Our Wedding</a>
+    <a href="#gallery">Gallery</a>
     <a href="#memories">Memories</a>
+    <a href="#wedding">The Day</a>
+    <a href="#cash-gift">Registry</a>
     <a href="#qa">Q&A</a>
     <a href="#wishes">Wishes</a>
-    <a href="#cash-gift">Cash Gift</a>
   </div>
   <div class="nav_right">
     <button class="theme_toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
@@ -24,17 +24,17 @@
 
 <div class="mobile_menu" id="mobileMenu">
   <div class="mobile_menu_top">
-    <div class="nav_logo"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="The Gospels logo" width="900" height="251"></div>
+    <div class="nav_logo"><img src="{{ asset('favicon.svg') }}" alt="The Gospels logo" width="512" height="512"></div>
     <button id="closeMenu" aria-label="Close">✕</button>
   </div>
   <div class="mobile_menu_links">
-    <a href="#home" data-close><span>01</span>Home</a>
-    <a href="#howWeMet" data-close><span>02</span>Our Story</a>
-    <a href="#wedding" data-close><span>03</span>Our Wedding</a>
-    <a href="#memories" data-close><span>04</span>Memories</a>
-    <a href="#qa" data-close><span>05</span>Q&A</a>
-    <a href="#wishes" data-close><span>06</span>Wishes</a>
-    <a href="#cash-gift" data-close><span>07</span>Cash Gift</a>
+    <a href="#howWeMet" data-close><span>01</span>Our Story</a>
+    <a href="#gallery" data-close><span>02</span>Gallery</a>
+    <a href="#memories" data-close><span>03</span>Memories</a>
+    <a href="#wedding" data-close><span>04</span>The Day</a>
+    <a href="#cash-gift" data-close><span>05</span>Registry</a>
+    <a href="#qa" data-close><span>06</span>Q&A</a>
+    <a href="#wishes" data-close><span>07</span>Wishes</a>
     <a href="#rsvp" data-close><span>08</span>RSVP</a>
   </div>
   <div class="mobile_menu_foot">
@@ -127,36 +127,101 @@
       <div class="count_item"><span class="count_num" id="cMins">—</span><span class="count_lab">Minutes</span></div>
       <div class="count_item"><span class="count_num" id="cSecs">—</span><span class="count_lab">Seconds</span></div>
     </div>
+    <div class="countdown_hash">{{ $setting->hashtag ?? '#THEGOSPELS26' }}</div>
   </div>
 </section>
 
-<section class="how" id="howWeMet">
-  <div class="how_inner">
-    <div class="video_frame reveal" id="videoFrame">
-      <div class="video_poster" id="videoPoster" @if($weddingData['podcastUrl']) role="button" tabindex="0" aria-label="Play the couple’s story video" @else aria-disabled="true" tabindex="-1" @endif>
-        @if($galleries->isNotEmpty())
-          @php($storyPoster = $galleries->get(2) ?? $galleries->first())
-          <img src="{{ $storyPoster->image_path }}" alt="{{ $storyPoster->caption ?: 'Photo shared by the couple' }}" loading="lazy">
-        @else
-          <div class="photo_placeholder"><span>The couple’s story will appear here when added.</span></div>
-        @endif
-        @if($weddingData['podcastUrl'])
-          <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
-        @endif
+<section class="how story_feature" id="howWeMet" aria-labelledby="storyHeadline">
+  <div class="story_feature_inner">
+    <div class="story_feature_header">
+      <div>
+        <div class="eyebrow">Our story</div>
+        <h2 class="story_feature_title" id="storyHeadline">Two sides,<br><i>one story.</i></h2>
+      </div>
+      <div class="story_couple_badge">
+        <span>{{ $setting->hashtag ?? '#THEGOSPELS26' }}</span>
+        <strong>{{ $partnerOneFirst }} <i>&amp;</i> {{ $partnerTwoFirst }}</strong>
       </div>
     </div>
-    <div class="how_text reveal">
-      <div class="eyebrow">Our story, in our own words</div>
-      <h3 style="margin-top:16px">THE MOMENT<br><em>it all began</em></h3>
-      <p class="body">{{ $setting->podcast_desc ?? 'The families of Chiamaka and Gospel invite you to celebrate their wedding ceremony.' }}</p>
-      @if($weddingData['podcastUrl'])
-        <p class="body" style="opacity:.7;font-size:13px">The podcast will try to start automatically with sound muted. If your browser blocks autoplay, press play in the YouTube player and unmute there.</p>
-        <div class="how_label">Our story, in our own words</div>
-      @else
-        <p class="body" style="opacity:.7;font-size:13px">The couple’s YouTube podcast will appear here once it is added in wedding settings.</p>
-      @endif
+
+    <div class="story_feature_grid">
+      <figure class="story_media reveal">
+        <div class="video_frame" id="videoFrame">
+          <div class="video_poster" id="videoPoster" @if($weddingData['podcastUrl']) role="button" tabindex="0" aria-label="Play the couple’s story podcast" @else aria-disabled="true" tabindex="-1" @endif>
+            @if($galleries->isNotEmpty())
+              @php($storyPoster = $galleries->get(2) ?? $galleries->first())
+              <img src="{{ $storyPoster->image_path }}" alt="{{ $storyPoster->caption ?: 'Photo shared by the couple' }}" loading="lazy">
+            @else
+              <div class="photo_placeholder"><span>The couple’s story will appear here when added.</span></div>
+            @endif
+            @if($weddingData['podcastUrl'])
+              <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
+            @endif
+          </div>
+        </div>
+        <figcaption class="story_media_caption">
+          <span>{{ $setting->podcast_title ?: 'Our story, in our own words' }}</span>
+          @if(filled($setting->podcast_desc))<p>{{ $setting->podcast_desc }}</p>@endif
+        </figcaption>
+      </figure>
+
+      <div class="how_text story_narrative reveal">
+        <div class="eyebrow">Our story</div>
+        <h3 style="margin-top:16px">THE MOMENT<br><em>it all began</em></h3>
+        @if(filled($setting->story_intro))
+          <blockquote class="story_pullquote">{{ $setting->story_intro }}</blockquote>
+        @endif
+        <div class="story_copy">
+          @if(is_array($setting->story_content) && count($setting->story_content))
+            @foreach($setting->story_content as $paragraph)
+              <p>{{ $paragraph }}</p>
+            @endforeach
+          @elseif(filled($setting->podcast_desc))
+            <p>{{ $setting->podcast_desc }}</p>
+          @else
+            <p>The couple’s story will appear here when shared.</p>
+          @endif
+        </div>
+        @if($weddingData['podcastUrl'])
+          <p class="story_podcast_note">The story podcast is ready to play above. If autoplay is blocked, press play in the video.</p>
+        @else
+          <p class="story_podcast_note">The couple’s podcast will appear here once it is added in wedding settings.</p>
+        @endif
+        <a class="story_keep_reading" href="{{ $timelines->isNotEmpty() ? '#storyTimeline' : '#memories' }}">Keep reading <span aria-hidden="true">→</span></a>
+      </div>
     </div>
+
+    @if($timelines->isNotEmpty())
+      <div class="story_timeline" id="storyTimeline" aria-label="Our story timeline">
+        @foreach($timelines as $timeline)
+          <article class="story_timeline_item">
+            <span class="story_timeline_date">{{ $timeline->date_label }}</span>
+            <h4>{{ $timeline->title }}</h4>
+            @if(filled($timeline->desc))<p>{{ $timeline->desc }}</p>@endif
+          </article>
+        @endforeach
+      </div>
+    @endif
   </div>
+</section>
+
+<section class="gallery_mason" id="gallery" aria-labelledby="galleryHeading">
+  <div class="gallery_head">
+    <div><div class="eyebrow">Gallery</div><h2 class="h2" id="galleryHeading" style="margin-top:12px">Moments <i>in bloom</i></h2></div>
+    <div class="gallery_hint"><span>Scroll or swipe</span><span aria-hidden="true">← &nbsp; →</span></div>
+  </div>
+  @if($galleries->isNotEmpty())
+    <div class="gallery_grid" id="galleryGrid">
+      @foreach($galleries as $index => $g)
+      <div class="gallery_item" data-i="{{ $index }}">
+        <img src="{{ $g->image_path }}" loading="lazy" alt="{{ $g->caption }}">
+        <div class="gallery_item_meta"><span>{{ $g->category }} — {{ $g->caption }}</span></div>
+      </div>
+      @endforeach
+    </div>
+  @else
+    <div class="gallery_empty" role="status">Photos will be added to the journal as they are shared.</div>
+  @endif
 </section>
 
 <section class="moments_cine" id="memories" aria-label="Memories">
@@ -183,25 +248,6 @@
   @endif
 </section>
 
-<section class="gallery_mason" id="gallery">
-  <div class="gallery_head">
-    <div><div class="eyebrow">Photo journal</div><h2 class="h2" style="margin-top:12px">A love letter<br><i>in photographs</i></h2></div>
-    <div class="body" style="max-width:22em;opacity:.7">A photo journal of the moments Chiamaka and Gospel choose to share with family and friends.</div>
-  </div>
-  @if($galleries->isNotEmpty())
-    <div class="gallery_grid" id="galleryGrid">
-      @foreach($galleries as $index => $g)
-      <div class="gallery_item" data-i="{{ $index }}">
-        <img src="{{ $g->image_path }}" loading="lazy" alt="{{ $g->caption }}">
-        <div class="gallery_item_meta"><span>{{ $g->category }} — {{ $g->caption }}</span></div>
-      </div>
-      @endforeach
-    </div>
-  @else
-    <div class="gallery_empty" role="status">Photos will be added to the journal as they are shared.</div>
-  @endif
-</section>
-
 <div class="lightbox" id="lightbox">
   <img class="lightbox_img" id="lbImg" alt="">
   <div class="lightbox_ui">
@@ -212,85 +258,65 @@
   </div>
 </div>
 
-<section class="wedding" id="wedding">
-  <div class="wedding_inner">
-    <div class="wedding_side reveal">
-      <div class="eyebrow">Our wedding</div>
-      <h2 class="h2" style="margin-top:12px">Come<br>celebrate<br><i>with us.</i></h2>
-      <p class="body" style="margin-top:20px;opacity:.7">Chiamaka and Gospel would be honoured by your presence as they celebrate with their families.</p>
+<section class="wedding day_section" id="wedding" aria-labelledby="dayHeading">
+  <div class="day_inner">
+    <div class="day_display reveal">
+      <div class="eyebrow">The day</div>
+      <h2 class="day_date_big" id="dayHeading">
+        <span>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('d') }}<i>.</i>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('m') }}</span>
+        <em>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('Y') }}</em>
+      </h2>
       @if($setting->order_pdf_path)
-        <a class="btn_line" href="{{ $setting->order_pdf_path }}" target="_blank" rel="noopener">Download Order of Service</a>
+        <a class="btn_line day_order" href="{{ $setting->order_pdf_path }}" target="_blank" rel="noopener">Download Order of Service <span aria-hidden="true">↗</span></a>
       @endif
     </div>
-    <div class="reveal">
-      <div class="wedding_timeline">
-        <div class="wt_row">
-          <div class="wt_time">{{ $setting->ceremony_time ?: '11:00 AM' }}<div class="wt_label">Ceremony</div></div>
-          <div><div class="wt_title">Wedding ceremony</div><div class="wt_desc">Saturday, November 21, 2026 — beginning promptly.</div></div>
+
+    <div class="day_panel reveal">
+      <div class="day_facts">
+        <div class="day_fact"><span>Date</span><strong>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('l, j F Y') }}</strong></div>
+        <div class="day_fact"><span>Time</span><strong>{{ $setting->ceremony_time ?: '11:00 AM' }}</strong></div>
+        <div class="day_fact"><span>City</span><strong>{{ $weddingData['city'] }}</strong></div>
+      </div>
+
+      <div class="day_venue" id="venue">
+        <div class="eyebrow">Venue</div>
+        <h3>{{ $setting->venue_name }}</h3>
+        <p class="day_address">{!! nl2br(e($weddingData['address'])) !!}<br>{{ $weddingData['city'] }}</p>
+        <div class="venue_actions">
+          <a class="btn_line" href="{{ $weddingData['mapsUrl'] }}" target="_blank" rel="noopener noreferrer">View location <span aria-hidden="true">↗</span></a>
+          <button class="btn_line" id="copyAddrBtn" type="button">Copy address</button>
         </div>
-        <div class="wt_row">
-          <div class="wt_time">{{ $setting->reception_time ?: 'To follow' }}<div class="wt_label">Reception</div></div>
-          <div><div class="wt_title">Reception</div><div class="wt_desc">Reception to follow the ceremony.</div></div>
+      </div>
+
+      <div class="day_schedule">
+        <div class="eyebrow">Order of the day</div>
+        <div class="wedding_timeline">
+          <div class="wt_row">
+            <div class="wt_time">{{ $setting->ceremony_time ?: '11:00 AM' }}<div class="wt_label">Ceremony</div></div>
+            <div><div class="wt_title">Wedding ceremony</div>@if(filled($setting->arrival_time))<div class="wt_desc">Guest arrival from {{ $setting->arrival_time }}.</div>@endif</div>
+          </div>
+          <div class="wt_row">
+            <div class="wt_time">{{ $setting->reception_time ?: 'To follow' }}<div class="wt_label">Reception</div></div>
+            <div><div class="wt_title">Reception</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day_dress" id="dresscode">
+        <div>
+          <div class="eyebrow">Dress code</div>
+          <h3>{{ $setting->dress_title ?? 'Formal Attire' }}</h3>
+          @if(filled($setting->dress_note))<p>{{ $setting->dress_note }}</p>@endif
+        </div>
+        <div class="dress_swatches" aria-label="Suggested dress-code colors">
+          @foreach($weddingData['dressColors'] as $color)
+            <div class="swatch"><div class="swatch_circle" style="background:{{ $color['hex'] }}"></div><span class="swatch_label">{{ $color['name'] }}</span></div>
+          @endforeach
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<section class="venue" id="venue">
-  <div class="venue_inner reveal">
-    <div class="venue_map" role="img" aria-label="Venue location card; use View location for directions">
-      <div class="venue_map_pattern" aria-hidden="true"></div>
-      <div class="venue_map_label">{{ $setting->venue_name }} • {{ $setting->city }}</div>
-    </div>
-    <div class="venue_info">
-      <div class="eyebrow">Venue</div>
-      <div class="venue_name">{{ $setting->venue_name }}</div>
-      <div class="venue_addr">{!! nl2br(e($weddingData['address'])) !!}<br>{{ $weddingData['city'] }}<br><br>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }} • {{ $setting->ceremony_time ?: '11:00 AM' }} prompt</div>
-      <div class="venue_actions">
-        <a class="btn_line" href="{{ $weddingData['mapsUrl'] }}" target="_blank" rel="noopener noreferrer">View location</a>
-        <button class="btn_line" id="copyAddrBtn">Copy address</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="dress" id="dresscode">
-  <div class="dress_inner">
-    <div class="reveal">
-      <div class="eyebrow">Dress code</div>
-      <h2 class="h2" style="margin-top:12px">{{ $setting->dress_title ?? 'Formal Attire' }}</h2>
-      <p class="body" style="margin-top:16px">We invite you to dress in a way that makes you feel your most beautiful. Think timeless, refined, celebratory.</p>
-      <div class="dress_note">{{ $setting->dress_note ?: 'Emerald green, beige, gold, and white.' }}</div>
-    </div>
-    <div class="reveal">
-      <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6">Suggested palette</div>
-      <div class="dress_swatches">
-        @foreach($weddingData['dressColors'] as $color)
-          <div class="swatch"><div class="swatch_circle" style="background:{{ $color['hex'] }}"></div><span class="swatch_label">{{ $color['name'] }}</span></div>
-        @endforeach
-      </div>
-    </div>
-  </div>
-</section>
-
-@if($mc)
-<section class="mc" id="mc">
-  <div class="mc_inner">
-    <div class="mc_img reveal"><img src="{{ $mc->image_path }}" alt="{{ $mc->name }}" loading="lazy" decoding="async"></div>
-    <div class="reveal">
-      <div class="mc_role">{{ $mc->role }}</div>
-      <div class="mc_name">{{ $mc->name }}</div>
-      <div class="mc_bio body">{{ $mc->bio }}</div>
-      <div class="mc_social">
-        @if($mc->instagram_url)<a href="{{ $mc->instagram_url }}" target="_blank">Instagram</a>@endif
-        @if($mc->x_url)<a href="{{ $mc->x_url }}" target="_blank">X</a>@endif
-        @if($mc->website_url)<a href="{{ $mc->website_url }}" target="_blank">Website</a>@endif
-      </div>
-    </div>
-  </div>
-</section>
-@endif
 
 <section class="info_qa">
   <div class="info_col reveal">
@@ -316,29 +342,29 @@
   </div>
 </section>
 
-<section class="cash_gift" id="cash-gift">
+<section class="cash_gift registry_section" id="cash-gift" aria-labelledby="registryHeading">
   <div class="cash_gift_inner">
     <div class="cash_gift_intro">
-      <div>
-        <div class="eyebrow">Cash gifts</div>
-        <h2 class="h2" style="margin-top:12px">Your presence is<br><i>the greatest gift.</i></h2>
-      </div>
+      <div class="eyebrow">Registry</div>
+      <h2 class="h2" id="registryHeading" style="margin-top:16px">Prefer to send<br><i>a cash gift?</i></h2>
       <p class="body">We are grateful to celebrate with you. If you would also like to give a cash gift, you may use the bank details below. There is no obligation.</p>
     </div>
-    @if(filled($setting->bank_name) && filled($setting->account_name) && filled($setting->account_number))
-      <div class="cash_gift_details" aria-label="Cash gift bank transfer details">
-        <div class="cash_gift_item"><span>Bank</span><strong>{{ $setting->bank_name }}</strong></div>
-        <div class="cash_gift_item"><span>Account name</span><strong>{{ $setting->account_name }}</strong></div>
-        <div class="cash_gift_item"><span>Account number</span><strong id="cashGiftAccount">{{ $setting->account_number }}</strong></div>
-      </div>
-      <button class="btn_line" type="button" id="copyAccountBtn" data-account="{{ $setting->account_number }}">Copy account number</button>
-      @if(filled($setting->cash_gift_note))
-        <p class="cash_gift_note">{{ $setting->cash_gift_note }}</p>
+    <div class="cash_gift_transfer">
+      @if(filled($setting->bank_name) && filled($setting->account_name) && filled($setting->account_number))
+        <div class="cash_gift_details" aria-label="Cash gift bank transfer details">
+          <div class="cash_gift_item"><span>Bank</span><strong>{{ $setting->bank_name }}</strong></div>
+          <div class="cash_gift_item"><span>Account name</span><strong>{{ $setting->account_name }}</strong></div>
+          <div class="cash_gift_item"><span>Account number</span><strong id="cashGiftAccount">{{ $setting->account_number }}</strong></div>
+        </div>
+        <button class="btn_line" type="button" id="copyAccountBtn" data-account="{{ $setting->account_number }}">Copy account number</button>
+        @if(filled($setting->cash_gift_note))
+          <p class="cash_gift_note">{{ $setting->cash_gift_note }}</p>
+        @endif
+      @else
+        <p class="cash_gift_note" role="status">Bank transfer details will be shared here by the couple.</p>
       @endif
-    @else
-      <p class="cash_gift_note" role="status">Bank transfer details will be shared here by the couple.</p>
-    @endif
-    <p class="cash_gift_disclaimer">Please verify the account name and number before making a transfer. This website does not collect or process payments.</p>
+      <p class="cash_gift_disclaimer">Please verify the account name and number before making a transfer. This website does not collect or process payments.</p>
+    </div>
   </div>
 </section>
 
@@ -370,21 +396,12 @@
   </div>
 </section>
 
-<section class="guestbook" id="wishes" aria-labelledby="wishesHeading">
+<section class="guestbook wishes_section" id="wishes" aria-labelledby="wishesHeading">
   <div class="gb_inner">
-    <div>
+    <div class="gb_heading">
       <div class="eyebrow">Wishes from our people</div>
-      <h2 class="h2" id="wishesHeading" style="margin-top:12px;font-size:36px">Send us<br><i>your wishes</i></h2>
+      <h2 class="h2" id="wishesHeading">Leave us<br><i>a wish.</i></h2>
       <p class="gb_intro">Leave a blessing, a memory, or a few kind words for the couple.</p>
-    </div>
-    <div>
-      <div class="gb_list" id="wishesList">
-        @forelse($guestbooks as $gb)
-        <article class="gb_card"><div class="gb_msg">“{{ $gb->message }}”</div><div class="gb_name">— {{ $gb->name }}</div></article>
-        @empty
-        <p class="gb_empty" role="status">Be the first to send a wish. Approved wishes will appear here.</p>
-        @endforelse
-      </div>
       <form class="gb_form" id="wishForm" action="{{ route('guestbook.store') }}" method="POST">
         @csrf
         <h4>Leave a wish for the couple</h4>
@@ -401,21 +418,36 @@
         <button class="btn_line gb_submit" style="width:100%;margin-top:16px;justify-content:center" type="submit">Send your wish</button>
       </form>
     </div>
+    <div class="gb_wishes">
+      <div class="eyebrow">Shared with love</div>
+      <div class="gb_list" id="wishesList">
+        @forelse($guestbooks as $gb)
+          <article class="gb_card"><div class="gb_msg">“{{ $gb->message }}”</div><div class="gb_name">— {{ $gb->name }}</div></article>
+        @empty
+          <p class="gb_empty" role="status">Be the first to send a wish. Approved wishes will appear here.</p>
+        @endforelse
+      </div>
+    </div>
   </div>
 </section>
 
-<footer class="footer">
+<footer class="footer closing_footer">
   <div class="footer_inner">
-    <div class="footer_top">
-      <div class="footer_brand"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="The Gospels logo" width="900" height="251" loading="lazy" decoding="async"></div>
-      <div>
-        <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
-        <div class="footer_nav">
-          <a href="#howWeMet">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#wishes">Wishes</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer_bottom"><span>With love, {{ $setting->partner_one }} & {{ $setting->partner_two }}</span><span>{{ $weddingData['city'] }} • Crafted with care</span></div>
+    <a class="footer_mark" href="#home" aria-label="Back to the top">
+      <img src="{{ asset('favicon.svg') }}" alt="The Gospels brand mark" width="512" height="512" loading="lazy" decoding="async">
+    </a>
+    <div class="footer_couple">{{ $partnerOneFirst }} <i>&amp;</i> {{ $partnerTwoFirst }}</div>
+    <div class="footer_hashtag">{{ $setting->hashtag ?? '#THEGOSPELS26' }} <span aria-hidden="true">·</span> {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
+    <nav class="footer_nav" aria-label="Footer navigation">
+      <a href="#howWeMet">Our story</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#memories">Memories</a>
+      <a href="#wedding">The day</a>
+      <a href="#cash-gift">Registry</a>
+      <a href="#wishes">Wishes</a>
+      <a href="#rsvp">RSVP</a>
+    </nav>
+    <div class="footer_bottom"><span>With love, {{ $setting->partner_one }} &amp; {{ $setting->partner_two }}</span><span>{{ $weddingData['city'] }}</span><a href="{{ route('admin.dashboard') }}">Admin</a></div>
   </div>
 </footer>
 
