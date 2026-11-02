@@ -443,6 +443,18 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('.body,.story_feature .story_copy p{font-size:16px}', $themeCss);
     }
 
+    public function test_registry_copy_reflects_the_couples_home_support_message(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Support us in')
+            ->assertSee('building our home')
+            ->assertSee('We’re beginning this beautiful journey')
+            ->assertSee('While your physical gifts are a great idea')
+            ->assertSee('Thank you so much for your support. We feel your love.')
+            ->assertDontSee('Prefer to send');
+    }
+
     public function test_cash_gift_details_are_managed_in_settings_and_shown_publicly(): void
     {
         $admin = User::factory()->create();

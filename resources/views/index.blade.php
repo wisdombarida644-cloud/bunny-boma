@@ -307,8 +307,10 @@
   <div class="cash_gift_inner">
     <div class="cash_gift_intro">
       <div class="eyebrow">Registry</div>
-      <h2 class="h2" id="registryHeading" style="margin-top:16px">Prefer to send<br><i>a cash gift?</i></h2>
-      <p class="body">We are grateful to celebrate with you. If you would also like to give a cash gift, you may use the bank details below. There is no obligation.</p>
+      <h2 class="h2" id="registryHeading" style="margin-top:16px">Support us in<br><i>building our home</i></h2>
+      <p class="body">We’re beginning this beautiful journey, getting into our first apartment, and starting life as a young couple and we’d really appreciate your support to help us build our home.</p>
+      <p class="body">While your physical gifts are a great idea, we both would love and prefer your gifts translated into cash so as to help us meet our most important needs.</p>
+      <p class="body">Thank you so much for your support. We feel your love.</p>
     </div>
     <div class="cash_gift_transfer">
       @if(filled($setting->bank_name) && filled($setting->account_name) && filled($setting->account_number))
