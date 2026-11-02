@@ -9,7 +9,6 @@
     <a href="#memories">Memories</a>
     <a href="#wedding">The Day</a>
     <a href="#cash-gift">Registry</a>
-    <a href="#qa">Q&A</a>
     <a href="#wishes">Wishes</a>
   </div>
   <div class="nav_right">
@@ -33,9 +32,8 @@
     <a href="#memories" data-close><span>03</span>Memories</a>
     <a href="#wedding" data-close><span>04</span>The Day</a>
     <a href="#cash-gift" data-close><span>05</span>Registry</a>
-    <a href="#qa" data-close><span>06</span>Q&A</a>
-    <a href="#wishes" data-close><span>07</span>Wishes</a>
-    <a href="#rsvp" data-close><span>08</span>RSVP</a>
+    <a href="#wishes" data-close><span>06</span>Wishes</a>
+    <a href="#rsvp" data-close><span>07</span>RSVP</a>
   </div>
   <div class="mobile_menu_foot">
     <span>{{ $setting->hashtag ?? '#THEGOSPELS26' }}</span>
@@ -301,30 +299,6 @@
           @endforeach
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="info_qa">
-  <div class="info_col reveal">
-    <div class="eyebrow">Good to know</div>
-    <h2 class="h2" style="margin-top:12px;font-size:40px">Important<br>information</h2>
-    <div class="info_list">
-      @foreach($infos as $inf)
-        <div class="info_item"><h4>{{ $inf->title }}</h4><p>{{ $inf->text }}</p></div>
-      @endforeach
-    </div>
-  </div>
-  <div class="info_col reveal" id="qa">
-    <div class="eyebrow">Questions & answers</div>
-    <h2 class="h2" style="margin-top:12px;font-size:40px">A few things<br><i>worth knowing</i></h2>
-    <div class="qa_list" id="qaList">
-      @foreach($qas as $index => $qa)
-        <div class="qa_item {{ $index === 0 ? 'open' : '' }}">
-          <button class="qa_q"><span>{{ $qa->question }}</span><span>+</span></button>
-          <div class="qa_a"><p>{{ $qa->answer }}</p></div>
-        </div>
-      @endforeach
     </div>
   </div>
 </section>
@@ -940,12 +914,6 @@ document.addEventListener("DOMContentLoaded", () => {
     videoPoster.setAttribute("aria-disabled", "true");
     videoPoster.querySelector(".video_play")?.remove();
   }
-
-  // Q&A accordion.
-  document.getElementById("qaList")?.addEventListener("click", event => {
-    const button = event.target.closest(".qa_q");
-    if (button) button.parentElement.classList.toggle("open");
-  });
 
   // Copy bank transfer details without sending payment information anywhere.
   const copyAccountButton = document.getElementById("copyAccountBtn");

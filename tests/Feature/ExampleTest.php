@@ -117,6 +117,8 @@ class ExampleTest extends TestCase
         $memoriesStart = strpos($html, '<section class="moments_cine" id="memories"');
         $galleryStart = strpos($html, '<section class="gallery_mason" id="gallery"');
         $dayStart = strpos($html, '<section class="wedding day_section" id="wedding"');
+        $dayEnd = strpos('</section>', $dayStart);
+        $registryStart = strpos($html, '<section class="cash_gift registry_section" id="cash-gift"');
 
         $this->assertNotFalse($heroEnd);
         $this->assertNotFalse($countdownStart);
@@ -125,12 +127,19 @@ class ExampleTest extends TestCase
         $this->assertNotFalse($memoriesStart);
         $this->assertNotFalse($galleryStart);
         $this->assertNotFalse($dayStart);
+        $this->assertNotFalse($dayEnd);
+        $this->assertNotFalse($registryStart);
         $this->assertGreaterThan($heroEnd, $countdownStart);
         $this->assertGreaterThan($countdownEnd, $loveStoryStart);
         $this->assertGreaterThan($loveStoryStart, $galleryStart);
         $this->assertGreaterThan($galleryStart, $memoriesStart);
         $this->assertGreaterThan($memoriesStart, $dayStart);
+        $this->assertGreaterThan($dayEnd, $registryStart);
         $this->assertStringNotContainsString('<section class="mc"', $html);
+        $this->assertStringNotContainsString('<section class="info_qa"', $html);
+        $this->assertStringNotContainsString('Important information', $html);
+        $this->assertStringNotContainsString('worth knowing', $html);
+        $this->assertStringNotContainsString('href="#qa"', $html);
         $this->assertStringContainsString('id="countGrid"', $html);
         $this->assertStringContainsString('class="countdown_hash"', $html);
         $this->assertStringContainsString('<h3>Our Story</h3>', $html);
@@ -160,6 +169,11 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('class="day_date_big" id="dayHeading"', $html);
         $this->assertStringContainsString('class="day_facts"', $html);
         $this->assertStringContainsString('class="day_schedule"', $html);
+        $themeCss = file_get_contents(public_path('css/invitation-theme.css'));
+        $this->assertIsString($themeCss);
+        $this->assertStringNotContainsString('#7A5CBF', $themeCss);
+        $this->assertStringNotContainsString('#C2A5F0', $themeCss);
+        $this->assertStringContainsString('color:var(--deep2)', $themeCss);
     }
 
     public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void

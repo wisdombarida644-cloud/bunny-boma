@@ -394,23 +394,6 @@ section{position:relative}
 .mc_social a:hover{opacity:1}
 @media(max-width:900px){.mc{padding:80px 0}.mc_inner{grid-template-columns:1fr;padding:0 24px}}
 
-/* INFO + QA */
-.info_qa{padding:120px 0;background:var(--ivory);display:grid;grid-template-columns:1fr 1fr}
-.info_col{padding:0 48px}
-.info_col:first-child{border-right:1px solid var(--line)}
-.info_list{margin-top:32px;display:grid;gap:32px}
-.info_item h4{font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
-.info_item p{font-size:14px;line-height:1.8;opacity:.8}
-.qa_list{margin-top:32px;border-top:1px solid var(--char)}
-.qa_item{border-bottom:1px solid var(--line)}
-.qa_q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:20px 0;text-align:left;font-family:var(--serif);font-size:18px;line-height:1.3}
-.qa_q span:last-child{font-family:var(--sans);font-size:14px;transition:transform .4s}
-.qa_item.open .qa_q span:last-child{transform:rotate(45deg)}
-.qa_a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease), opacity .4s;opacity:0}
-.qa_item.open .qa_a{max-height:300px;opacity:.8;padding-bottom:20px}
-.qa_a p{font-size:14px;line-height:1.8}
-@media(max-width:900px){.info_qa{grid-template-columns:1fr}.info_col{padding:32px 24px}.info_col:first-child{border-right:none;border-bottom:1px solid var(--line)}}
-
 /* CASH GIFTS */
 .cash_gift{padding:120px 0;background:var(--warm)}
 .cash_gift_inner{max-width:1100px;margin:0 auto;padding:0 48px}
@@ -516,7 +499,6 @@ section{position:relative}
 :root[data-theme="dark"] .story,
 :root[data-theme="dark"] .gallery_mason,
 :root[data-theme="dark"] .venue,
-:root[data-theme="dark"] .info_qa,
 :root[data-theme="dark"] .guestbook{background:#202823}
 :root[data-theme="dark"] .hero_backdrop_image{filter:saturate(.7) brightness(.74) blur(3px)}
 :root[data-theme="dark"] .hero_backdrop:after{background:linear-gradient(90deg,rgba(20,26,22,.64) 0%,rgba(20,26,22,.52) 38%,rgba(20,26,22,.36) 70%,rgba(20,26,22,.24) 100%),linear-gradient(0deg,rgba(20,26,22,.18),rgba(20,26,22,.18))}

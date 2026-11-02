@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gallery;
 use App\Models\Guestbook;
-use App\Models\Info;
 use App\Models\Mc;
 use App\Models\Moment;
-use App\Models\Qa;
 use App\Models\Rsvp;
 use App\Models\Timeline;
 use App\Models\WeddingSetting;
@@ -40,8 +38,6 @@ class FrontController extends Controller
             ->values();
         $ogImageUrl = asset('images/og-wedding-couple.jpg');
         $mc = Mc::where('is_visible', true)->first();
-        $qas = Qa::where('is_published', true)->orderBy('sort_order', 'asc')->get();
-        $infos = Info::orderBy('sort_order', 'asc')->get();
         $guestbooks = Guestbook::where('is_approved', true)->latest()->get();
         $podcastVideoUrl = $this->safeYoutubeEmbedUrl($setting->podcast_youtube_url);
 
@@ -109,8 +105,6 @@ class FrontController extends Controller
             'galleries',
             'heroBackgroundPhotos',
             'mc',
-            'qas',
-            'infos',
             'guestbooks',
             'weddingData',
             'ogImageUrl'
