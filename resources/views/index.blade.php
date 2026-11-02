@@ -119,6 +119,51 @@
   <a class="hero_scroll" href="#story"><span>Scroll to discover</span></a>
 </header>
 
+<section class="story" id="story">
+  <div class="story_inner">
+    <div class="story_top">
+      <div>
+        <div class="eyebrow">THE MOMENT</div>
+        <h2 class="h2 reveal" style="margin-top:16px"><i>it all began</i></h2>
+      </div>
+      <div class="story_copy reveal" id="storyCopy">
+        @if(is_array($setting->story_content) && count($setting->story_content))
+          @foreach($setting->story_content as $p)
+            <p>{{ $p }}</p>
+          @endforeach
+        @else
+          <p>Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi invite you to celebrate their wedding with their families on Saturday, November 21, 2026.</p>
+        @endif
+      </div>
+    </div>
+    <div class="story_image reveal">
+      <div class="story_image_main">
+        @if($galleries->isNotEmpty())
+          <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
+        @else
+          <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
+        @endif
+      </div>
+      <div class="story_image_side">
+        @if($galleries->count() > 1)
+          <img src="{{ $galleries->get(1)->image_path }}" alt="{{ $galleries->get(1)->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
+        @else
+          <div class="photo_placeholder"><span>More photos will appear here.</span></div>
+        @endif
+      </div>
+    </div>
+    <div class="timeline" id="timeline">
+      @foreach($timelines as $t)
+      <div class="tl_item">
+        <div class="tl_date">{{ $t->date_label }}</div>
+        <div class="tl_title">{{ $t->title }}</div>
+        <div style="font-size:12px;opacity:.6;margin-top:4px">{{ $t->desc }}</div>
+      </div>
+      @endforeach
+    </div>
+  </div>
+</section>
+
 @if(filled($setting->family_one) || filled($setting->family_two))
 <section class="families_bar" aria-label="Families">
   <div class="families_inner">
@@ -184,50 +229,6 @@
   </div>
 </section>
 
-<section class="story" id="story">
-  <div class="story_inner">
-    <div class="story_top">
-      <div>
-        <div class="eyebrow">Our love story</div>
-        <h2 class="h2 reveal" style="margin-top:16px">{!! str_replace('. ', '.<br>', e($setting->story_title ?? 'Some stories are written. Ours was lived.')) !!}</h2>
-      </div>
-      <div class="story_copy reveal" id="storyCopy">
-        @if(is_array($setting->story_content) && count($setting->story_content))
-          @foreach($setting->story_content as $p)
-            <p>{{ $p }}</p>
-          @endforeach
-        @else
-          <p>Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi invite you to celebrate their wedding with their families on Saturday, November 21, 2026.</p>
-        @endif
-      </div>
-    </div>
-    <div class="story_image reveal">
-      <div class="story_image_main">
-        @if($galleries->isNotEmpty())
-          <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
-        @else
-          <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
-        @endif
-      </div>
-      <div class="story_image_side">
-        @if($galleries->count() > 1)
-          <img src="{{ $galleries->get(1)->image_path }}" alt="{{ $galleries->get(1)->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
-        @else
-          <div class="photo_placeholder"><span>More photos will appear here.</span></div>
-        @endif
-      </div>
-    </div>
-    <div class="timeline" id="timeline">
-      @foreach($timelines as $t)
-      <div class="tl_item">
-        <div class="tl_date">{{ $t->date_label }}</div>
-        <div class="tl_title">{{ $t->title }}</div>
-        <div style="font-size:12px;opacity:.6;margin-top:4px">{{ $t->desc }}</div>
-      </div>
-      @endforeach
-    </div>
-  </div>
-</section>
 
 <section class="how" id="howWeMet">
   <div class="how_inner">

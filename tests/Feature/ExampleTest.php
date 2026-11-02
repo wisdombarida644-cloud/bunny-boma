@@ -107,6 +107,19 @@ class ExampleTest extends TestCase
             ->assertDontSee('images.unsplash.com');
     }
 
+    public function test_story_section_with_brides_heading_follows_the_hero(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+        $heroEnd = strpos($html, '</header>');
+        $storyStart = strpos($html, '<section class="story" id="story">');
+
+        $this->assertNotFalse($heroEnd);
+        $this->assertNotFalse($storyStart);
+        $this->assertGreaterThan($heroEnd, $storyStart);
+        $this->assertStringContainsString('THE MOMENT', $html);
+        $this->assertStringContainsString('<i>it all began</i>', $html);
+    }
+
     public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void
     {
         Storage::fake('public');
