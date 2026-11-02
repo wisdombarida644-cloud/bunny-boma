@@ -429,6 +429,20 @@ class ExampleTest extends TestCase
             ->assertSessionHasErrorsIn('rsvp', ['name']);
     }
 
+    public function test_public_supporting_text_has_readable_sizes_for_older_guests(): void
+    {
+        $themeCss = file_get_contents(public_path('css/invitation-theme.css'));
+
+        $this->assertIsString($themeCss);
+        $this->assertStringContainsString('.cash_gift.registry_section .cash_gift_intro .body{max-width:31em;margin-top:22px;color:rgba(241,235,221,.75);font-size:16px', $themeCss);
+        $this->assertStringContainsString('.cash_gift.registry_section .cash_gift_item span{color:rgba(241,235,221,.82);font-size:12px;letter-spacing:.12em}', $themeCss);
+        $this->assertStringContainsString('.cash_gift.registry_section .cash_gift_note{margin-top:18px;color:rgba(241,235,221,.76);font-size:16px', $themeCss);
+        $this->assertStringContainsString('.cash_gift.registry_section .cash_gift_disclaimer{margin-top:24px;color:rgba(241,235,221,.76);font-size:13px', $themeCss);
+        $this->assertStringContainsString('.cash_gift.registry_section .cash_gift_transfer>.btn_line{margin-top:20px;border-color:rgba(229,217,196,.6);color:var(--ivory);font-size:12px;letter-spacing:.12em}', $themeCss);
+        $this->assertStringContainsString('.eyebrow{font-size:12px;letter-spacing:.16em}', $themeCss);
+        $this->assertStringContainsString('.body,.story_feature .story_copy p{font-size:16px}', $themeCss);
+    }
+
     public function test_cash_gift_details_are_managed_in_settings_and_shown_publicly(): void
     {
         $admin = User::factory()->create();
