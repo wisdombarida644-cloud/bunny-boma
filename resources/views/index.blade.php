@@ -138,10 +138,6 @@
         <div class="eyebrow">Our story</div>
         <h2 class="story_feature_title" id="storyHeadline">Two sides,<br><i>one story.</i></h2>
       </div>
-      <div class="story_couple_badge">
-        <span>{{ $setting->hashtag ?? '#THEGOSPELS26' }}</span>
-        <strong>{{ $partnerOneFirst }} <i>&amp;</i> {{ $partnerTwoFirst }}</strong>
-      </div>
     </div>
 
     <div class="story_feature_grid">

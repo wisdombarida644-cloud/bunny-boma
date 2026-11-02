@@ -132,6 +132,7 @@ class ExampleTest extends TestCase
         $this->assertGreaterThan($memoriesStart, $dayStart);
         $this->assertStringNotContainsString('<section class="mc"', $html);
         $this->assertStringContainsString('id="countGrid"', $html);
+        $this->assertStringContainsString('class="countdown_hash"', $html);
         $this->assertStringContainsString('THE MOMENT<br><em>it all began</em>', $html);
         $this->assertStringContainsString('id="videoPoster"', $html);
         $this->assertStringContainsString('href="#howWeMet"', $html);
