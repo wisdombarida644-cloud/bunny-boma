@@ -107,21 +107,29 @@ class ExampleTest extends TestCase
             ->assertDontSee('images.unsplash.com');
     }
 
-    public function test_compact_countdown_follows_the_hero_and_story_follows_the_countdown(): void
+    public function test_compact_countdown_leads_directly_into_the_love_story(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
         $heroEnd = strpos($html, '</header>');
         $countdownStart = strpos($html, '<section class="countdown_sec countdown_strip" id="countdownSec"');
-        $storyStart = strpos($html, '<section class="story" id="story">');
+        $countdownEnd = strpos($html, '</section>', $countdownStart);
+        $loveStoryStart = strpos($html, '<section class="how" id="howWeMet">');
+        $memoriesStart = strpos($html, '<section class="moments_cine" id="memories"');
 
         $this->assertNotFalse($heroEnd);
         $this->assertNotFalse($countdownStart);
-        $this->assertNotFalse($storyStart);
+        $this->assertNotFalse($countdownEnd);
+        $this->assertNotFalse($loveStoryStart);
+        $this->assertNotFalse($memoriesStart);
         $this->assertGreaterThan($heroEnd, $countdownStart);
-        $this->assertGreaterThan($countdownStart, $storyStart);
+        $this->assertGreaterThan($countdownEnd, $loveStoryStart);
+        $this->assertGreaterThan($loveStoryStart, $memoriesStart);
         $this->assertStringContainsString('id="countGrid"', $html);
-        $this->assertStringContainsString('THE MOMENT', $html);
-        $this->assertStringContainsString('<i>it all began</i>', $html);
+        $this->assertStringContainsString('THE MOMENT<br><em>it all began</em>', $html);
+        $this->assertStringContainsString('id="videoPoster"', $html);
+        $this->assertStringContainsString('href="#howWeMet"', $html);
+        $this->assertStringNotContainsString('<section class="story"', $html);
+        $this->assertStringNotContainsString('<section class="gospels"', $html);
         $this->assertStringNotContainsString('<section class="families_bar"', $html);
         $this->assertStringNotContainsString('Save the date', $html);
         $this->assertStringNotContainsString('THE DAY WE', $html);

@@ -5,7 +5,7 @@
   <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('images/thegospels-wordmark.jpg') }}" alt="" width="900" height="251" fetchpriority="high"></a>
   <div class="nav_links" id="navLinks">
     <a href="#home">Home</a>
-    <a href="#story">Our Story</a>
+    <a href="#howWeMet">Our Story</a>
     <a href="#wedding">Our Wedding</a>
     <a href="#memories">Memories</a>
     <a href="#qa">Q&A</a>
@@ -29,7 +29,7 @@
   </div>
   <div class="mobile_menu_links">
     <a href="#home" data-close><span>01</span>Home</a>
-    <a href="#story" data-close><span>02</span>Our Story</a>
+    <a href="#howWeMet" data-close><span>02</span>Our Story</a>
     <a href="#wedding" data-close><span>03</span>Our Wedding</a>
     <a href="#memories" data-close><span>04</span>Memories</a>
     <a href="#qa" data-close><span>05</span>Q&A</a>
@@ -129,71 +129,6 @@
     </div>
   </div>
 </section>
-
-<section class="story" id="story">
-  <div class="story_inner">
-    <div class="story_top">
-      <div>
-        <div class="eyebrow">THE MOMENT</div>
-        <h2 class="h2 reveal" style="margin-top:16px"><i>it all began</i></h2>
-      </div>
-      <div class="story_copy reveal" id="storyCopy">
-        @if(is_array($setting->story_content) && count($setting->story_content))
-          @foreach($setting->story_content as $p)
-            <p>{{ $p }}</p>
-          @endforeach
-        @else
-          <p>{{ $partnerOneFirst }} and {{ $partnerTwoFirst }} invite you to celebrate their wedding with family and friends.</p>
-        @endif
-      </div>
-    </div>
-    <div class="story_image reveal">
-      <div class="story_image_main">
-        @if($galleries->isNotEmpty())
-          <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
-        @else
-          <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
-        @endif
-      </div>
-      <div class="story_image_side">
-        @if($galleries->count() > 1)
-          <img src="{{ $galleries->get(1)->image_path }}" alt="{{ $galleries->get(1)->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
-        @else
-          <div class="photo_placeholder"><span>More photos will appear here.</span></div>
-        @endif
-      </div>
-    </div>
-    <div class="timeline" id="timeline">
-      @foreach($timelines as $t)
-      <div class="tl_item">
-        <div class="tl_date">{{ $t->date_label }}</div>
-        <div class="tl_title">{{ $t->title }}</div>
-        <div style="font-size:12px;opacity:.6;margin-top:4px">{{ $t->desc }}</div>
-      </div>
-      @endforeach
-    </div>
-  </div>
-</section>
-
-<section class="gospels" id="gospels">
-  <div class="gospels_inner">
-    <div>
-      <div class="eyebrow">The Gospel</div>
-      <div class="gospels_hash reveal">{{ $setting->hashtag ?? '#THEGOSPELS26' }}</div>
-      <div class="gospels_quote reveal">One celebration.<br>Two families.<br>A new chapter.</div>
-      <p class="body gospels_text reveal">With gratitude to God and the love of their families, Chiamaka and Gospel invite you to celebrate their wedding ceremony.</p>
-    </div>
-    <div class="gospels_img_wrap reveal">
-      <div class="gospels_behind"></div>
-      @if($galleries->isNotEmpty())
-        <img src="{{ $galleries->first()->image_path }}" alt="{{ $galleries->first()->caption ?: 'Wedding photo shared by the couple' }}" loading="lazy">
-      @else
-        <div class="photo_placeholder"><span>Couple’s photos will appear here after upload.</span></div>
-      @endif
-    </div>
-  </div>
-</section>
-
 
 <section class="how" id="howWeMet">
   <div class="how_inner">
@@ -476,7 +411,7 @@
       <div>
         <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">{{ $setting->hashtag }} — {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
         <div class="footer_nav">
-          <a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#wishes">Wishes</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
+          <a href="#howWeMet">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#wishes">Wishes</a><a href="#cash-gift">Cash gift</a><a href="{{ route('admin.dashboard') }}">Admin</a>
         </div>
       </div>
     </div>
