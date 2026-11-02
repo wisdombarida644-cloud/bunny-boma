@@ -133,8 +133,9 @@ class ExampleTest extends TestCase
         $this->assertStringNotContainsString('<section class="mc"', $html);
         $this->assertStringContainsString('id="countGrid"', $html);
         $this->assertStringContainsString('class="countdown_hash"', $html);
-        $this->assertStringContainsString('THE MOMENT<br><em>it all began</em>', $html);
-        $this->assertStringContainsString('id="videoPoster"', $html);
+        $this->assertStringContainsString('<h3>Our Story</h3>', $html);
+        $this->assertStringContainsString('class="story_photo_frame"', $html);
+        $this->assertStringNotContainsString('id="videoPoster"', $html);
         $this->assertStringContainsString('href="#howWeMet"', $html);
         $this->assertStringNotContainsString('<section class="story"', $html);
         $this->assertStringNotContainsString('<section class="gospels"', $html);
@@ -448,7 +449,9 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertSee('Example Bank')
             ->assertSee('0123456789')
-            ->assertSee('Thank you for celebrating with us.');
+            ->assertSee('Thank you for celebrating with us.')
+            ->assertDontSee('id="videoPoster"', false)
+            ->assertDontSee('<iframe', false);
     }
 
     public function test_guest_wishes_require_approval_before_publication(): void

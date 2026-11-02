@@ -138,32 +138,28 @@
         <div class="eyebrow">Our story</div>
         <h2 class="story_feature_title" id="storyHeadline">Two sides,<br><i>one story.</i></h2>
       </div>
+      <div class="story_couple_pill" aria-label="Our story: {{ $partnerOneFirst }} and {{ $partnerTwoFirst }}">
+        <span class="story_couple_pill_primary">{{ $partnerOneFirst }}</span>
+        <span class="story_couple_pill_join" aria-hidden="true">&amp;</span>
+        <span class="story_couple_pill_secondary">{{ $partnerTwoFirst }}</span>
+      </div>
     </div>
 
     <div class="story_feature_grid">
-      <figure class="story_media reveal">
-        <div class="video_frame" id="videoFrame">
-          <div class="video_poster" id="videoPoster" @if($weddingData['podcastUrl']) role="button" tabindex="0" aria-label="Play the couple’s story podcast" @else aria-disabled="true" tabindex="-1" @endif>
-            @if($galleries->isNotEmpty())
-              @php($storyPoster = $galleries->get(2) ?? $galleries->first())
-              <img src="{{ $storyPoster->image_path }}" alt="{{ $storyPoster->caption ?: 'Photo shared by the couple' }}" loading="lazy">
-            @else
-              <div class="photo_placeholder"><span>The couple’s story will appear here when added.</span></div>
-            @endif
-            @if($weddingData['podcastUrl'])
-              <div class="video_play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v14l11-7-11-7z"/></svg></div>
-            @endif
-          </div>
+      <figure class="story_photo reveal">
+        <div class="story_photo_frame">
+          @if($galleries->isNotEmpty())
+            @php($storyPhoto = $galleries->get(2) ?? $galleries->first())
+            <img src="{{ $storyPhoto->image_path }}" alt="{{ $storyPhoto->caption ?: 'A photograph shared by the couple' }}" loading="lazy" decoding="async">
+          @else
+            <div class="photo_placeholder"><span>A photograph will appear here when shared.</span></div>
+          @endif
         </div>
-        <figcaption class="story_media_caption">
-          <span>{{ $setting->podcast_title ?: 'Our story, in our own words' }}</span>
-          @if(filled($setting->podcast_desc))<p>{{ $setting->podcast_desc }}</p>@endif
-        </figcaption>
+        <figcaption class="story_photo_credit">As told by {{ $partnerOneFirst }} &amp; {{ $partnerTwoFirst }}</figcaption>
       </figure>
 
-      <div class="how_text story_narrative reveal">
-        <div class="eyebrow">Our story</div>
-        <h3 style="margin-top:16px">THE MOMENT<br><em>it all began</em></h3>
+      <article class="story_narrative reveal">
+        <h3>Our Story</h3>
         @if(filled($setting->story_intro))
           <blockquote class="story_pullquote">{{ $setting->story_intro }}</blockquote>
         @endif
@@ -178,13 +174,8 @@
             <p>The couple’s story will appear here when shared.</p>
           @endif
         </div>
-        @if($weddingData['podcastUrl'])
-          <p class="story_podcast_note">The story podcast is ready to play above. If autoplay is blocked, press play in the video.</p>
-        @else
-          <p class="story_podcast_note">The couple’s podcast will appear here once it is added in wedding settings.</p>
-        @endif
-        <a class="story_keep_reading" href="{{ $timelines->isNotEmpty() ? '#storyTimeline' : '#memories' }}">Keep reading <span aria-hidden="true">→</span></a>
-      </div>
+        <a class="story_keep_reading" href="{{ $timelines->isNotEmpty() ? '#storyTimeline' : '#gallery' }}">Keep reading <span aria-hidden="true">→</span></a>
+      </article>
     </div>
 
     @if($timelines->isNotEmpty())
