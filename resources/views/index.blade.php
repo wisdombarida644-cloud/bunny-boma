@@ -708,8 +708,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let galleryAnimationFrame = 0;
   let galleryLastFrameTime = 0;
   let galleryIsVisible = !("IntersectionObserver" in window);
-  let galleryPointerOver = false;
-  let galleryFocusWithin = false;
   let galleryPointerActive = false;
   let galleryPauseUntil = 0;
   let galleryPointerId = null;
@@ -745,7 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
       galleryLoopInitialized = true;
     }
   };
-  const galleryCanMove = () => galleryGrid && !reduceMotion && galleryLoopDistance > 0 && galleryIsVisible && !galleryPointerOver && !galleryFocusWithin && !galleryPointerActive && !lightbox?.classList.contains("open") && performance.now() >= galleryPauseUntil;
+  const galleryCanMove = () => galleryGrid && !reduceMotion && galleryLoopDistance > 0 && galleryIsVisible && !galleryPointerActive && !lightbox?.classList.contains("open") && performance.now() >= galleryPauseUntil;
   const animateGallery = time => {
     galleryAnimationFrame = 0;
     if (!galleryCanMove()) {
@@ -755,7 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (galleryLastFrameTime) {
       const elapsed = Math.min(time - galleryLastFrameTime, 80);
-      galleryGrid.scrollLeft += elapsed * 0.016;
+      galleryGrid.scrollLeft += elapsed * 0.022;
       if (galleryGrid.scrollLeft >= galleryLoopDistance) galleryGrid.scrollLeft -= galleryLoopDistance;
     }
     galleryLastFrameTime = time;
@@ -787,24 +785,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }, { threshold: 0.05 });
       galleryVisibilityObserver.observe(galleryGrid);
     }
-    galleryGrid.addEventListener("pointerenter", event => {
-      if (event.pointerType !== "mouse") return;
-      galleryPointerOver = true;
-      syncGalleryMotion();
-    });
-    galleryGrid.addEventListener("pointerleave", event => {
-      if (event.pointerType !== "mouse") return;
-      galleryPointerOver = false;
-      pauseGalleryMotion(700);
-    });
-    galleryGrid.addEventListener("focusin", () => {
-      galleryFocusWithin = true;
-      syncGalleryMotion();
-    });
-    galleryGrid.addEventListener("focusout", event => {
-      if (galleryGrid.contains(event.relatedTarget)) return;
-      galleryFocusWithin = false;
-      pauseGalleryMotion(700);
+    galleryGrid.addEventListener("keydown", event => {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) pauseGalleryMotion(1600);
     });
     galleryGrid.addEventListener("pointerdown", event => {
       if (event.pointerType === "mouse" && event.button !== 0) return;

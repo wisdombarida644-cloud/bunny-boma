@@ -153,7 +153,9 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('copyText(address)', $html);
         $this->assertStringContainsString('Drag or swipe', $html);
         $this->assertStringContainsString('aria-label="Wedding photo gallery. Drag or swipe to explore."', $html);
-        $this->assertStringContainsString('galleryGrid.scrollLeft += elapsed * 0.016', $html);
+        $this->assertStringContainsString('galleryGrid.scrollLeft += elapsed * 0.022', $html);
+        $this->assertStringContainsString('galleryGrid.addEventListener("keydown"', $html);
+        $this->assertStringNotContainsString('galleryPointerOver', $html);
         $this->assertStringContainsString('galleryGrid.scrollLeft = galleryScrollStart - distance', $html);
         $this->assertStringContainsString('class="day_date_big" id="dayHeading"', $html);
         $this->assertStringContainsString('class="day_facts"', $html);
