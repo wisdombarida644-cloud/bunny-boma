@@ -56,8 +56,8 @@ class ExampleTest extends TestCase
             ->assertSee('Our memory album is taking shape.')
             ->assertSee('Chiamaka Boma Ibekwe')
             ->assertSee('Gospel Abina-Aziba MacBenneth Isikpi')
-            ->assertSee('Mr Ikechukwu Ibekwe')
-            ->assertSee('Bishop & Pastor Mrs Lemuel MacSimple Isikpi')
+            ->assertDontSee('Mr Ikechukwu Ibekwe')
+            ->assertDontSee('Bishop & Pastor Mrs Lemuel MacSimple Isikpi')
             ->assertSee('November 21, 2026')
             ->assertSee('November 7, 2026')
             ->assertSee('ATWIL EVENT CENTER')
@@ -107,17 +107,33 @@ class ExampleTest extends TestCase
             ->assertDontSee('images.unsplash.com');
     }
 
-    public function test_story_section_with_brides_heading_follows_the_hero(): void
+    public function test_compact_countdown_follows_the_hero_and_story_follows_the_countdown(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
         $heroEnd = strpos($html, '</header>');
+        $countdownStart = strpos($html, '<section class="countdown_sec countdown_strip" id="countdownSec"');
         $storyStart = strpos($html, '<section class="story" id="story">');
 
         $this->assertNotFalse($heroEnd);
+        $this->assertNotFalse($countdownStart);
         $this->assertNotFalse($storyStart);
-        $this->assertGreaterThan($heroEnd, $storyStart);
+        $this->assertGreaterThan($heroEnd, $countdownStart);
+        $this->assertGreaterThan($countdownStart, $storyStart);
+        $this->assertStringContainsString('id="countGrid"', $html);
         $this->assertStringContainsString('THE MOMENT', $html);
         $this->assertStringContainsString('<i>it all began</i>', $html);
+        $this->assertStringNotContainsString('<section class="families_bar"', $html);
+        $this->assertStringNotContainsString('Save the date', $html);
+        $this->assertStringNotContainsString('THE DAY WE', $html);
+        $this->assertStringNotContainsString('Add to calendar', $html);
+        $this->assertStringNotContainsString('Copy Link', $html);
+        $this->assertStringNotContainsString('id="shareBtn"', $html);
+        $this->assertStringNotContainsString('navigator.share', $html);
+        $this->assertStringNotContainsString('const copyLinkButton', $html);
+        $this->assertStringNotContainsString('const shareButton', $html);
+        $this->assertStringNotContainsString('const calendarButton', $html);
+        $this->assertStringContainsString('id="copyAddrBtn"', $html);
+        $this->assertStringContainsString('copyText(address)', $html);
     }
 
     public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void

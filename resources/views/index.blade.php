@@ -116,8 +116,19 @@
       </div>
     </div>
   </div>
-  <a class="hero_scroll" href="#story"><span>Scroll to discover</span></a>
+  <a class="hero_scroll" href="#countdownSec"><span>Scroll to discover</span></a>
 </header>
+
+<section class="countdown_sec countdown_strip" id="countdownSec" aria-label="Wedding countdown">
+  <div class="countdown_strip_inner">
+    <div class="count_grid reveal" id="countGrid">
+      <div class="count_item"><span class="count_num" id="cDays">—</span><span class="count_lab">Days</span></div>
+      <div class="count_item"><span class="count_num" id="cHours">—</span><span class="count_lab">Hours</span></div>
+      <div class="count_item"><span class="count_num" id="cMins">—</span><span class="count_lab">Minutes</span></div>
+      <div class="count_item"><span class="count_num" id="cSecs">—</span><span class="count_lab">Seconds</span></div>
+    </div>
+  </div>
+</section>
 
 <section class="story" id="story">
   <div class="story_inner">
@@ -132,7 +143,7 @@
             <p>{{ $p }}</p>
           @endforeach
         @else
-          <p>Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi invite you to celebrate their wedding with their families on Saturday, November 21, 2026.</p>
+          <p>{{ $partnerOneFirst }} and {{ $partnerTwoFirst }} invite you to celebrate their wedding with family and friends.</p>
         @endif
       </div>
     </div>
@@ -160,52 +171,6 @@
         <div style="font-size:12px;opacity:.6;margin-top:4px">{{ $t->desc }}</div>
       </div>
       @endforeach
-    </div>
-  </div>
-</section>
-
-@if(filled($setting->family_one) || filled($setting->family_two))
-<section class="families_bar" aria-label="Families">
-  <div class="families_inner">
-    <div class="eyebrow">Together with their families</div>
-    <div class="families_grid">
-      @if(filled($setting->family_one))<p>{{ $setting->family_one }}</p>@endif
-      @if(filled($setting->family_two))<p>{{ $setting->family_two }}</p>@endif
-    </div>
-  </div>
-</section>
-@endif
-
-<section class="countdown_sec" id="countdownSec">
-  <div class="count_wrap">
-    <div>
-      <div class="eyebrow">Save the date</div>
-      <h2 class="count_big reveal"><span>THE DAY WE</span><span>SAY <em>I DO</em></span></h2>
-      <p class="body count_desc reveal">Two families, one celebration. Surrounded by the people who have shaped us, we will make promises that last a lifetime.</p>
-      <div class="count_note reveal">Until we begin this beautiful chapter</div>
-      <div class="count_grid reveal" id="countGrid">
-        <div class="count_item"><span class="count_num" id="cDays">—</span><span class="count_lab">Days</span></div>
-        <div class="count_item"><span class="count_num" id="cHours">—</span><span class="count_lab">Hours</span></div>
-        <div class="count_item"><span class="count_num" id="cMins">—</span><span class="count_lab">Minutes</span></div>
-        <div class="count_item"><span class="count_num" id="cSecs">—</span><span class="count_lab">Seconds</span></div>
-      </div>
-      <button class="add_cal" id="addCalBtn">Add to calendar</button>
-    </div>
-    <div class="reveal" style="border-left:1px solid var(--line);padding-left:48px">
-      <div style="font-family:var(--serif);font-size:88px;line-height:.9;letter-spacing:-.04em">
-        <div>{{ \Carbon\Carbon::parse($setting->wedding_date)->format('d') }}</div>
-        <div style="opacity:.3">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('m') }}</div>
-        <div style="opacity:.6">{{ \Carbon\Carbon::parse($setting->wedding_date)->format('Y') }}</div>
-      </div>
-      <div style="margin-top:24px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;line-height:1.8">
-        {{ \Carbon\Carbon::parse($setting->wedding_date)->format('l') }}<br>
-        {{ $setting->ceremony_time ?? '11:00 AM' }} prompt<br>
-        {{ $setting->venue_name ?? 'ATWIL EVENT CENTER' }} • {{ $setting->city ?? 'Port Harcourt, Rivers State' }}
-      </div>
-      <div style="margin-top:32px;display:flex;gap:12px">
-        <button class="btn_line" id="copyLinkBtn" style="margin-top:0">Copy Link</button>
-        <button class="btn_line" id="shareBtn" style="margin-top:0">Share</button>
-      </div>
     </div>
   </div>
 </section>
@@ -897,7 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Copy, share, calendar download, and venue address helpers.
+  // Clipboard helpers shared by account and venue address actions.
   const copyText = async text => {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
@@ -920,62 +885,6 @@ document.addEventListener("DOMContentLoaded", () => {
     button.textContent = label;
     window.setTimeout(() => { button.textContent = original; }, 2000);
   };
-  const copyLinkButton = document.getElementById("copyLinkBtn");
-  copyLinkButton?.addEventListener("click", async () => {
-    try {
-      await copyText(window.location.href);
-      showTemporaryLabel(copyLinkButton, "Copied!");
-    } catch {
-      showTemporaryLabel(copyLinkButton, "Copy unavailable");
-    }
-  });
-  const shareButton = document.getElementById("shareBtn");
-  shareButton?.addEventListener("click", async () => {
-    const shareData = {
-      title: `${weddingData.partnerOne} & ${weddingData.partnerTwo} | ${weddingData.hashtag}`,
-      text: `Join us on ${weddingData.date}`,
-      url: window.location.href,
-    };
-    try {
-      if (navigator.share) await navigator.share(shareData);
-      else {
-        await copyText(shareData.url);
-        showTemporaryLabel(shareButton, "Link copied");
-      }
-    } catch {
-      showTemporaryLabel(shareButton, "Share unavailable");
-    }
-  });
-  const calendarButton = document.getElementById("addCalBtn");
-  calendarButton?.addEventListener("click", () => {
-    const start = new Date(weddingData.dateTime);
-    if (!Number.isFinite(start.getTime())) return;
-    const end = new Date(start.getTime() + 6 * 60 * 60 * 1000);
-    const formatIcsDate = date => date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
-    const escapeIcs = value => String(value || "").replace(/\\/g, "\\\\").replace(/\r?\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//With the Gospels//Wedding//EN",
-      "CALSCALE:GREGORIAN",
-      "BEGIN:VEVENT",
-      `DTSTAMP:${formatIcsDate(new Date())}`,
-      `DTSTART:${formatIcsDate(start)}`,
-      `DTEND:${formatIcsDate(end)}`,
-      `SUMMARY:${escapeIcs(`${weddingData.partnerOne} & ${weddingData.partnerTwo} Wedding`)}`,
-      `LOCATION:${escapeIcs([weddingData.venue, weddingData.address, weddingData.city].filter(Boolean).join(", "))}`,
-      `DESCRIPTION:${escapeIcs(weddingData.hashtag)}`,
-      "END:VEVENT",
-      "END:VCALENDAR",
-      "",
-    ].join("\r\n");
-    const objectUrl = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-    const link = document.createElement("a");
-    link.href = objectUrl;
-    link.download = "wedding.ics";
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-  });
   const addressButton = document.getElementById("copyAddrBtn");
   addressButton?.addEventListener("click", async () => {
     const address = [weddingData.venue, weddingData.address, weddingData.city].filter(Boolean).join(", ");
