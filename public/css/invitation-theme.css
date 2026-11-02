@@ -292,33 +292,44 @@ body{
 :root[data-theme="dark"] .story_timeline_item{border-right-color:var(--line)}
 :root[data-theme="dark"] .story_timeline_item p{color:rgba(241,235,221,.72)}
 
-.gallery_mason{padding:clamp(74px,8.5vw,122px) 0;background:var(--ivory);overflow:hidden}
-.gallery_head{max-width:1380px;padding:0 clamp(24px,5.2vw,76px);align-items:flex-end}
-.gallery_head .h2{max-width:10em;font-size:clamp(42px,6.3vw,82px);font-weight:400;line-height:.94;letter-spacing:-.04em}
-.gallery_head .h2 i{color:var(--deep2);font-family:var(--serif2);font-weight:400}
+.gallery_mason{padding:0 0 86px;background:#FBFAFD;overflow:hidden}
+.gallery_head{max-width:1380px;margin:0 auto;padding:0 clamp(24px,5.2vw,76px);align-items:flex-end}
+.gallery_head .eyebrow{color:#7A5CBF}
+.gallery_head .eyebrow:before{background:#7A5CBF}
+.gallery_head .h2{max-width:10em;font-size:clamp(42px,8.2vw,112px);font-weight:400;line-height:.94;letter-spacing:-.04em}
+.gallery_head .h2 i{color:#7A5CBF;font-family:var(--serif2);font-weight:400}
 .gallery_hint{display:flex;align-items:center;gap:18px;padding-bottom:8px;color:var(--deep2);font-size:9px;letter-spacing:.15em;text-transform:uppercase}
-.gallery_hint span:last-child{color:var(--champ);font-size:15px;letter-spacing:0}
-.gallery_grid{display:flex;gap:16px;width:100%;max-width:none;margin:46px 0 0;padding:0 clamp(24px,5.2vw,76px) 12px;columns:unset!important;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:clamp(24px,5.2vw,76px);overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:rgba(43,62,50,.3) transparent}
-.gallery_item{position:relative;flex:0 0 clamp(270px,30vw,410px);height:clamp(360px,39vw,520px);margin:0;break-inside:unset;overflow:hidden;background:var(--beige);scroll-snap-align:start;cursor:zoom-in}
-.gallery_item img{width:100%;height:100%;object-fit:cover;transition:transform .85s var(--ease),filter .6s;filter:saturate(.91)}
+.gallery_hint span:last-child{color:#7A5CBF;font-size:15px;letter-spacing:0}
+.gallery_grid{display:flex;align-items:flex-start;gap:16px;width:100%;max-width:none;margin:clamp(64px,5.4vw,74px) 0 0;padding:0 clamp(24px,5.2vw,76px) 12px;columns:unset!important;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:clamp(24px,5.2vw,76px);overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:rgba(43,62,50,.3) transparent;scroll-behavior:auto;touch-action:pan-x pan-y;cursor:grab}
+.gallery_grid.is-looping{scroll-snap-type:none}
+.gallery_grid.is-dragging,.gallery_grid.is-dragging .gallery_item{cursor:grabbing;user-select:none}
+.gallery_item{position:relative;flex:0 0 clamp(224px,18.2vw,268px);height:clamp(390px,36vw,500px);margin:0;break-inside:unset;overflow:hidden;background:var(--beige);scroll-snap-align:start;cursor:grab}
+.gallery_item--staggered{margin-top:48px}
+.gallery_item img{width:100%;height:100%;object-fit:cover;transition:transform .85s var(--ease),filter .6s;filter:saturate(.91);-webkit-user-drag:none}
 .gallery_item:hover img{transform:scale(1.045);filter:saturate(1)}
 .gallery_item_meta{opacity:0;padding:18px 20px;background:linear-gradient(0deg,rgba(13,32,24,.78),transparent);transition:opacity .3s ease}
 .gallery_item:hover .gallery_item_meta,.gallery_item:focus-within .gallery_item_meta{opacity:1}
 .gallery_item_meta span{font-size:9px;letter-spacing:.16em}
-.gallery_empty{max-width:1380px;padding-inline:clamp(24px,5.2vw,76px);font-size:19px}
-.gallery_grid:focus-visible{outline:2px solid var(--champ);outline-offset:4px}
+.gallery_empty{max-width:1380px;margin:0 auto;padding-inline:clamp(24px,5.2vw,76px);font-size:19px}
+.gallery_grid:focus-visible{outline:2px solid #7A5CBF;outline-offset:4px}
 :root[data-theme="dark"] .gallery_mason{background:#202823}
+:root[data-theme="dark"] .gallery_head .eyebrow,
+:root[data-theme="dark"] .gallery_head .h2 i{color:#C2A5F0}
+:root[data-theme="dark"] .gallery_head .eyebrow:before{background:#C2A5F0}
+:root[data-theme="dark"] .gallery_hint{color:var(--taupe)}
+:root[data-theme="dark"] .gallery_hint span:last-child{color:#C2A5F0}
 
-.day_section.wedding{padding:clamp(78px,9vw,132px) 0;background:var(--warm);border-top:1px solid var(--line2)}
-.day_inner{max-width:1380px;margin:0 auto;padding:0 clamp(24px,5.2vw,76px);display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:clamp(38px,7vw,102px);align-items:start}
-.day_display{padding-top:8px}
-.day_display>.eyebrow{color:var(--deep2)}
-.day_date_big{margin-top:30px;color:var(--deep);font-family:var(--serif);font-weight:400;line-height:.8;letter-spacing:-.075em}
-.day_date_big span{display:block;font-size:clamp(74px,9.5vw,138px);white-space:nowrap}
-.day_date_big span i{color:var(--champ);font-style:normal}
-.day_date_big em{display:block;margin-top:18px;color:var(--deep2);font-family:var(--sans);font-size:clamp(18px,2.3vw,30px);font-style:normal;font-weight:400;letter-spacing:.24em}
-.day_order{margin-top:38px}
-.day_panel{min-width:0;padding:clamp(26px,4vw,52px);background:rgba(255,255,255,.58);border:1px solid rgba(43,62,50,.12);box-shadow:0 16px 44px rgba(43,62,50,.045)}
+.day_section.wedding{padding:0;background:#FBFAFD;border-top:1px solid var(--line2)}
+.day_inner{max-width:1380px;margin:0 auto;padding:0 clamp(24px,5.2vw,76px);display:grid;grid-template-columns:minmax(0,1.24fr) minmax(0,1fr);gap:0;align-items:stretch}
+.day_display{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:32px 0}
+.day_display>.eyebrow{color:#7A5CBF}
+.day_display>.eyebrow:before{background:#7A5CBF}
+.day_date_big{margin-top:24px;color:var(--deep);font-family:var(--serif);font-weight:400;line-height:.8;letter-spacing:-.08em}
+.day_date_big span,.day_date_big em{display:block;font-size:clamp(105px,16vw,220px);line-height:.78;letter-spacing:-.08em;white-space:nowrap}
+.day_date_big span i{color:#7A5CBF;font-style:normal}
+.day_date_big em{margin-top:6px;color:#7A5CBF;font-family:var(--serif);font-style:normal;font-weight:400}
+.day_order{margin-top:28px}
+.day_panel{min-width:0;padding:clamp(26px,3vw,40px);background:rgba(255,255,255,.68);border:1px solid rgba(43,62,50,.12);box-shadow:0 16px 44px rgba(43,62,50,.045)}
 :root[data-theme="dark"] .day_panel{background:rgba(255,255,255,.035);border-color:var(--line);box-shadow:none}
 .day_facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .day_fact{display:grid;grid-template-columns:minmax(70px,.34fr) minmax(0,1fr);gap:20px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
@@ -344,7 +355,10 @@ body{
 .day_dress .swatch_label{font-size:8px;letter-spacing:.12em}
 :root[data-theme="dark"] .day_section.wedding{background:#202823}
 :root[data-theme="dark"] .day_date_big{color:var(--beige)}
-:root[data-theme="dark"] .day_date_big em{color:var(--taupe)}
+:root[data-theme="dark"] .day_date_big em,
+:root[data-theme="dark"] .day_date_big span i,
+:root[data-theme="dark"] .day_display>.eyebrow{color:#C2A5F0}
+:root[data-theme="dark"] .day_display>.eyebrow:before{background:#C2A5F0}
 :root[data-theme="dark"] .day_section .day_fact strong,
 :root[data-theme="dark"] .day_section .day_venue h3,
 :root[data-theme="dark"] .day_section .day_address,
@@ -441,9 +455,10 @@ body{
 
 @media(max-width:900px){
   .story_feature_grid{gap:36px}
-  .day_inner{grid-template-columns:minmax(190px,.68fr) minmax(0,1.32fr);gap:34px}
-  .day_panel{padding:26px}
-  .day_date_big span{font-size:clamp(68px,10vw,96px)}
+  .day_inner{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:0}
+  .day_display{padding:22px 0}
+  .day_panel{padding:24px}
+  .day_date_big span,.day_date_big em{font-size:clamp(74px,11.5vw,104px)}
   .wishes_section .gb_inner{gap:32px}
   .wishes_section .gb_list{grid-template-columns:1fr}
 }
@@ -482,14 +497,15 @@ body{
   .gallery_hint span:last-child{font-size:12px}
   .gallery_grid{gap:12px;margin-top:32px;padding:0 24px 10px;scroll-padding-inline:24px}
   .gallery_item{flex-basis:78vw;height:clamp(350px,112vw,470px)}
+  .gallery_item--staggered{margin-top:0}
   .gallery_item_meta{opacity:1}
   .gallery_item_meta span{font-size:8px}
   .day_section.wedding{padding:76px 0}
   .day_inner{grid-template-columns:1fr;gap:34px;padding:0 24px}
-  .day_display{padding-top:0}
+  .day_display{min-height:0;padding:0}
   .day_date_big{margin-top:22px}
-  .day_date_big span{font-size:clamp(74px,20vw,112px)}
-  .day_date_big em{margin-top:12px;font-size:20px}
+  .day_date_big span,.day_date_big em{font-size:clamp(74px,22vw,104px)}
+  .day_date_big em{margin-top:6px}
   .day_order{margin-top:22px}
   .day_panel{padding:24px 20px}
   .day_fact{grid-template-columns:68px minmax(0,1fr);gap:12px;padding:13px 0}

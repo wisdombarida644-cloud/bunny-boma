@@ -195,12 +195,12 @@
 <section class="gallery_mason" id="gallery" aria-labelledby="galleryHeading">
   <div class="gallery_head">
     <div><div class="eyebrow">Gallery</div><h2 class="h2" id="galleryHeading" style="margin-top:12px">Moments <i>in bloom</i></h2></div>
-    <div class="gallery_hint"><span>Scroll or swipe</span><span aria-hidden="true">← &nbsp; →</span></div>
+    <div class="gallery_hint"><span>Drag or swipe</span><span aria-hidden="true">← &nbsp; →</span></div>
   </div>
   @if($galleries->isNotEmpty())
-    <div class="gallery_grid" id="galleryGrid">
+    <div class="gallery_grid" id="galleryGrid" role="region" aria-label="Wedding photo gallery. Drag or swipe to explore." tabindex="0">
       @foreach($galleries as $index => $g)
-      <div class="gallery_item" data-i="{{ $index }}">
+      <div class="gallery_item{{ $index % 3 === 0 ? ' gallery_item--staggered' : '' }}" data-i="{{ $index }}">
         <img src="{{ $g->image_path }}" loading="lazy" alt="{{ $g->caption }}">
         <div class="gallery_item_meta"><span>{{ $g->category }} — {{ $g->caption }}</span></div>
       </div>
@@ -702,6 +702,161 @@ document.addEventListener("DOMContentLoaded", () => {
   const lightbox = document.getElementById("lightbox");
   const lightboxImage = document.getElementById("lbImg");
   const lightboxCounter = document.getElementById("lbCounter");
+  const galleryGrid = document.getElementById("galleryGrid");
+  const originalGalleryItems = galleryGrid ? Array.from(galleryGrid.querySelectorAll(".gallery_item")) : [];
+  let galleryLoopDistance = 0;
+  let galleryAnimationFrame = 0;
+  let galleryLastFrameTime = 0;
+  let galleryIsVisible = !("IntersectionObserver" in window);
+  let galleryPointerOver = false;
+  let galleryFocusWithin = false;
+  let galleryPointerActive = false;
+  let galleryPauseUntil = 0;
+  let galleryPointerId = null;
+  let galleryPointerStartX = 0;
+  let galleryScrollStart = 0;
+  let galleryDidDrag = false;
+  let galleryIgnoreClickUntil = 0;
+  let galleryResumeTimer = 0;
+  let galleryLoopInitialized = false;
+  const resetGalleryLoop = () => {
+    if (!galleryGrid || reduceMotion || originalGalleryItems.length < 2) return;
+    galleryGrid.querySelectorAll("[data-gallery-clone]").forEach(clone => clone.remove());
+    const gridStyle = window.getComputedStyle(galleryGrid);
+    const gap = parseFloat(gridStyle.columnGap || gridStyle.gap) || 0;
+    const itemsWidth = originalGalleryItems.reduce((width, item) => width + item.getBoundingClientRect().width, 0);
+    if (!itemsWidth) return;
+    galleryLoopDistance = itemsWidth + gap * originalGalleryItems.length;
+    const cloneSets = Math.max(1, Math.ceil((galleryGrid.clientWidth + galleryLoopDistance) / galleryLoopDistance));
+    for (let copy = 0; copy < cloneSets; copy += 1) {
+      originalGalleryItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.dataset.galleryClone = "true";
+        clone.setAttribute("aria-hidden", "true");
+        galleryGrid.appendChild(clone);
+      });
+    }
+    galleryGrid.classList.add("is-looping");
+    if (!galleryLoopInitialized) {
+      if (window.innerWidth > 760) {
+        const leftPadding = parseFloat(gridStyle.paddingLeft) || 0;
+        galleryGrid.scrollLeft = leftPadding + originalGalleryItems[0].getBoundingClientRect().width * 0.62;
+      }
+      galleryLoopInitialized = true;
+    }
+  };
+  const galleryCanMove = () => galleryGrid && !reduceMotion && galleryLoopDistance > 0 && galleryIsVisible && !galleryPointerOver && !galleryFocusWithin && !galleryPointerActive && !lightbox?.classList.contains("open") && performance.now() >= galleryPauseUntil;
+  const animateGallery = time => {
+    galleryAnimationFrame = 0;
+    if (!galleryCanMove()) {
+      galleryLastFrameTime = 0;
+      galleryGrid?.classList.remove("is-auto-moving");
+      return;
+    }
+    if (galleryLastFrameTime) {
+      const elapsed = Math.min(time - galleryLastFrameTime, 80);
+      galleryGrid.scrollLeft += elapsed * 0.016;
+      if (galleryGrid.scrollLeft >= galleryLoopDistance) galleryGrid.scrollLeft -= galleryLoopDistance;
+    }
+    galleryLastFrameTime = time;
+    galleryGrid.classList.add("is-auto-moving");
+    galleryAnimationFrame = requestAnimationFrame(animateGallery);
+  };
+  const syncGalleryMotion = () => {
+    if (galleryCanMove()) {
+      if (!galleryAnimationFrame) galleryAnimationFrame = requestAnimationFrame(animateGallery);
+      return;
+    }
+    if (galleryAnimationFrame) cancelAnimationFrame(galleryAnimationFrame);
+    galleryAnimationFrame = 0;
+    galleryLastFrameTime = 0;
+    galleryGrid?.classList.remove("is-auto-moving");
+  };
+  const pauseGalleryMotion = duration => {
+    galleryPauseUntil = performance.now() + duration;
+    window.clearTimeout(galleryResumeTimer);
+    galleryResumeTimer = window.setTimeout(syncGalleryMotion, duration + 40);
+    syncGalleryMotion();
+  };
+  resetGalleryLoop();
+  if (galleryGrid) {
+    if ("IntersectionObserver" in window) {
+      const galleryVisibilityObserver = new IntersectionObserver(entries => {
+        galleryIsVisible = entries.some(entry => entry.isIntersecting);
+        syncGalleryMotion();
+      }, { threshold: 0.05 });
+      galleryVisibilityObserver.observe(galleryGrid);
+    }
+    galleryGrid.addEventListener("pointerenter", event => {
+      if (event.pointerType !== "mouse") return;
+      galleryPointerOver = true;
+      syncGalleryMotion();
+    });
+    galleryGrid.addEventListener("pointerleave", event => {
+      if (event.pointerType !== "mouse") return;
+      galleryPointerOver = false;
+      pauseGalleryMotion(700);
+    });
+    galleryGrid.addEventListener("focusin", () => {
+      galleryFocusWithin = true;
+      syncGalleryMotion();
+    });
+    galleryGrid.addEventListener("focusout", event => {
+      if (galleryGrid.contains(event.relatedTarget)) return;
+      galleryFocusWithin = false;
+      pauseGalleryMotion(700);
+    });
+    galleryGrid.addEventListener("pointerdown", event => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      galleryPointerActive = true;
+      pauseGalleryMotion(1600);
+      if (event.pointerType === "mouse") {
+        galleryPointerId = event.pointerId;
+        galleryPointerStartX = event.clientX;
+        galleryScrollStart = galleryGrid.scrollLeft;
+        galleryDidDrag = false;
+        galleryGrid.setPointerCapture(event.pointerId);
+      }
+      syncGalleryMotion();
+    });
+    galleryGrid.addEventListener("pointermove", event => {
+      if (galleryPointerId !== event.pointerId) return;
+      const distance = event.clientX - galleryPointerStartX;
+      if (!galleryDidDrag && Math.abs(distance) > 5) {
+        galleryDidDrag = true;
+        galleryGrid.classList.add("is-dragging");
+      }
+      if (galleryDidDrag) {
+        galleryGrid.scrollLeft = galleryScrollStart - distance;
+        event.preventDefault();
+      }
+    });
+    const finishGalleryPointer = event => {
+      if (galleryPointerId !== null && galleryPointerId === event.pointerId) {
+        if (galleryDidDrag) galleryIgnoreClickUntil = performance.now() + 350;
+        galleryGrid.classList.remove("is-dragging");
+        galleryPointerId = null;
+        galleryDidDrag = false;
+      }
+      galleryPointerActive = false;
+      pauseGalleryMotion(1600);
+    };
+    galleryGrid.addEventListener("pointerup", finishGalleryPointer);
+    galleryGrid.addEventListener("pointercancel", finishGalleryPointer);
+    galleryGrid.addEventListener("wheel", () => pauseGalleryMotion(1600), { passive: true });
+    let galleryResizeTimer = 0;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(galleryResizeTimer);
+      galleryResizeTimer = window.setTimeout(() => {
+        const previousDistance = galleryLoopDistance;
+        const previousScroll = galleryGrid.scrollLeft;
+        resetGalleryLoop();
+        if (galleryLoopDistance && previousDistance) galleryGrid.scrollLeft = previousScroll % galleryLoopDistance;
+        syncGalleryMotion();
+      }, 120);
+    }, { passive: true });
+    syncGalleryMotion();
+  }
   let galleryIndex = 0;
   const renderGalleryImage = () => {
     const item = gallery[galleryIndex];
@@ -716,10 +871,12 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGalleryImage();
     lightbox.classList.add("open");
     document.body.style.overflow = "hidden";
+    syncGalleryMotion();
   };
   const closeLightbox = () => {
     lightbox.classList.remove("open");
     document.body.style.overflow = "";
+    pauseGalleryMotion(700);
   };
   const moveLightbox = direction => {
     if (!gallery.length) return;
@@ -727,7 +884,10 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGalleryImage();
   };
   document.querySelectorAll(".gallery_item").forEach(item => {
-    item.addEventListener("click", () => openLightbox(Number(item.dataset.i)));
+    item.addEventListener("click", () => {
+      if (performance.now() < galleryIgnoreClickUntil) return;
+      openLightbox(Number(item.dataset.i));
+    });
   });
   document.getElementById("lbClose")?.addEventListener("click", closeLightbox);
   document.getElementById("lbPrev")?.addEventListener("click", () => moveLightbox(-1));

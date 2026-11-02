@@ -151,6 +151,13 @@ class ExampleTest extends TestCase
         $this->assertStringNotContainsString('const calendarButton', $html);
         $this->assertStringContainsString('id="copyAddrBtn"', $html);
         $this->assertStringContainsString('copyText(address)', $html);
+        $this->assertStringContainsString('Drag or swipe', $html);
+        $this->assertStringContainsString('aria-label="Wedding photo gallery. Drag or swipe to explore."', $html);
+        $this->assertStringContainsString('galleryGrid.scrollLeft += elapsed * 0.016', $html);
+        $this->assertStringContainsString('galleryGrid.scrollLeft = galleryScrollStart - distance', $html);
+        $this->assertStringContainsString('class="day_date_big" id="dayHeading"', $html);
+        $this->assertStringContainsString('class="day_facts"', $html);
+        $this->assertStringContainsString('class="day_schedule"', $html);
     }
 
     public function test_uploaded_gallery_photos_are_used_in_homepage_hero(): void
