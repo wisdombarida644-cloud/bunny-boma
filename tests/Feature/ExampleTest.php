@@ -93,9 +93,18 @@ class ExampleTest extends TestCase
             ->assertSee('aria-selected="false"', false)
             ->assertSee('aria-label="Chiamaka’s Account"', false)
             ->assertSee('aria-label="Benny’s Account"', false)
-            ->assertSee('My soul knew that man from the very first day')
-            ->assertSee('On June 29, 2024, a few minutes after 2 a.m.')
-            ->assertSee('more than 3,000 young people')
+            ->assertSee('Boy oh Boy!')
+            ->assertSee('I’m wondering how to squeeze our story into a short article and it’s not even easy.')
+            ->assertSee('22nd March 2024, I had just moved from Bayelsa state')
+            ->assertSee('June 29th 2024, few minutes past 2 AM whilst on a video call')
+            ->assertSee('more than 3,000 youths present')
+            ->assertSee('It was a Sunny Sunday morning 😂')
+            ->assertSee('I had previously felt the nudge to actively participate in Youth Fellowship before then')
+            ->assertSee('My soul knew that man from the very first day we had a conversation.')
+            ->assertSee('I look forward to doing life, purpose and fulfilling our Kingdom assignments alongside you.')
+            ->assertSee('eases my hearts even during the difficult moments')
+            ->assertSee('A lifetime of your rich love is causing my heart excitement in anticipation for our journey to officially begin!')
+            ->assertDontSee('In March 2024, Benny moved from Bayelsa')
             ->assertSee('This is love ohh, believe me, it is!');
     }
 
