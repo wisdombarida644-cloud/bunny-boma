@@ -132,18 +132,8 @@
 @php
   $storySides = is_array($setting->story_sides) ? $setting->story_sides : [];
   $hasStorySides = isset($storySides['chiamaka']['paragraphs'], $storySides['benny']['paragraphs']);
-  $storyPhotoChiamaka = $galleries->first(function ($photo) {
-    $details = strtolower(($photo->category ?? '').' '.($photo->caption ?? ''));
-    return str_contains($details, 'chiamaka') || str_contains($details, 'bride');
-  }) ?? $galleries->get(2) ?? $galleries->first();
-  $storyPhotoBenny = $galleries->first(function ($photo) use ($storyPhotoChiamaka) {
-    $details = strtolower(($photo->category ?? '').' '.($photo->caption ?? ''));
-    $matchesBenny = str_contains($details, 'benny') || str_contains($details, 'groom');
-    return $matchesBenny && (!$storyPhotoChiamaka || $photo->image_path !== $storyPhotoChiamaka->image_path);
-  }) ?? $galleries->get(1) ?? $galleries->first();
-  if ($storyPhotoChiamaka && $storyPhotoBenny && $storyPhotoBenny->image_path === $storyPhotoChiamaka->image_path) {
-    $storyPhotoBenny = $galleries->first(fn ($photo) => $photo->image_path !== $storyPhotoChiamaka->image_path) ?? $storyPhotoChiamaka;
-  }
+  $storyPhotoChiamaka = asset('images/story-chiamaka.jpg');
+  $storyPhotoBenny = asset('images/story-benny.jpg');
 @endphp
 <section class="how story_feature" id="howWeMet" aria-labelledby="storyHeadline">
   <div class="story_feature_inner">
@@ -181,21 +171,17 @@
     <div class="story_feature_grid">
       <figure class="story_photo reveal">
         <div class="story_photo_frame">
-          @if($storyPhotoChiamaka)
-            <img
-              data-story-photo
-              src="{{ $storyPhotoChiamaka->image_path }}"
-              alt="{{ $storyPhotoChiamaka->caption ?: 'A photograph shared by Chiamaka' }}"
-              data-story-photo-chiamaka-src="{{ $storyPhotoChiamaka->image_path }}"
-              data-story-photo-chiamaka-alt="{{ $storyPhotoChiamaka->caption ?: 'A photograph shared by Chiamaka' }}"
-              data-story-photo-benny-src="{{ $storyPhotoBenny?->image_path ?? $storyPhotoChiamaka->image_path }}"
-              data-story-photo-benny-alt="{{ $storyPhotoBenny?->caption ?: 'A photograph shared by Benny' }}"
-              loading="lazy"
-              decoding="async"
-            >
-          @else
-            <div class="photo_placeholder"><span>A photograph will appear here when shared.</span></div>
-          @endif
+          <img
+            data-story-photo
+            src="{{ $storyPhotoChiamaka }}"
+            alt="Portrait of Chiamaka"
+            data-story-photo-chiamaka-src="{{ $storyPhotoChiamaka }}"
+            data-story-photo-chiamaka-alt="Portrait of Chiamaka"
+            data-story-photo-benny-src="{{ $storyPhotoBenny }}"
+            data-story-photo-benny-alt="Portrait of Benny"
+            loading="lazy"
+            decoding="async"
+          >
         </div>
         <figcaption class="story_photo_credit" data-story-photo-credit aria-live="polite">@if($hasStorySides)As told by Chiamaka@else As told by {{ $partnerOneFirst }} &amp; {{ $partnerTwoFirst }}@endif</figcaption>
       </figure>

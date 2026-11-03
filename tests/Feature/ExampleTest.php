@@ -80,14 +80,11 @@ class ExampleTest extends TestCase
     {
         $this->seed(WeddingDatabaseSeeder::class);
 
-        foreach ([
-            ['image_path' => '/media/gallery/shared-01.jpg', 'category' => 'Pre-Wedding', 'caption' => 'Shared portrait one', 'sort_order' => 1],
-            ['image_path' => '/media/gallery/benny-portrait.jpg', 'category' => 'Benny', 'caption' => 'Benny portrait', 'sort_order' => 2],
-            ['image_path' => '/media/gallery/shared-03.jpg', 'category' => 'Pre-Wedding', 'caption' => 'Shared portrait three', 'sort_order' => 3],
-            ['image_path' => '/media/gallery/chiamaka-portrait.jpg', 'category' => 'Chiamaka', 'caption' => 'Chiamaka portrait', 'sort_order' => 4],
-        ] as $photo) {
-            Gallery::create($photo + ['is_active' => true]);
-        }
+        $this->assertFileExists(public_path('images/story-chiamaka.jpg'));
+        $this->assertFileExists(public_path('images/story-benny.jpg'));
+        $themeCss = file_get_contents(public_path('css/invitation-theme.css'));
+        $this->assertIsString($themeCss);
+        $this->assertStringContainsString('.story_photo_credit{grid-area:photo;z-index:2;justify-self:start;align-self:end;', $themeCss);
 
         $this->get('/')
             ->assertOk()
@@ -100,14 +97,18 @@ class ExampleTest extends TestCase
             ->assertSee('data-story-panel="benny"', false)
             ->assertSee('aria-selected="true"', false)
             ->assertSee('aria-selected="false"', false)
-            ->assertSee('data-story-photo-chiamaka-src="/media/gallery/chiamaka-portrait.jpg"', false)
-            ->assertSee('data-story-photo-benny-src="/media/gallery/benny-portrait.jpg"', false)
+            ->assertSee('data-story-photo-chiamaka-src="'.asset('images/story-chiamaka.jpg').'"', false)
+            ->assertSee('data-story-photo-benny-src="'.asset('images/story-benny.jpg').'"', false)
+            ->assertSee('data-story-photo-chiamaka-alt="Portrait of Chiamaka"', false)
+            ->assertSee('data-story-photo-benny-alt="Portrait of Benny"', false)
             ->assertSee('data-story-photo-credit aria-live="polite">As told by Chiamaka', false)
             ->assertSee('aria-controls="storyCopy-chiamaka"', false)
             ->assertSee('data-story-toggle aria-expanded="false"', false)
             ->assertSee('class="story_keep_reading" type="button"', false)
             ->assertDontSee('href="#storyTimeline"', false)
             ->assertSee('copy.classList.toggle("is-expanded", isExpanding)', false)
+            ->assertSee('storyPhoto.src = imagePath', false)
+            ->assertSee('storyPhotoCredit.textContent = `As told by ${name}`', false)
             ->assertSee('aria-label="Chiamaka’s Account"', false)
             ->assertSee('aria-label="Benny’s Account"', false)
             ->assertSee('Boy oh Boy!')
