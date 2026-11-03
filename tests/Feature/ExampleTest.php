@@ -152,6 +152,12 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('A Youth Sundays at RCCG', $html);
         $this->assertStringContainsString('class="moments_nav"', $html);
         $this->assertStringNotContainsString('moments_bg', $html);
+
+        $layoutStyles = file_get_contents(resource_path('views/layouts/app.blade.php'));
+        $this->assertIsString($layoutStyles);
+        $this->assertStringContainsString('scroll-margin-top:88px;', $layoutStyles);
+        $this->assertStringContainsString('.moments_stage>img{display:block;width:100%;height:100%;object-fit:contain;', $layoutStyles);
+        $this->assertStringContainsString('.moments_stage>img{object-fit:cover}', $layoutStyles);
     }
 
     public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void
