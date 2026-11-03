@@ -8,6 +8,7 @@ use App\Models\Mc;
 use App\Models\Moment;
 use App\Models\User;
 use Database\Seeders\DemoPhotoSeeder;
+use Database\Seeders\WeddingDatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +73,20 @@ class ExampleTest extends TestCase
             ->assertDontSee('Gift Registry')
             ->assertDontSee('dQw4w9WgXcQ')
             ->assertDontSee('images.unsplash.com');
+    }
+
+    public function test_seeded_homepage_story_uses_the_couples_short_article(): void
+    {
+        $this->seed(WeddingDatabaseSeeder::class);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('A friendship rooted in faith, carried by laughter, and guided by God.')
+            ->assertSee('In March 2024, Benny moved from Bayelsa to Rivers State')
+            ->assertSee('On May 22, they crossed paths again outside the church')
+            ->assertSee('A little after 2 a.m. on June 29, 2024')
+            ->assertSee('more than 3,000 young people')
+            ->assertSee('a lifetime—and a day extra—of love');
     }
 
     public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void
