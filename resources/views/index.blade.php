@@ -132,6 +132,9 @@
 @php
   $storySides = is_array($setting->story_sides) ? $setting->story_sides : [];
   $hasStorySides = isset($storySides['chiamaka']['paragraphs'], $storySides['benny']['paragraphs']);
+  $storyPhotoCredit = $hasStorySides
+    ? 'As told by Chiamaka'
+    : 'As told by '.$partnerOneFirst.' & '.$partnerTwoFirst;
   $storyPhotoChiamaka = asset('images/story-chiamaka.jpg');
   $storyPhotoBenny = asset('images/story-benny.jpg');
 @endphp
@@ -183,7 +186,7 @@
             decoding="async"
           >
         </div>
-        <figcaption class="story_photo_credit" data-story-photo-credit aria-live="polite">@if($hasStorySides)As told by Chiamaka@else As told by {{ $partnerOneFirst }} &amp; {{ $partnerTwoFirst }}@endif</figcaption>
+        <figcaption class="story_photo_credit" data-story-photo-credit aria-live="polite">{{ $storyPhotoCredit }}</figcaption>
       </figure>
 
       <article class="story_narrative reveal">
