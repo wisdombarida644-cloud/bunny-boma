@@ -26,7 +26,7 @@ try {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ $ogImageUrl ?? asset('images/og-wedding-couple.jpg') }}">
 <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}">
-<link rel="preload" as="image" href="{{ asset('favicon.svg') }}" fetchpriority="high">
+<link rel="preload" as="image" href="{{ asset('images/thegospels-wordmark.png') }}" fetchpriority="high">
 @if(isset($heroBackgroundPhotos) && $heroBackgroundPhotos->isNotEmpty())
 <link rel="preload" as="image" href="{{ $heroBackgroundPhotos->first()->image_path }}" fetchpriority="high">
 @if($heroBackgroundPhotos->count() > 1)
@@ -88,8 +88,8 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .nav:not(.scrolled){color:var(--char);text-shadow:none}
 .nav.scrolled{background:rgba(252,251,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);text-shadow:none}
 .nav:not(.scrolled) .nav_links a:after{background:var(--char)}
-.nav_logo{width:42px;height:42px;flex:none;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;border-radius:50%}
-.nav_logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.nav_logo{width:clamp(128px,14vw,190px);height:auto;aspect-ratio:1800/306;flex:none;display:inline-flex;align-items:center;justify-content:center;overflow:visible;border-radius:0}
+.nav_logo img{display:block;width:100%;height:100%;object-fit:contain;border-radius:0}
 .nav_links{display:flex;gap:32px;align-items:center}
 .nav_links a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;opacity:.85;position:relative;padding:4px 0}
 .nav_links a:after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--char);transition:width .4s var(--ease)}
@@ -467,11 +467,11 @@ section{position:relative}
 .footer_inner{max-width:1280px;margin:0 auto;padding:0 48px}
 .footer_top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;border-bottom:1px solid rgba(252,251,247,.12);padding-bottom:40px}
 .footer_brand{display:flex;align-items:center;gap:18px}
-.footer_brand img{width:76px;height:76px;flex:none;border-radius:50%}
+.footer_brand img{width:min(240px,60vw);height:auto;aspect-ratio:1800/306;flex:none;object-fit:contain;border-radius:0}
 .footer_brand span{font-family:var(--serif);font-size:48px;line-height:.9;letter-spacing:-.02em}
 .footer_nav{display:flex;gap:24px;flex-wrap:wrap;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 .footer_bottom{margin-top:32px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
-@media(max-width:700px){.footer_inner{padding:0 24px}.footer_brand span{font-size:36px}.footer_brand img{width:64px;height:64px}}
+@media(max-width:700px){.footer_inner{padding:0 24px}.footer_brand span{font-size:36px}.footer_brand img{width:min(220px,70vw);height:auto}}
 
 /* OPTIONAL BACKGROUND MUSIC */
 .music_player{position:fixed;right:22px;bottom:22px;z-index:45;display:flex;align-items:center;gap:12px;max-width:min(440px,calc(100vw - 32px));padding:10px 14px;background:var(--deep);color:var(--warm);border:1px solid rgba(252,251,247,.22);box-shadow:0 8px 28px rgba(0,0,0,.2)}

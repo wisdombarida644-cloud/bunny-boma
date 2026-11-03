@@ -29,6 +29,7 @@ class ExampleTest extends TestCase
             ->assertSee('Leave a wish for the couple')
             ->assertSee('themeToggle', false)
             ->assertSee(asset('favicon.svg'))
+            ->assertSee(asset('images/thegospels-wordmark.png'))
             ->assertSee(asset('favicon-32x32.png'))
             ->assertSee(asset('apple-touch-icon.png'))
             ->assertSee(asset('site.webmanifest'))

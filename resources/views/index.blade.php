@@ -2,7 +2,7 @@
 
 @section('content')
 <nav class="nav" id="nav">
-  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('favicon.svg') }}" alt="" width="512" height="512" fetchpriority="high"></a>
+  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="{{ asset('images/thegospels-wordmark.png') }}" alt="" width="1800" height="306" fetchpriority="high"></a>
   <div class="nav_links" id="navLinks">
     <a href="#howWeMet">Our Story</a>
     <a href="#gallery">Gallery</a>
@@ -23,7 +23,7 @@
 
 <div class="mobile_menu" id="mobileMenu">
   <div class="mobile_menu_top">
-    <div class="nav_logo"><img src="{{ asset('favicon.svg') }}" alt="The Gospels logo" width="512" height="512"></div>
+    <div class="nav_logo"><img src="{{ asset('images/thegospels-wordmark.png') }}" alt="The Gospels wedding logo" width="1800" height="306"></div>
     <button id="closeMenu" aria-label="Close">✕</button>
   </div>
   <div class="mobile_menu_links">
@@ -433,8 +433,8 @@
 
 <footer class="footer closing_footer">
   <div class="footer_inner">
-    <a class="footer_mark" href="#home" aria-label="Back to the top">
-      <img src="{{ asset('favicon.svg') }}" alt="The Gospels brand mark" width="512" height="512" loading="lazy" decoding="async">
+    <a class="footer_wordmark" href="#home" aria-label="Back to the top">
+      <img src="{{ asset('images/thegospels-wordmark.png') }}" alt="" width="1800" height="306" loading="lazy" decoding="async">
     </a>
     <div class="footer_couple">{{ $partnerOneFirst }} <i>&amp;</i> {{ $partnerTwoFirst }}</div>
     <div class="footer_hashtag">{{ $setting->hashtag ?? '#THEGOSPELS26' }} <span aria-hidden="true">·</span> {{ \Carbon\Carbon::parse($setting->wedding_date)->format('F j, Y') }}</div>
