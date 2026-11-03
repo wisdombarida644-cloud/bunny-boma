@@ -132,6 +132,18 @@
 @php
   $storySides = is_array($setting->story_sides) ? $setting->story_sides : [];
   $hasStorySides = isset($storySides['chiamaka']['paragraphs'], $storySides['benny']['paragraphs']);
+  $storyPhotoChiamaka = $galleries->first(function ($photo) {
+    $details = strtolower(($photo->category ?? '').' '.($photo->caption ?? ''));
+    return str_contains($details, 'chiamaka') || str_contains($details, 'bride');
+  }) ?? $galleries->get(2) ?? $galleries->first();
+  $storyPhotoBenny = $galleries->first(function ($photo) use ($storyPhotoChiamaka) {
+    $details = strtolower(($photo->category ?? '').' '.($photo->caption ?? ''));
+    $matchesBenny = str_contains($details, 'benny') || str_contains($details, 'groom');
+    return $matchesBenny && (!$storyPhotoChiamaka || $photo->image_path !== $storyPhotoChiamaka->image_path);
+  }) ?? $galleries->get(1) ?? $galleries->first();
+  if ($storyPhotoChiamaka && $storyPhotoBenny && $storyPhotoBenny->image_path === $storyPhotoChiamaka->image_path) {
+    $storyPhotoBenny = $galleries->first(fn ($photo) => $photo->image_path !== $storyPhotoChiamaka->image_path) ?? $storyPhotoChiamaka;
+  }
 @endphp
 <section class="how story_feature" id="howWeMet" aria-labelledby="storyHeadline">
   <div class="story_feature_inner">
@@ -169,14 +181,23 @@
     <div class="story_feature_grid">
       <figure class="story_photo reveal">
         <div class="story_photo_frame">
-          @if($galleries->isNotEmpty())
-            @php($storyPhoto = $galleries->get(2) ?? $galleries->first())
-            <img src="{{ $storyPhoto->image_path }}" alt="{{ $storyPhoto->caption ?: 'A photograph shared by the couple' }}" loading="lazy" decoding="async">
+          @if($storyPhotoChiamaka)
+            <img
+              data-story-photo
+              src="{{ $storyPhotoChiamaka->image_path }}"
+              alt="{{ $storyPhotoChiamaka->caption ?: 'A photograph shared by Chiamaka' }}"
+              data-story-photo-chiamaka-src="{{ $storyPhotoChiamaka->image_path }}"
+              data-story-photo-chiamaka-alt="{{ $storyPhotoChiamaka->caption ?: 'A photograph shared by Chiamaka' }}"
+              data-story-photo-benny-src="{{ $storyPhotoBenny?->image_path ?? $storyPhotoChiamaka->image_path }}"
+              data-story-photo-benny-alt="{{ $storyPhotoBenny?->caption ?: 'A photograph shared by Benny' }}"
+              loading="lazy"
+              decoding="async"
+            >
           @else
             <div class="photo_placeholder"><span>A photograph will appear here when shared.</span></div>
           @endif
         </div>
-        <figcaption class="story_photo_credit">As told by {{ $partnerOneFirst }} &amp; {{ $partnerTwoFirst }}</figcaption>
+        <figcaption class="story_photo_credit" data-story-photo-credit aria-live="polite">@if($hasStorySides)As told by Chiamaka@else As told by {{ $partnerOneFirst }} &amp; {{ $partnerTwoFirst }}@endif</figcaption>
       </figure>
 
       <article class="story_narrative reveal">
@@ -186,18 +207,21 @@
             @php($storySide = $storySides[$sideKey])
             <div class="story_side_panel" id="storyPanel-{{ $sideKey }}" role="tabpanel" aria-labelledby="storyTab-{{ $sideKey }}" data-story-panel="{{ $sideKey }}" tabindex="0" @if(!$loop->first) hidden @endif>
               <blockquote class="story_pullquote">{{ $storySide['quote'] }}</blockquote>
-              <div class="story_copy">
+              <div class="story_copy is-collapsed" id="storyCopy-{{ $sideKey }}" data-story-copy="{{ $sideKey }}">
                 @foreach($storySide['paragraphs'] as $paragraph)
                   <p>{{ $paragraph }}</p>
                 @endforeach
               </div>
+              <button class="story_keep_reading" type="button" data-story-toggle aria-expanded="false" aria-controls="storyCopy-{{ $sideKey }}">
+                <span class="story_keep_reading_label">Keep reading</span><span class="story_keep_reading_icon" aria-hidden="true">↓</span>
+              </button>
             </div>
           @endforeach
         @else
           @if(filled($setting->story_intro))
             <blockquote class="story_pullquote">{{ $setting->story_intro }}</blockquote>
           @endif
-          <div class="story_copy">
+          <div class="story_copy is-collapsed" id="storyCopy-default">
             @if(is_array($setting->story_content) && count($setting->story_content))
               @foreach($setting->story_content as $paragraph)
                 <p>{{ $paragraph }}</p>
@@ -208,8 +232,10 @@
               <p>The couple’s story will appear here when shared.</p>
             @endif
           </div>
+          <button class="story_keep_reading" type="button" data-story-toggle aria-expanded="false" aria-controls="storyCopy-default">
+            <span class="story_keep_reading_label">Keep reading</span><span class="story_keep_reading_icon" aria-hidden="true">↓</span>
+          </button>
         @endif
-        <a class="story_keep_reading" href="{{ $timelines->isNotEmpty() ? '#storyTimeline' : '#gallery' }}">Keep reading <span aria-hidden="true">→</span></a>
       </article>
     </div>
 
@@ -246,22 +272,24 @@
   @endif
 </section>
 
-<section class="moments_cine" id="memories" aria-label="Memories">
-  <div class="moments_bg" id="momentsBg"></div>
-  <div class="moments_title"><div class="eyebrow">Our memories</div><h2>Little moments, held forever</h2></div>
-  @if($moments->isNotEmpty())
-  <div class="moments_card_wrap">
-    <div class="moments_card" id="momentsCard">
-      <img id="momentsImg" src="{{ $moments->first()->image_path }}" alt="{{ $moments->first()->title ?: 'Wedding memory' }}" loading="lazy" decoding="async">
-      <div class="moments_card_caption">
-        <h4 id="momentsTitle">{{ $moments->first()->title }}</h4>
-        <p id="momentsCaption">{{ $moments->first()->caption }}</p>
-        <div class="moments_card_name" id="momentsName">{{ $moments->first()->credit_name }}</div>
-      </div>
-    </div>
+<section class="moments_cine" id="memories" aria-labelledby="memoriesHeading">
+  <div class="moments_title">
+    <div class="eyebrow">Our memories</div>
+    <h2 id="memoriesHeading">Little moments, held forever</h2>
   </div>
-  <div class="moments_nav"><button id="momPrev" type="button" aria-label="Previous memory">←</button><button id="momNext" type="button" aria-label="Next memory">→</button></div>
-  <div class="moments_counter"><span id="momCounter">01 / {{ str_pad((string) $moments->count(), 2, '0', STR_PAD_LEFT) }}</span><div class="moments_dots" id="momDots" role="group" aria-label="Choose a memory"></div></div>
+  @if($moments->isNotEmpty())
+  <div class="moments_stage">
+    <img id="momentsImg" src="{{ $moments->first()->image_path }}" alt="{{ $moments->first()->title ?: 'Wedding memory' }}" loading="lazy" decoding="async">
+    <div class="moments_nav"><button id="momPrev" type="button" aria-label="Previous memory">←</button><button id="momNext" type="button" aria-label="Next memory">→</button></div>
+  </div>
+  <div class="moments_details">
+    <div class="moments_card_caption">
+      <h3 id="momentsTitle">{{ $moments->first()->title }}</h3>
+      <p id="momentsCaption">{{ $moments->first()->caption }}</p>
+      <div class="moments_card_name" id="momentsName">{{ $moments->first()->credit_name }}</div>
+    </div>
+    <div class="moments_counter"><span id="momCounter">01 / {{ str_pad((string) $moments->count(), 2, '0', STR_PAD_LEFT) }}</span><div class="moments_dots" id="momDots" role="group" aria-label="Choose a memory"></div></div>
+  </div>
   @else
   <div class="memories_empty" role="status">
     <p>Our memory album is taking shape.</p>
@@ -509,6 +537,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const storyTablist = document.querySelector("[data-story-tablist]");
   const storyTabs = storyTablist ? Array.from(storyTablist.querySelectorAll('[role="tab"]')) : [];
+  const storyPhoto = document.querySelector("[data-story-photo]");
+  const storyPhotoCredit = document.querySelector("[data-story-photo-credit]");
   const activateStoryTab = (activeTab, moveFocus = false) => {
     storyTabs.forEach(tab => {
       const isActive = tab === activeTab;
@@ -517,8 +547,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const panel = document.getElementById(tab.getAttribute("aria-controls"));
       if (panel) panel.hidden = !isActive;
     });
+    const side = activeTab?.dataset.storyTab;
+    if (side && storyPhoto) {
+      const sideName = side.charAt(0).toUpperCase() + side.slice(1);
+      const imagePath = storyPhoto.dataset[`storyPhoto${sideName}Src`];
+      const imageAlt = storyPhoto.dataset[`storyPhoto${sideName}Alt`];
+      if (imagePath && storyPhoto.getAttribute("src") !== imagePath) storyPhoto.src = imagePath;
+      if (imageAlt) storyPhoto.alt = imageAlt;
+    }
+    if (side && storyPhotoCredit) {
+      const name = side === "chiamaka" ? "Chiamaka" : "Benny";
+      storyPhotoCredit.textContent = `As told by ${name}`;
+    }
     if (moveFocus) activeTab.focus();
   };
+  document.querySelectorAll("[data-story-toggle]").forEach(button => {
+    button.addEventListener("click", () => {
+      const copy = document.getElementById(button.getAttribute("aria-controls"));
+      if (!copy) return;
+      const isExpanding = button.getAttribute("aria-expanded") !== "true";
+      copy.classList.toggle("is-expanded", isExpanding);
+      copy.classList.toggle("is-collapsed", !isExpanding);
+      button.setAttribute("aria-expanded", String(isExpanding));
+      const label = button.querySelector(".story_keep_reading_label");
+      const icon = button.querySelector(".story_keep_reading_icon");
+      if (label) label.textContent = isExpanding ? "Show less" : "Keep reading";
+      if (icon) icon.textContent = isExpanding ? "↑" : "↓";
+    });
+  });
   storyTabs.forEach((tab, index) => {
     tab.addEventListener("click", () => activateStoryTab(tab));
     tab.addEventListener("keydown", event => {
@@ -650,7 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Moments carousel and dot navigation.
   const moments = Array.isArray(weddingData.moments) ? weddingData.moments : [];
   if (moments.length) {
-    const bg = document.getElementById("momentsBg");
     const image = document.getElementById("momentsImg");
     const title = document.getElementById("momentsTitle");
     const caption = document.getElementById("momentsCaption");
@@ -659,44 +714,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const dots = document.getElementById("momDots");
     let index = 0;
 
-    bg.replaceChildren();
-    const backgroundImages = [document.createElement("img"), document.createElement("img")];
-    backgroundImages.forEach(backgroundImage => {
-      backgroundImage.alt = "";
-      backgroundImage.loading = "lazy";
-      backgroundImage.decoding = "async";
-      backgroundImage.setAttribute("fetchpriority", "low");
-      bg.appendChild(backgroundImage);
-    });
-    let activeBackgroundIndex = -1;
-    let backgroundRequest = 0;
-    let backgroundStarted = false;
-    const showMomentBackground = () => {
-      if (!backgroundStarted) return;
-      const imagePath = moments[index].image_path;
-      const activeImage = activeBackgroundIndex >= 0 ? backgroundImages[activeBackgroundIndex] : null;
-      if (activeImage?.getAttribute("src") === imagePath) return;
-      const targetIndex = activeBackgroundIndex === 0 ? 1 : 0;
-      const target = backgroundImages[targetIndex];
-      const requestId = ++backgroundRequest;
-      target.classList.remove("active");
-      target.onload = () => {
-        if (requestId !== backgroundRequest) return;
-        target.classList.add("active");
-        if (activeBackgroundIndex >= 0) backgroundImages[activeBackgroundIndex].classList.remove("active");
-        activeBackgroundIndex = targetIndex;
-      };
-      target.onerror = () => {
-        if (requestId === backgroundRequest) target.classList.remove("active");
-      };
-      target.src = imagePath;
-      if (target.complete && target.naturalWidth) target.onload();
-    };
-    const startMomentBackground = () => {
-      if (backgroundStarted) return;
-      backgroundStarted = true;
-      showMomentBackground();
-    };
     const renderMoment = () => {
       const moment = moments[index];
       image.src = moment.image_path;
@@ -705,7 +722,6 @@ document.addEventListener("DOMContentLoaded", () => {
       caption.textContent = moment.caption || "";
       credit.textContent = moment.credit_name || "";
       counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(moments.length).padStart(2, "0")}`;
-      showMomentBackground();
       dots.innerHTML = moments.map((_, i) => `<button type="button" class="${i === index ? "active" : ""}" data-index="${i}" aria-label="Show moment ${i + 1}"></button>`).join("");
     };
 
@@ -724,16 +740,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderMoment();
     });
     renderMoment();
-    if ("IntersectionObserver" in window) {
-      const momentsBackgroundObserver = new IntersectionObserver(entries => {
-        if (!entries.some(entry => entry.isIntersecting)) return;
-        startMomentBackground();
-        momentsBackgroundObserver.disconnect();
-      }, { rootMargin: "400px 0px" });
-      momentsBackgroundObserver.observe(bg);
-    } else {
-      startMomentBackground();
-    }
   }
 
   // Accessible gallery lightbox with previous/next, keyboard, and backdrop support.

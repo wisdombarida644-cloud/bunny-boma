@@ -80,6 +80,15 @@ class ExampleTest extends TestCase
     {
         $this->seed(WeddingDatabaseSeeder::class);
 
+        foreach ([
+            ['image_path' => '/media/gallery/shared-01.jpg', 'category' => 'Pre-Wedding', 'caption' => 'Shared portrait one', 'sort_order' => 1],
+            ['image_path' => '/media/gallery/benny-portrait.jpg', 'category' => 'Benny', 'caption' => 'Benny portrait', 'sort_order' => 2],
+            ['image_path' => '/media/gallery/shared-03.jpg', 'category' => 'Pre-Wedding', 'caption' => 'Shared portrait three', 'sort_order' => 3],
+            ['image_path' => '/media/gallery/chiamaka-portrait.jpg', 'category' => 'Chiamaka', 'caption' => 'Chiamaka portrait', 'sort_order' => 4],
+        ] as $photo) {
+            Gallery::create($photo + ['is_active' => true]);
+        }
+
         $this->get('/')
             ->assertOk()
             ->assertSee('role="tablist"', false)
@@ -91,6 +100,14 @@ class ExampleTest extends TestCase
             ->assertSee('data-story-panel="benny"', false)
             ->assertSee('aria-selected="true"', false)
             ->assertSee('aria-selected="false"', false)
+            ->assertSee('data-story-photo-chiamaka-src="/media/gallery/chiamaka-portrait.jpg"', false)
+            ->assertSee('data-story-photo-benny-src="/media/gallery/benny-portrait.jpg"', false)
+            ->assertSee('data-story-photo-credit aria-live="polite">As told by Chiamaka', false)
+            ->assertSee('aria-controls="storyCopy-chiamaka"', false)
+            ->assertSee('data-story-toggle aria-expanded="false"', false)
+            ->assertSee('class="story_keep_reading" type="button"', false)
+            ->assertDontSee('href="#storyTimeline"', false)
+            ->assertSee('copy.classList.toggle("is-expanded", isExpanding)', false)
             ->assertSee('aria-label="Chiamaka’s Account"', false)
             ->assertSee('aria-label="Benny’s Account"', false)
             ->assertSee('Boy oh Boy!')
@@ -106,6 +123,33 @@ class ExampleTest extends TestCase
             ->assertSee('A lifetime of your rich love is causing my heart excitement in anticipation for our journey to officially begin!')
             ->assertDontSee('In March 2024, Benny moved from Bayelsa')
             ->assertSee('This is love ohh, believe me, it is!');
+    }
+
+    public function test_memories_show_a_full_frame_photo_with_title_and_caption_outside_it(): void
+    {
+        Moment::create([
+            'image_path' => '/media/moments/youth-sunday.jpg',
+            'title' => 'A Youth Sundays at RCCG',
+            'caption' => 'A shared memory from the beginning.',
+            'credit_name' => 'Chiamaka and Benny',
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+        $titlePosition = strpos($html, 'class="moments_title"');
+        $photoPosition = strpos($html, 'class="moments_stage"');
+        $detailsPosition = strpos($html, 'class="moments_details"');
+
+        $this->assertNotFalse($titlePosition);
+        $this->assertNotFalse($photoPosition);
+        $this->assertNotFalse($detailsPosition);
+        $this->assertLessThan($photoPosition, $titlePosition);
+        $this->assertGreaterThan($photoPosition, $detailsPosition);
+        $this->assertStringContainsString('id="momentsImg"', $html);
+        $this->assertStringContainsString('A Youth Sundays at RCCG', $html);
+        $this->assertStringContainsString('class="moments_nav"', $html);
+        $this->assertStringNotContainsString('moments_bg', $html);
     }
 
     public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void
