@@ -129,6 +129,10 @@
   </div>
 </section>
 
+@php
+  $storySides = is_array($setting->story_sides) ? $setting->story_sides : [];
+  $hasStorySides = isset($storySides['chiamaka']['paragraphs'], $storySides['benny']['paragraphs']);
+@endphp
 <section class="how story_feature" id="howWeMet" aria-labelledby="storyHeadline">
   <div class="story_feature_inner">
     <div class="story_feature_header">
@@ -136,11 +140,30 @@
         <div class="eyebrow">Our story</div>
         <h2 class="story_feature_title" id="storyHeadline">Two sides,<br><i>one story.</i></h2>
       </div>
-      <div class="story_couple_pill" aria-label="Our story: {{ $partnerOneFirst }} and {{ $partnerTwoFirst }}">
-        <span class="story_couple_pill_primary">{{ $partnerOneFirst }}</span>
-        <span class="story_couple_pill_join" aria-hidden="true">&amp;</span>
-        <span class="story_couple_pill_secondary">{{ $partnerTwoFirst }}</span>
-      </div>
+      @if($hasStorySides)
+        <div class="story_couple_pill" role="tablist" aria-label="Read their story by account" data-story-tablist>
+          @foreach(['chiamaka', 'benny'] as $sideKey)
+            @php($storySide = $storySides[$sideKey])
+            <button
+              class="story_couple_pill_tab"
+              id="storyTab-{{ $sideKey }}"
+              type="button"
+              role="tab"
+              aria-controls="storyPanel-{{ $sideKey }}"
+              aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+              aria-label="{{ $storySide['account_label'] }}"
+              data-story-tab="{{ $sideKey }}"
+              tabindex="{{ $loop->first ? 0 : -1 }}"
+            >{{ $storySide['tab_label'] }}</button>
+          @endforeach
+        </div>
+      @else
+        <div class="story_couple_pill" aria-label="Our story: {{ $partnerOneFirst }} and {{ $partnerTwoFirst }}">
+          <span class="story_couple_pill_primary">{{ $partnerOneFirst }}</span>
+          <span class="story_couple_pill_join" aria-hidden="true">&amp;</span>
+          <span class="story_couple_pill_secondary">{{ $partnerTwoFirst }}</span>
+        </div>
+      @endif
     </div>
 
     <div class="story_feature_grid">
@@ -158,20 +181,34 @@
 
       <article class="story_narrative reveal">
         <h3>Our Story</h3>
-        @if(filled($setting->story_intro))
-          <blockquote class="story_pullquote">{{ $setting->story_intro }}</blockquote>
-        @endif
-        <div class="story_copy">
-          @if(is_array($setting->story_content) && count($setting->story_content))
-            @foreach($setting->story_content as $paragraph)
-              <p>{{ $paragraph }}</p>
-            @endforeach
-          @elseif(filled($setting->podcast_desc))
-            <p>{{ $setting->podcast_desc }}</p>
-          @else
-            <p>The couple’s story will appear here when shared.</p>
+        @if($hasStorySides)
+          @foreach(['chiamaka', 'benny'] as $sideKey)
+            @php($storySide = $storySides[$sideKey])
+            <div class="story_side_panel" id="storyPanel-{{ $sideKey }}" role="tabpanel" aria-labelledby="storyTab-{{ $sideKey }}" data-story-panel="{{ $sideKey }}" tabindex="0" @if(!$loop->first) hidden @endif>
+              <blockquote class="story_pullquote">{{ $storySide['quote'] }}</blockquote>
+              <div class="story_copy">
+                @foreach($storySide['paragraphs'] as $paragraph)
+                  <p>{{ $paragraph }}</p>
+                @endforeach
+              </div>
+            </div>
+          @endforeach
+        @else
+          @if(filled($setting->story_intro))
+            <blockquote class="story_pullquote">{{ $setting->story_intro }}</blockquote>
           @endif
-        </div>
+          <div class="story_copy">
+            @if(is_array($setting->story_content) && count($setting->story_content))
+              @foreach($setting->story_content as $paragraph)
+                <p>{{ $paragraph }}</p>
+              @endforeach
+            @elseif(filled($setting->podcast_desc))
+              <p>{{ $setting->podcast_desc }}</p>
+            @else
+              <p>The couple’s story will appear here when shared.</p>
+            @endif
+          </div>
+        @endif
         <a class="story_keep_reading" href="{{ $timelines->isNotEmpty() ? '#storyTimeline' : '#gallery' }}">Keep reading <span aria-hidden="true">→</span></a>
       </article>
     </div>
@@ -469,6 +506,32 @@ document.addEventListener("DOMContentLoaded", () => {
   burger?.addEventListener("click", () => setMobileMenuOpen(!menu?.classList.contains("open")));
   closeMenu?.addEventListener("click", closeMobileMenu);
   document.querySelectorAll("[data-close]").forEach(link => link.addEventListener("click", closeMobileMenu));
+
+  const storyTablist = document.querySelector("[data-story-tablist]");
+  const storyTabs = storyTablist ? Array.from(storyTablist.querySelectorAll('[role="tab"]')) : [];
+  const activateStoryTab = (activeTab, moveFocus = false) => {
+    storyTabs.forEach(tab => {
+      const isActive = tab === activeTab;
+      tab.setAttribute("aria-selected", String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+      const panel = document.getElementById(tab.getAttribute("aria-controls"));
+      if (panel) panel.hidden = !isActive;
+    });
+    if (moveFocus) activeTab.focus();
+  };
+  storyTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activateStoryTab(tab));
+    tab.addEventListener("keydown", event => {
+      let nextIndex = null;
+      if (event.key === "ArrowRight") nextIndex = (index + 1) % storyTabs.length;
+      if (event.key === "ArrowLeft") nextIndex = (index - 1 + storyTabs.length) % storyTabs.length;
+      if (event.key === "Home") nextIndex = 0;
+      if (event.key === "End") nextIndex = storyTabs.length - 1;
+      if (nextIndex === null) return;
+      event.preventDefault();
+      activateStoryTab(storyTabs[nextIndex], true);
+    });
+  });
 
   const rsvpForm = document.getElementById("rsvpForm");
   const rsvpSubmit = rsvpForm?.querySelector("button[type=submit]");

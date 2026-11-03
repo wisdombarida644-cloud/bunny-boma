@@ -236,11 +236,16 @@ body{
 .story_feature_header{display:flex;justify-content:space-between;align-items:flex-end;gap:32px}
 .story_feature_title{margin-top:24px;color:var(--deep);font-family:var(--serif);font-size:clamp(48px,7.1vw,100px);font-weight:400;line-height:.88;letter-spacing:-.045em}
 .story_feature_title i{color:var(--deep2);font-family:var(--serif2);font-weight:400}
-.story_couple_pill{display:flex;align-items:center;gap:0;flex:0 0 auto;margin-bottom:10px;padding:5px;border:1px solid rgba(197,154,78,.36);border-radius:999px;background:rgba(197,154,78,.12);color:var(--deep2);font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}
+.story_couple_pill{display:flex;align-items:center;gap:3px;flex:0 0 auto;margin-bottom:10px;padding:5px;border:1px solid rgba(197,154,78,.36);border-radius:999px;background:rgba(197,154,78,.12);color:var(--deep2);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.story_couple_pill_tab{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 clamp(10px,1.25vw,18px);border:0;border-radius:999px;background:transparent;color:var(--deep2);font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;line-height:1.25;text-transform:inherit;white-space:nowrap;cursor:pointer;transition:background .2s ease,color .2s ease}
+.story_couple_pill_tab[aria-selected="true"]{background:var(--deep);color:var(--ivory)}
+.story_couple_pill_tab:not([aria-selected="true"]):hover{background:rgba(197,154,78,.16);color:var(--deep)}
+.story_couple_pill_tab:focus-visible{outline:2px solid var(--champ);outline-offset:2px}
 .story_couple_pill_primary,.story_couple_pill_secondary{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 clamp(12px,1.6vw,22px);border-radius:999px}
 .story_couple_pill_primary{background:var(--deep);color:var(--ivory)}
 .story_couple_pill_join{padding:0 4px;color:var(--champ);font-family:var(--serif2);font-size:15px;font-style:italic}
 .story_couple_pill_secondary{color:var(--deep2)}
+.story_side_panel[hidden]{display:none!important}
 .story_feature_grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(44px,6.3vw,88px);align-items:start;margin-top:clamp(54px,7vw,92px)}
 .story_photo{position:sticky;top:116px;min-width:0;margin:0;align-self:start}
 .story_photo_frame{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--beige);box-shadow:0 22px 60px rgba(34,25,47,.1)}
@@ -274,6 +279,9 @@ body{
 :root[data-theme="dark"] .story_couple_pill_primary{background:var(--champ);color:var(--deep)}
 :root[data-theme="dark"] .story_couple_pill_join{color:var(--champ)}
 :root[data-theme="dark"] .story_couple_pill_secondary{color:var(--beige)}
+:root[data-theme="dark"] .story_couple_pill_tab{color:var(--beige)}
+:root[data-theme="dark"] .story_couple_pill_tab[aria-selected="true"]{background:var(--champ);color:var(--deep)}
+:root[data-theme="dark"] .story_couple_pill_tab:not([aria-selected="true"]):hover{background:rgba(197,154,78,.2);color:var(--char)}
 :root[data-theme="dark"] .story_photo_frame{background:#222A25}
 :root[data-theme="dark"] .story_narrative h3{color:var(--beige)}
 :root[data-theme="dark"] .story_pullquote{color:var(--beige);border-left-color:var(--champ)}
@@ -464,8 +472,9 @@ body{
   .story_feature_inner{padding:0 24px}
   .story_feature_header{flex-direction:column;align-items:flex-start;gap:0}
   .story_feature_title{margin-top:18px;font-size:clamp(46px,11vw,70px)}
-  .story_couple_pill{margin:22px 0 0;max-width:100%;font-size:8px}
-  .story_couple_pill_primary,.story_couple_pill_secondary{min-height:36px;padding-inline:12px}
+  .story_couple_pill{width:100%;max-width:100%;margin:22px 0 0;white-space:normal}
+  .story_couple_pill_primary,.story_couple_pill_secondary,.story_couple_pill_tab{min-height:40px;padding-inline:8px}
+  .story_couple_pill_tab{flex:1 1 0;min-width:0;white-space:normal;text-align:center;letter-spacing:.06em}
   .story_feature_grid{grid-template-columns:1fr;gap:34px;margin-top:40px}
   .story_photo{position:relative;top:auto;order:0}
   .story_narrative{order:1;max-width:none}

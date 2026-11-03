@@ -75,18 +75,27 @@ class ExampleTest extends TestCase
             ->assertDontSee('images.unsplash.com');
     }
 
-    public function test_seeded_homepage_story_uses_the_couples_short_article(): void
+    public function test_seeded_homepage_story_lets_guests_switch_between_both_accounts(): void
     {
         $this->seed(WeddingDatabaseSeeder::class);
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('A friendship rooted in faith, carried by laughter, and guided by God.')
-            ->assertSee('In March 2024, Benny moved from Bayelsa to Rivers State')
-            ->assertSee('On May 22, they crossed paths again outside the church')
-            ->assertSee('A little after 2 a.m. on June 29, 2024')
+            ->assertSee('role="tablist"', false)
+            ->assertSee('HER SIDE · CHIAMAKA')
+            ->assertSee('HIS SIDE · BENNY')
+            ->assertSee('data-story-tab="chiamaka"', false)
+            ->assertSee('data-story-tab="benny"', false)
+            ->assertSee('data-story-panel="chiamaka"', false)
+            ->assertSee('data-story-panel="benny"', false)
+            ->assertSee('aria-selected="true"', false)
+            ->assertSee('aria-selected="false"', false)
+            ->assertSee('aria-label="Chiamaka’s Account"', false)
+            ->assertSee('aria-label="Benny’s Account"', false)
+            ->assertSee('My soul knew that man from the very first day')
+            ->assertSee('On June 29, 2024, a few minutes after 2 a.m.')
             ->assertSee('more than 3,000 young people')
-            ->assertSee('a lifetime—and a day extra—of love');
+            ->assertSee('This is love ohh, believe me, it is!');
     }
 
     public function test_demo_photo_seeder_is_opt_in_and_idempotent(): void

@@ -12,6 +12,13 @@ class WeddingDatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $storySides = json_decode(
+            file_get_contents(database_path('data/couple-story-sides.json')),
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
+
         if (WeddingSetting::count() === 0) {
             WeddingSetting::create([
                 'partner_one' => 'Chiamaka Boma Ibekwe',
@@ -43,6 +50,7 @@ class WeddingDatabaseSeeder extends Seeder
                     'A little after 2 a.m. on June 29, 2024, Benny asked Chiamaka to marry him during a video call. She said yes, and the best friends made their relationship official. They kept learning, forgiving, and growing together; Chiamaka moved to CCI first, and Benny followed in September 2025 after handing over his church responsibilities.',
                     'On Valentine’s Day 2026, Benny proposed again at the Young and Free Conference before more than 3,000 young people. Now they look forward to a lifetime—and a day extra—of love, faith, laughter, and purpose, grateful to God for bringing them this far.',
                 ],
+                'story_sides' => $storySides,
                 'dress_title' => 'Colors of the day',
                 'dress_note' => 'Emerald green, beige, gold, and white.',
                 'dress_colors' => [
