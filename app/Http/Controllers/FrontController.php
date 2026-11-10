@@ -16,6 +16,13 @@ class FrontController extends Controller
 {
     public function index()
     {
+        if (config('app.public_site_paused', true)) {
+            return response()
+                ->view('paused')
+                ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+                ->header('Pragma', 'no-cache');
+        }
+
         // Allow the site to render after migrations even before optional demo content is seeded.
         $setting = WeddingSetting::firstOrCreate([]);
         $timelines = Timeline::orderBy('sort_order', 'asc')->get();

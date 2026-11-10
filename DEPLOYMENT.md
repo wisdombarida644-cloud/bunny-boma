@@ -1,6 +1,6 @@
 # Deployment guide
 
-This is a Laravel 12 application. Deploy it to a PHP-capable host; a static host can serve only the separate root `index.html` prototype, not the Laravel CMS, RSVP, or guestbook routes. The requested website domain is `withthegospels.name.ng`, and the production environment example points `APP_URL` to `https://withthegospels.name.ng`. This repository change does **not** configure DNS, hosting, certificates, or deploy the site.
+This is a Laravel 12 application. Deploy it to a PHP-capable host; a static host can serve only the separate root `index.html` text-only pause page, not the Laravel CMS, RSVP, or guestbook routes. The public homepage is intentionally paused by default while the couple reviews its content; neither the Laravel page nor the static fallback displays photos. Existing uploads and site data are preserved. After the couple approves reopening the full site, set `PUBLIC_SITE_PAUSED=false` and rebuild Laravel's configuration cache. The requested website domain is `withthegospels.name.ng`, and the production environment example points `APP_URL` to `https://withthegospels.name.ng`. This repository change does **not** configure DNS, hosting, certificates, or deploy the site.
 
 ## Hosting requirements
 
@@ -15,7 +15,7 @@ Set the web server document root to the repository's **`public/` directory**. Do
 
 ## First deployment
 
-1. Set the host's secrets and environment variables using `.env.production.example` as a checklist. Never commit the real `.env` file. At minimum configure `APP_URL=https://withthegospels.name.ng`, a stable `APP_KEY`, database credentials, and `APP_DEBUG=false`. Require HTTPS and keep `SESSION_SECURE_COOKIE=true`.
+1. Set the host's secrets and environment variables using `.env.production.example` as a checklist. Never commit the real `.env` file. At minimum configure `APP_URL=https://withthegospels.name.ng`, a stable `APP_KEY`, database credentials, and `APP_DEBUG=false`. Keep `PUBLIC_SITE_PAUSED=true` while the couple reviews the content; after they approve reopening the full site, change it to `false` and rebuild the Laravel configuration cache. Require HTTPS and keep `SESSION_SECURE_COOKIE=true`.
 2. Install locked dependencies and build frontend assets:
 
    ```sh

@@ -86,6 +86,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public landing-page pause
+    |--------------------------------------------------------------------------
+    |
+    | Keep the public homepage on its text-only holding page until the couple
+    | approves returning the full wedding site.
+    |
+    */
+    'public_site_paused' => env('PUBLIC_SITE_PAUSED', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

@@ -1,919 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="shortcut icon" href="/favicon.ico">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta name="application-name" content="With the Gospels">
-<meta name="apple-mobile-web-app-title" content="The Gospels">
-<meta name="theme-color" content="#123C32">
-<title>Chiamaka Boma Ibekwe &amp; Gospel Abina-Aziba MacBenneth Isikpi | #THEGOSPELS26</title>
-<meta name="description" content="Chiamaka Boma Ibekwe and Gospel Abina-Aziba MacBenneth Isikpi celebrate on November 21, 2026 at ATWIL EVENT CENTER, Port Harcourt. #THEGOSPELS26">
-<meta property="og:title" content="Chiamaka Boma Ibekwe &amp; Gospel Abina-Aziba MacBenneth Isikpi | #THEGOSPELS26">
-<meta property="og:description" content="Saturday, November 21, 2026 at 11:00 AM prompt. ATWIL EVENT CENTER, Akpajo, Port Harcourt.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://withthegospels.name.ng">
-<link rel="canonical" href="https://withthegospels.name.ng">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,ital,wght@6..96,0..1,400;6..96,0..1,500;6..96,1,400;6..96,0,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
---deep:#123C32;
---deep2:#1B5547;
---beige:#E8DDCC;
---ivory:#F7F4EE;
---warm:#FCFBF7;
---char:#1D211E;
---taupe:#A89D8C;
---champ:#D4AF37;
---line:rgba(29,33,30,.12);
---line2:rgba(29,33,30,.08);
---serif:"Bodoni Moda", "Cormorant Garamond", serif;
---serif2:"Cormorant Garamond", serif;
---sans:"Manrope", sans-serif;
---ease:cubic-bezier(.25,.1,.25,1);
---ease2:cubic-bezier(.77,0,.175,1);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
-body{background:var(--warm);color:var(--char);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body.menu-open{overflow:hidden}
-img{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;background:none;border:none;cursor:pointer}
-::selection{background:var(--deep);color:var(--ivory)}
-/* NAV */
-.nav{position:fixed;inset:0 0 auto 0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:50;color:var(--char);transition:background .6s var(--ease), border-color .6s var(--ease),color .3s ease}
-.nav:not(.scrolled){color:var(--warm);text-shadow:0 1px 8px rgba(0,0,0,.55)}
-.nav.scrolled{background:rgba(252,251,247,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);text-shadow:none}
-.nav:not(.scrolled) .nav_links a:after{background:var(--warm)}
-.nav_logo{width:42px;height:42px;flex:none;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;border-radius:50%}
-.nav_logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.nav_links{display:flex;gap:32px;align-items:center}
-.nav_links a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;opacity:.8;position:relative;padding:4px 0}
-.nav_links a:after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--char);transition:width .4s var(--ease)}
-.nav_links a:hover:after{width:100%}
-.nav_right{display:flex;gap:18px;align-items:center}
-.nav_cta{font-size:10px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line);padding:10px 18px;transition:all .4s}
-.nav:not(.scrolled) .nav_cta{border-color:rgba(252,251,247,.72);color:var(--warm)}
-.nav_cta:hover{background:var(--char);color:var(--warm);border-color:var(--char)}
-.nav_burger{display:none;width:44px;height:44px;align-items:center;flex-direction:column;justify-content:center;gap:5px;border:1px solid transparent;border-radius:5px}
-.nav_burger span{display:block;width:22px;height:2px;background:var(--char);transition:all .4s var(--ease);border-radius:2px}
-.nav:not(.scrolled) .nav_burger{border-color:rgba(252,251,247,.65);background:rgba(18,60,50,.48)}
-.nav:not(.scrolled) .nav_burger span{background:var(--warm)}
-.nav.scrolled .nav_burger span{background:var(--char)}
-/* MOBILE MENU */
-.mobile_menu{position:fixed;inset:0;z-index:60;background:var(--warm);transform:translateY(-100%);transition:transform .8s var(--ease2);display:flex;flex-direction:column}
-.mobile_menu.open{transform:translateY(0)}
-.mobile_menu_top{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line)}
-.mobile_menu_links{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 28px;gap:6px}
-.mobile_menu_links a{font-family:var(--serif);font-size:42px;line-height:1.1;font-weight:300;letter-spacing:-.02em}
-.mobile_menu_links a span{font-size:10px;font-family:var(--sans);letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-right:16px;vertical-align:middle}
-.mobile_menu_foot{padding:24px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
-/* HERO */
-.hero{position:relative;height:100vh;min-height:720px;overflow:hidden;background:linear-gradient(135deg,#103b32 0%,#1b5547 52%,#0b2c25 100%)}
-.hero_overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 76% 24%,rgba(232,221,204,.12),transparent 35%),linear-gradient(180deg,rgba(18,60,50,.16) 0%,rgba(18,60,50,.2) 40%,rgba(18,24,20,.55) 100%)}
-.hero_content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 64px;color:var(--warm)}
-.hero_eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.85;margin-bottom:24px;display:flex;align-items:center;gap:12px}
-.hero_eyebrow:before{content:"";width:32px;height:1px;background:currentColor}
-.hero_title{font-family:var(--serif);font-size:clamp(34px,6vw,88px);line-height:.94;letter-spacing:-.04em;font-weight:400;max-width:12em;overflow-wrap:break-word}
-.hero_title em{font-family:var(--serif2);font-style:italic;text-transform:none;font-weight:300;display:block;font-size:.62em;letter-spacing:-.02em;margin:6px 0 6px 8px}
-.hero_meta{display:flex;gap:40px;margin-top:28px;align-items:flex-end;flex-wrap:wrap}
-.hero_date{font-size:11px;letter-spacing:.22em;text-transform:uppercase;line-height:1.6;opacity:.9}
-.hero_hash{font-family:var(--serif);font-size:18px;letter-spacing:.04em;opacity:.9}
-.hero_scroll{position:absolute;right:48px;bottom:64px;writing-mode:vertical-rl;font-size:10px;letter-spacing:.3em;text-transform:uppercase;opacity:.7;display:flex;align-items:center;gap:16px;color:var(--warm);z-index:3}
-.hero_scroll:after{content:"";width:1px;height:48px;background:currentColor;opacity:.5}
-@media(max-width:900px){.hero_content{padding:0 24px 48px}.hero_scroll{display:none}.hero_title{font-size:clamp(28px,8.5vw,50px);max-width:10em}}
-/* SECTIONS */
-section{position:relative}
-.eyebrow{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--taupe);font-weight:500;display:inline-flex;align-items:center;gap:10px}
-.eyebrow:before{content:"";width:24px;height:1px;background:currentColor}
-.h2{font-family:var(--serif);font-size:clamp(32px,5vw,64px);line-height:.95;letter-spacing:-.02em;font-weight:400}
-.h2 i{font-family:var(--serif2);font-style:italic;font-weight:300}
-.body{font-size:15px;line-height:1.9;max-width:36em}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
-.reveal.in{opacity:1;transform:translateY(0)}
-/* FAMILIES */
-.families_bar{padding:34px 0;background:var(--deep);color:var(--ivory)}
-.families_inner{max-width:1280px;margin:0 auto;padding:0 48px}
-.families_bar .eyebrow{color:rgba(252,251,247,.68)}
-.families_grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:20px}
-.families_grid p{padding-left:16px;border-left:1px solid var(--beige);font-family:var(--serif2);font-size:clamp(16px,2vw,22px);line-height:1.35;overflow-wrap:anywhere}
-@media(max-width:700px){.families_inner{padding:0 24px}.families_grid{grid-template-columns:1fr;gap:16px}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#173f34">
+  <meta name="description" content="A note from Benny and Chiamaka. Their wedding website is temporarily paused; thank you for your understanding.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A Note from Benny &amp; Chiamaka | #THEGOSPELS26">
+  <meta property="og:description" content="Their wedding website is temporarily paused. Thank you for your patience and understanding.">
+  <meta property="og:url" content="https://withthegospels.name.ng/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A Note from Benny &amp; Chiamaka | #THEGOSPELS26">
+  <meta name="twitter:description" content="Their wedding website is temporarily paused. Thank you for your patience and understanding.">
+  <title>A Note from Benny &amp; Chiamaka | #THEGOSPELS26</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --forest: #173f34;
+      --forest-soft: #38594d;
+      --gold: #b99b5d;
+      --paper: #f7f5ef;
+      --white: #fffefa;
+      --line: rgba(23, 63, 52, .16);
+    }
 
-/* COUNTDOWN */
-.countdown_sec{padding:120px 0 80px;background:var(--ivory);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
-.count_wrap{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:start}
-.count_big{font-family:var(--serif);font-size:clamp(48px,7vw,92px);line-height:.9;letter-spacing:-.03em}
-.count_big span{display:block}
-.count_big em{font-style:italic;font-weight:300;color:var(--deep2)}
-.count_desc{margin-top:24px}
-.count_grid{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--char);border-bottom:1px solid var(--char)}
-.count_item{padding:24px 12px;text-align:center;border-right:1px solid var(--line)}
-.count_item:last-child{border-right:none}
-.count_num{font-family:var(--serif);font-size:clamp(28px,4vw,56px);line-height:1;display:block;font-weight:300}
-.count_lab{font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-top:8px;display:block;opacity:.6}
-.count_note{margin-top:24px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.6}
-@media(max-width:900px){.count_wrap{grid-template-columns:1fr;padding:0 24px;gap:48px}.countdown_sec{padding:80px 0 60px}}
-/* GOSPELS */
-.gospels{padding:140px 0;background:var(--warm);overflow:hidden}
-.gospels_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.15fr .85fr;gap:80px;align-items:center}
-.gospels_hash{font-family:var(--serif);font-size:clamp(48px,8vw,96px);line-height:.9;letter-spacing:-.03em}
-.gospels_quote{font-family:var(--serif2);font-size:clamp(22px,3vw,34px);line-height:1.15;font-style:italic;font-weight:300;margin-top:32px;max-width:12em}
-.gospels_text{margin-top:20px;opacity:.8}
-.gospels_img_wrap{position:relative;aspect-ratio:4/5;background:var(--beige);overflow:hidden}
-.gospels_img_wrap img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-.gospels_img_wrap:hover img{transform:scale(1.04)}
-.photo_placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:220px;padding:28px;text-align:center;color:var(--deep);background:radial-gradient(ellipse at 70% 20%,rgba(212,175,55,.14),transparent 42%),linear-gradient(135deg,#e8ddcc,#f7f4ee);border:1px solid rgba(18,60,50,.12)}
-.photo_placeholder span{max-width:22em;font-size:10px;line-height:1.8;letter-spacing:.18em;text-transform:uppercase}
-.gospels_behind{position:absolute;left:-24px;top:-24px;width:100%;height:100%;border:1px solid var(--line);pointer-events:none}
-@media(max-width:900px){.gospels{padding:80px 0}.gospels_inner{grid-template-columns:1fr;padding:0 24px;gap:40px}.gospels_img_wrap{aspect-ratio:16/12}}
-/* STORY */
-.story{padding:120px 0;background:var(--ivory);border-top:1px solid var(--line2)}
-.story_inner{max-width:1280px;margin:0 auto;padding:0 48px}
-.story_top{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:start}
-.story_copy{columns:1;max-width:none}
-.story_copy p{margin-bottom:1.6em;font-size:16px;line-height:1.95;opacity:.9}
-.story_image{margin-top:80px;display:grid;grid-template-columns:1.6fr .8fr;gap:24px;align-items:end}
-.story_image_main{aspect-ratio:16/10;overflow:hidden;background:var(--beige)}
-.story_image_main img{width:100%;height:100%;object-fit:cover}
-.story_image_main .photo_placeholder{min-height:0;height:100%}
-.story_image_side{aspect-ratio:3/4;overflow:hidden;background:var(--beige);margin-bottom:40px}
-.story_image_side img{width:100%;height:100%;object-fit:cover}
-.story_image_side .photo_placeholder{min-height:0;height:100%;padding:18px}
-.timeline{margin-top:80px;border-top:1px solid var(--char);display:grid;grid-template-columns:repeat(5,1fr)}
-.tl_item{padding:20px 16px 0;border-right:1px solid var(--line)}
-.tl_item:last-child{border-right:none}
-.tl_date{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
-.tl_title{font-family:var(--serif);font-size:16px;margin-top:10px;letter-spacing:.02em}
-@media(max-width:900px){.story_inner{padding:0 24px}.story_top{grid-template-columns:1fr;gap:32px}.story_image{grid-template-columns:1fr}.story_image_side{display:none}.timeline{grid-template-columns:1fr}.tl_item{border-right:none;border-bottom:1px solid var(--line);padding:16px 0}}
-/* HOW WE MET */
-.how{padding:120px 0;background:var(--warm)}
-.how_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
-.video_frame{position:relative;aspect-ratio:16/11;background:var(--char);overflow:hidden}
-.video_frame video,.video_frame iframe{width:100%;height:100%;object-fit:cover;border:none}
-.video_poster{position:absolute;inset:0;cursor:pointer}
-.video_poster img,.video_poster .photo_placeholder{width:100%;height:100%;object-fit:cover;min-height:0}
-.video_play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:var(--warm);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.18);transition:transform .4s var(--ease)}
-.video_poster:hover .video_play{transform:translate(-50%,-50%) scale(1.08)}
-.how_text h3{font-family:var(--serif);font-size:clamp(28px,4vw,52px);line-height:.95}
-.how_text h3 em{font-family:var(--serif2);font-style:italic;font-weight:300}
-.how_text p{margin-top:20px}
-.how_label{margin-top:28px;display:flex;gap:12px;align-items:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
-.how_label:before{content:"";width:28px;height:1px;background:var(--char)}
-@media(max-width:900px){.how{padding:80px 0}.how_inner{grid-template-columns:1fr;padding:0 24px}.how_inner .video_frame{order:2}.how_inner .how_text{order:1}}
-/* MOMENTS CINEMATIC - reference inspired */
-.moments_cine{position:relative;height:92vh;min-height:640px;background:#0f1512;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.moments_bg{position:absolute;inset:0;overflow:hidden}
-.moments_bg img{width:100%;height:100%;object-fit:cover;filter:blur(18px) brightness(.55) saturate(.8);transform:scale(1.08);transition:opacity 1s var(--ease), transform 1.2s var(--ease);opacity:0;position:absolute;inset:0}
-.moments_bg img.active{opacity:1}
-.moments_card_wrap{position:relative;z-index:2;width:min(440px,86vw);transform:rotate(-1deg)}
-.moments_card{position:relative;background:var(--warm);padding:10px 10px 0;box-shadow:0 24px 64px rgba(0,0,0,.35), 0 2px 0 rgba(0,0,0,.06) inset;transition:transform .8s var(--ease)}
-.moments_card img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
-.moments_card_caption{padding:18px 14px 20px;background:var(--warm)}
-.moments_card_caption h4{font-family:var(--serif);font-size:18px;line-height:1.1;letter-spacing:.02em}
-.moments_card_caption p{font-size:12px;line-height:1.6;margin-top:8px;opacity:.7}
-.moments_card_name{margin-top:12px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.8;font-weight:600}
-.moments_nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,94vw);display:flex;justify-content:space-between;pointer-events:none;z-index:3}
-.moments_nav button{pointer-events:auto;width:44px;height:44px;border-radius:50%;background:var(--warm);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;transition:all .3s}
-.moments_nav button:hover{background:var(--char);color:var(--warm)}
-.moments_counter{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:3;color:var(--warm);font-size:11px;letter-spacing:.2em;display:flex;align-items:center;gap:16px;opacity:.9}
-.memories_empty{position:relative;z-index:2;width:min(440px,86vw);padding:36px 32px;background:var(--warm);text-align:center;font-family:var(--serif);font-size:22px;box-shadow:0 24px 64px rgba(0,0,0,.3)}
-.moments_dots{display:flex;gap:6px}
-.moments_dots span{width:24px;height:2px;background:rgba(252,251,247,.3);transition:background .4s}
-.moments_dots span.active{background:var(--warm)}
-.moments_title{position:absolute;top:32px;left:50%;transform:translateX(-50%);z-index:3;color:var(--warm);text-align:center}
-.moments_title .eyebrow{color:rgba(252,251,247,.7)}
-.moments_title .eyebrow:before{background:rgba(252,251,247,.7)}
-.moments_title h2{font-family:var(--serif);font-size:28px;letter-spacing:.02em;margin-top:8px;font-weight:400}
-@media(max-width:700px){.moments_cine{height:86vh}.moments_nav{width:92vw}.moments_card_wrap{width:78vw}}
-/* GALLERY MASONRY */
-.gallery_mason{padding:120px 0;background:var(--ivory)}
-.gallery_head{max-width:1280px;margin:0 auto;padding:0 48px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
-.gallery_grid{max-width:1280px;margin:48px auto 0;padding:0 24px;columns:3;column-gap:24px}
-.gallery_item{break-inside:avoid;margin-bottom:24px;position:relative;overflow:hidden;background:var(--beige);cursor:pointer}
-.gallery_item img{width:100%;height:auto;display:block;transition:transform 1s var(--ease), filter .6s}
-.gallery_item:hover img{transform:scale(1.04)}
-.gallery_item_meta{position:absolute;left:0;right:0;bottom:0;padding:14px 16px;background:linear-gradient(0deg, rgba(0,0,0,.45), transparent);color:white;opacity:0;transition:opacity .4s}
-.gallery_item:hover .gallery_item_meta{opacity:1}
-.gallery_item_meta span{font-size:10px;letter-spacing:.18em;text-transform:uppercase}
-.gallery_empty{max-width:1280px;margin:48px auto 0;padding:0 48px;font-family:var(--serif2);font-size:22px;opacity:.65}
-@media(max-width:640px){.gallery_empty{padding:0 24px}}
-@media(max-width:1000px){.gallery_grid{columns:2}}
-@media(max-width:640px){.gallery_grid{columns:1;padding:0 16px}.gallery_head{padding:0 24px}}
-/* LIGHTBOX */
-.lightbox{position:fixed;inset:0;z-index:80;background:rgba(18,24,20,.96);display:none;align-items:center;justify-content:center;padding:24px}
-.lightbox.open{display:flex}
-.lightbox_img{max-width:92vw;max-height:82vh;object-fit:contain;box-shadow:0 24px 80px rgba(0,0,0,.5)}
-.lightbox_ui{position:absolute;inset:0;pointer-events:none}
-.lightbox_ui button{pointer-events:auto}
-.lb_close{position:absolute;top:20px;right:20px;width:44px;height:44px;border:1px solid rgba(255,255,255,.2);border-radius:50%;color:white;display:flex;align-items:center;justify-content:center}
-.lb_prev,.lb_next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(252,251,247,.12);border:1px solid rgba(252,251,247,.2);color:white;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.lb_prev{left:20px}.lb_next{right:20px}
-.lb_counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:white;font-size:11px;letter-spacing:.2em;opacity:.7}
-/* WEDDING */
-.wedding{padding:140px 0;background:var(--warm);border-top:1px solid var(--line2)}
-.wedding_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
-.wedding_side{position:sticky;top:120px;align-self:start}
-.wedding_timeline{border-top:1px solid var(--char);margin-top:32px}
-.wt_row{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.wt_time{font-family:var(--serif);font-size:20px;letter-spacing:.02em}
-.wt_label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
-.wt_title{font-family:var(--serif);font-size:20px;line-height:1.2}
-.wt_desc{font-size:13px;opacity:.7;margin-top:6px}
-.btn_line{margin-top:32px;display:inline-flex;align-items:center;gap:12px;border:1px solid var(--char);padding:14px 22px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;transition:all .4s}
-.btn_line:hover{background:var(--char);color:var(--warm)}
-@media(max-width:900px){.wedding{padding:80px 0}.wedding_inner{grid-template-columns:1fr;padding:0 24px}.wedding_side{position:static}}
-/* VENUE */
-.venue{padding:100px 0;background:var(--ivory)}
-.venue_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.1fr .9fr;gap:0;align-items:stretch;border:1px solid var(--line)}
-.venue_map{position:relative;background:#e8ddcc;min-height:520px;overflow:hidden}
-.venue_map_pattern{position:absolute;inset:0;opacity:.62;background-color:#e8ddcc;background-image:linear-gradient(27deg,transparent 46%,rgba(18,60,50,.18) 47%,rgba(18,60,50,.18) 49%,transparent 50%),linear-gradient(152deg,transparent 43%,rgba(18,60,50,.14) 44%,rgba(18,60,50,.14) 46%,transparent 47%),repeating-linear-gradient(0deg,transparent 0 54px,rgba(18,60,50,.08) 55px 57px),repeating-linear-gradient(90deg,transparent 0 72px,rgba(18,60,50,.08) 73px 75px)}
-.venue_map_label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 32px);padding:14px 18px;background:var(--warm);border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.12);text-align:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
-.venue_info{padding:48px;background:var(--warm);display:flex;flex-direction:column;justify-content:center}
-.venue_name{font-family:var(--serif);font-size:36px;line-height:.95;margin-top:12px}
-.venue_addr{margin-top:16px;font-size:14px;line-height:1.8;opacity:.8}
-.venue_actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
-@media(max-width:900px){.venue_inner{grid-template-columns:1fr;padding:0 24px;border:none;gap:24px}.venue_inner{border:none}.venue_map{min-height:380px}.venue_info{padding:0;background:transparent}}
-/* DRESSCODE */
-.dress{padding:120px 0;background:var(--warm)}
-.dress_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:start}
-.dress_swatches{margin-top:32px;display:flex;gap:18px;flex-wrap:wrap}
-.swatch{width:92px;text-align:center}
-.swatch_circle{width:64px;height:64px;border-radius:50%;margin:0 auto;border:1px solid var(--line);position:relative;overflow:hidden}
-.swatch_label{font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;display:block;opacity:.8}
-.dress_note{margin-top:32px;padding:20px;border-left:1px solid var(--char);font-family:var(--serif2);font-style:italic;font-size:18px;line-height:1.4;opacity:.85}
-@media(max-width:900px){.dress{padding:80px 0}.dress_inner{grid-template-columns:1fr;padding:0 24px;gap:40px}}
-/* MC */
-.mc{padding:120px 0;background:var(--deep);color:var(--ivory)}
-.mc_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center}
-.mc_img{aspect-ratio:4/5;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-.mc_img img{width:100%;height:100%;object-fit:cover}
-.mc_role{font-size:10px;letter-spacing:.26em;text-transform:uppercase;opacity:.6}
-.mc_name{font-family:var(--serif);font-size:clamp(28px,4vw,48px);line-height:.95;margin-top:12px}
-.mc_bio{margin-top:20px;opacity:.8;line-height:1.9}
-.mc_social{display:flex;gap:16px;margin-top:28px}
-.mc_social a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;border-bottom:1px solid rgba(252,251,247,.2);padding-bottom:4px}
-.mc_social a:hover{opacity:1}
-@media(max-width:900px){.mc{padding:80px 0}.mc_inner{grid-template-columns:1fr;padding:0 24px}}
-/* INFO + QA */
-.info_qa{padding:120px 0;background:var(--ivory);display:grid;grid-template-columns:1fr 1fr}
-.info_col{padding:0 48px}
-.info_col:first-child{border-right:1px solid var(--line)}
-.info_list{margin-top:32px;display:grid;gap:32px}
-.info_item h4{font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
-.info_item p{font-size:14px;line-height:1.8;opacity:.8}
-.qa_list{margin-top:32px;border-top:1px solid var(--char)}
-.qa_item{border-bottom:1px solid var(--line)}
-.qa_q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:20px 0;text-align:left;font-family:var(--serif);font-size:18px;line-height:1.3}
-.qa_q span:last-child{font-family:var(--sans);font-size:14px;transition:transform .4s}
-.qa_item.open .qa_q span:last-child{transform:rotate(45deg)}
-.qa_a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease), opacity .4s;opacity:0}
-.qa_item.open .qa_a{max-height:300px;opacity:.8;padding-bottom:20px}
-.qa_a p{font-size:14px;line-height:1.8}
-@media(max-width:900px){.info_qa{grid-template-columns:1fr}.info_col{padding:32px 24px}.info_col:first-child{border-right:none;border-bottom:1px solid var(--line)}}
-/* CASH GIFTS */
-.cash_gift{padding:120px 0;background:var(--warm)}
-.cash_gift_inner{max-width:1100px;margin:0 auto;padding:0 48px}
-.cash_gift_intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end}
-.cash_gift_intro .body{opacity:.72}
-.cash_gift_note{margin-top:28px;max-width:52em;line-height:1.8}
-.cash_gift_disclaimer{margin-top:18px;font-size:11px;line-height:1.7;opacity:.58}
-@media(max-width:700px){.cash_gift{padding:80px 0}.cash_gift_inner{padding:0 24px}.cash_gift_intro{grid-template-columns:1fr;gap:24px}}
-/* RSVP */
-.rsvp{padding:120px 0;background:var(--deep);color:var(--ivory)}
-.rsvp_inner{max-width:960px;margin:0 auto;padding:0 48px;text-align:center}
-.rsvp_form{margin-top:48px;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:20px;background:var(--warm);color:var(--char);padding:32px;border:1px solid rgba(255,255,255,.08)}
-.rsvp_field{display:flex;flex-direction:column;gap:8px}
-.rsvp_field.full{grid-column:1/-1}
-.rsvp_field label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
-.rsvp_field input,.rsvp_field select,.rsvp_field textarea{border:none;border-bottom:1px solid var(--line);padding:12px 0;font-family:var(--sans);font-size:14px;background:transparent;outline:none;transition:border-color .3s}
-.rsvp_field input:focus,.rsvp_field textarea:focus{border-color:var(--char)}
-.rsvp_submit{grid-column:1/-1;margin-top:12px;background:var(--char);color:var(--warm);padding:16px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:opacity .3s}
-.rsvp_submit:hover{opacity:.9}
-.rsvp_whatsapp{display:inline-flex;align-items:center;justify-content:center;margin-top:24px;padding:13px 18px;border:1px solid rgba(252,251,247,.65);color:var(--warm);font-size:10px;letter-spacing:.14em;text-transform:uppercase;transition:background .3s,color .3s}
-.rsvp_whatsapp:hover{background:var(--warm);color:var(--deep)}
-@media(max-width:700px){.rsvp_inner{padding:0 24px}.rsvp_form{grid-template-columns:1fr;padding:24px 20px}}
-/* GUESTBOOK */
-.guestbook{padding:100px 0;background:var(--ivory);border-top:1px solid var(--line2)}
-.gb_inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
-.gb_list{display:grid;gap:24px;margin-top:24px}
-.gb_card{border-bottom:1px solid var(--line);padding-bottom:20px}
-.gb_msg{font-family:var(--serif2);font-style:italic;font-size:18px;line-height:1.5}
-.gb_empty{padding:18px;border:1px dashed var(--line);font-size:13px;opacity:.65}
-.gb_name{font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-top:10px;opacity:.6}
-.gb_form{border:1px solid var(--line);padding:24px;background:var(--warm);align-self:start}
-.gb_form h4{font-family:var(--serif);font-size:20px}
-@media(max-width:900px){.gb_inner{grid-template-columns:1fr;padding:0 24px}}
-/* CLOSING */
-.closing{position:relative;height:92vh;min-height:600px;background:linear-gradient(135deg,#103b32 0%,#1b5547 52%,#0b2c25 100%);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--warm)}
-.closing_overlay{position:absolute;inset:0;background:linear-gradient(0deg, rgba(18,60,50,.7), rgba(18,60,50,.2))}
-.closing_content{position:relative;z-index:2;padding:0 24px;max-width:720px}
-.closing_content h2{font-family:var(--serif);font-size:clamp(32px,5vw,64px);line-height:.9;letter-spacing:-.02em;font-weight:300}
-.closing_content h2 em{font-family:var(--serif2);font-style:italic}
-.closing_hash{margin-top:24px;font-family:var(--serif);font-size:18px;letter-spacing:.06em}
-.closing_thanks{margin-top:16px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
-/* FOOTER */
-.footer{background:var(--deep);color:var(--ivory);padding:80px 0 32px}
-.footer_inner{max-width:1280px;margin:0 auto;padding:0 48px}
-.footer_top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;border-bottom:1px solid rgba(252,251,247,.12);padding-bottom:40px}
-.footer_brand{display:flex;align-items:center;gap:18px}
-.footer_brand img{width:76px;height:76px;flex:none;border-radius:50%}
-.footer_brand span{font-family:var(--serif);font-size:48px;line-height:.9;letter-spacing:-.02em}
-.footer_nav{display:flex;gap:24px;flex-wrap:wrap;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
-.footer_bottom{margin-top:32px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
-@media(max-width:700px){.footer_inner{padding:0 24px}.footer_brand span{font-size:36px}.footer_brand img{width:64px;height:64px}}
-/* MODALS */
-.modal{position:fixed;inset:0;z-index:90;background:rgba(18,24,20,.72);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
-.modal.open{display:flex}
-.modal_box{background:var(--warm);width:min(560px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);position:relative;animation:modalIn .6s var(--ease)}
-@keyframes modalIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.modal_close{position:absolute;top:12px;right:12px;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--warm);z-index:2}
-.modal_content{padding:28px}
-.modal_img{aspect-ratio:16/10;overflow:hidden;background:var(--beige)}
-.modal_img img{width:100%;height:100%;object-fit:cover}
-.share_row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-.share_btn{border:1px solid var(--line);padding:10px 14px;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
-/* UTIL */
-.scroll_prog{position:fixed;top:0;left:0;height:2px;background:var(--deep);width:0;z-index:100;transition:width .1s linear}
-.add_cal{font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-bottom:1px solid var(--char);padding-bottom:4px;margin-top:12px;display:inline-block}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
-</style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { min-height: 100%; background: var(--paper); }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      padding: clamp(14px, 3vw, 34px);
+      display: grid;
+      place-items: center;
+      background: var(--paper);
+      color: var(--forest);
+      font-family: "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+      width: min(100%, 1000px);
+      min-height: min(720px, calc(100svh - 28px));
+      padding: clamp(26px, 5vw, 58px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .page::before {
+      position: absolute;
+      z-index: -1;
+      inset: 10px;
+      border: 1px solid rgba(185, 155, 93, .38);
+      content: "";
+      pointer-events: none;
+    }
+
+    .masthead,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .17em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .masthead { min-height: 24px; }
+    .brand { white-space: nowrap; }
+    .edition { color: var(--forest-soft); text-align: right; }
+
+    .note {
+      width: min(100%, 670px);
+      margin: auto;
+      padding: 72px 20px 78px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 24px;
+      color: var(--forest-soft);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .24em;
+      line-height: 1.7;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(44px, 7vw, 78px);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.04;
+    }
+
+    .divider {
+      width: 74px;
+      height: 1px;
+      margin: 32px auto;
+      background: var(--gold);
+    }
+
+    .message {
+      max-width: 48ch;
+      margin: 0 auto;
+      color: #4e5d53;
+      font-size: clamp(16px, 2vw, 18px);
+      line-height: 1.9;
+    }
+
+    .thanks {
+      margin: 12px auto 0;
+      color: #657168;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .signature {
+      margin: 30px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(23px, 3vw, 29px);
+      font-style: italic;
+      line-height: 1.3;
+    }
+
+    .footer {
+      color: var(--forest-soft);
+      font-size: 9px;
+      letter-spacing: .15em;
+    }
+
+    .footer-note { text-align: right; }
+
+    @media (max-width: 560px) {
+      .page {
+        min-height: calc(100svh - 28px);
+        padding: 30px 24px;
+      }
+
+      .page::before { inset: 7px; }
+      .masthead { align-items: flex-start; font-size: 8px; letter-spacing: .12em; }
+      .note { padding: 55px 8px; }
+      .eyebrow { font-size: 9px; letter-spacing: .18em; }
+      .divider { margin: 26px auto; }
+      .message { font-size: 16px; line-height: 1.8; }
+      .thanks { font-size: 13px; }
+      .footer { align-items: flex-end; font-size: 8px; letter-spacing: .1em; }
+    }
+
+    @media (max-height: 620px) and (min-width: 561px) {
+      .page { min-height: calc(100svh - 28px); }
+      .note { padding-block: 36px; }
+      .divider { margin-block: 22px; }
+      .signature { margin-top: 20px; }
+    }
+  </style>
 </head>
 <body>
-<div class="scroll_prog" id="scrollProg"></div>
+  <main class="page">
+    <header class="masthead">
+      <span class="brand">#THEGOSPELS26</span>
+      <span class="edition">A note from Benny &amp; Chiamaka</span>
+    </header>
 
-<nav class="nav" id="nav">
-  <a href="#home" class="nav_logo" aria-label="With the Gospels home"><img src="/favicon.svg" alt=""></a>
-  <div class="nav_links" id="navLinks">
-    <a href="#home">Home</a>
-    <a href="#story">Our Story</a>
-    <a href="#wedding">Our Wedding</a>
-    <a href="#memories">Memories</a>
-    <a href="#qa">Q&A</a>
-    <a href="#cash-gift">Cash Gift</a>
-  </div>
-  <div class="nav_right">
-    <a href="#rsvp" class="nav_cta">RSVP</a>
-    <button class="nav_burger" id="burger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
+    <section class="note" aria-labelledby="page-title">
+      <p class="eyebrow">With love and gratitude</p>
+      <h1 id="page-title">A quiet pause.</h1>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="message">Our wedding website is temporarily paused while we review a few things.</p>
+      <p class="thanks">Thank you for your patience and understanding. Please check back later.</p>
+      <p class="signature">Benny &amp; Chiamaka</p>
+    </section>
 
-<div class="mobile_menu" id="mobileMenu">
-  <div class="mobile_menu_top">
-    <div class="nav_logo"><img src="/favicon.svg" alt="The Gospels"></div>
-    <button id="closeMenu" aria-label="Close">✕</button>
-  </div>
-  <div class="mobile_menu_links">
-    <a href="#home" data-close><span>01</span>Home</a>
-    <a href="#story" data-close><span>02</span>Our Story</a>
-    <a href="#wedding" data-close><span>03</span>Our Wedding</a>
-    <a href="#memories" data-close><span>04</span>Memories</a>
-    <a href="#qa" data-close><span>05</span>Q&A</a>
-    <a href="#cash-gift" data-close><span>06</span>Cash Gift</a>
-    <a href="#rsvp" data-close><span>07</span>RSVP</a>
-  </div>
-  <div class="mobile_menu_foot"><span>#THEGOSPELS26</span><span>Nov 21, 2026</span></div>
-</div>
-
-<header class="hero" id="home">
-  <div class="hero_overlay"></div>
-  <div class="hero_content">
-    <div class="hero_eyebrow">The beginning of forever</div>
-    <h1 class="hero_title">Chiamaka Boma Ibekwe <em>&</em> Gospel Abina-Aziba MacBenneth Isikpi</h1>
-    <div class="hero_meta">
-      <div class="hero_date">Saturday, November 21, 2026<br>11:00 AM prompt — Port Harcourt</div>
-      <div class="hero_hash">#THEGOSPELS26</div>
-    </div>
-  </div>
-  <div class="hero_scroll">Scroll — Discover our story</div>
-</header>
-
-<section class="families_bar" aria-label="Families">
-  <div class="families_inner">
-    <div class="eyebrow">Together with their families</div>
-    <div class="families_grid">
-      <p>Mr Ikechukwu Ibekwe &amp; Hon. Mrs Ibierembo Thompson-Ibekwe</p>
-      <p>Bishop &amp; Pastor Mrs Lemuel MacSimple Isikpi</p>
-    </div>
-  </div>
-</section>
-
-<section class="countdown_sec" id="countdownSec">
-  <div class="count_wrap">
-    <div>
-      <div class="eyebrow">Save the date</div>
-      <h2 class="count_big reveal"><span>THE DAY WE</span><span>SAY <em>I DO</em></span></h2>
-      <p class="body count_desc reveal">Two families, one celebration. Surrounded by the people who have shaped us, we will make promises that last a lifetime.</p>
-      <div class="count_note reveal">Until we begin this beautiful chapter</div>
-      <div class="count_grid reveal" id="countGrid">
-        <div class="count_item"><span class="count_num" id="cDays">—</span><span class="count_lab">Days</span></div>
-        <div class="count_item"><span class="count_num" id="cHours">—</span><span class="count_lab">Hours</span></div>
-        <div class="count_item"><span class="count_num" id="cMins">—</span><span class="count_lab">Minutes</span></div>
-        <div class="count_item"><span class="count_num" id="cSecs">—</span><span class="count_lab">Seconds</span></div>
-      </div>
-      <button class="add_cal" id="addCalBtn">Add to calendar</button>
-    </div>
-    <div class="reveal" style="border-left:1px solid var(--line);padding-left:48px">
-      <div style="font-family:var(--serif);font-size:88px;line-height:.9;letter-spacing:-.04em">
-        <div>21</div><div style="opacity:.3">11</div><div style="opacity:.6">2026</div>
-      </div>
-      <div style="margin-top:24px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;line-height:1.8">
-        Saturday<br>11:00 AM prompt<br>ATWIL EVENT CENTER<br>Akpajo, Port Harcourt
-      </div>
-      <div style="margin-top:32px;display:flex;gap:12px">
-        <button class="share_btn" id="copyLinkBtn">Copy Link</button>
-        <button class="share_btn" id="shareBtn">Share</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="gospels" id="gospels">
-  <div class="gospels_inner">
-    <div>
-      <div class="eyebrow">The Gospel</div>
-      <div class="gospels_hash reveal">#THE<br>GOSPELS26</div>
-      <div class="gospels_quote reveal">One celebration.<br>Two families.<br>A new chapter.</div>
-      <p class="body gospels_text reveal">With gratitude to God and the love of their families, Chiamaka and Gospel invite you to celebrate their wedding ceremony.</p>
-    </div>
-    <div class="gospels_img_wrap reveal">
-      <div class="gospels_behind"></div>
-      <div class="photo_placeholder"><span>Wedding photos will be shared here by the couple.</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="story" id="story">
-  <div class="story_inner">
-    <div class="story_top">
-      <div>
-        <div class="eyebrow">Our love story</div>
-        <h2 class="h2 reveal" style="margin-top:16px">Two families,<br>one joyful<br><i>beginning.</i></h2>
-      </div>
-      <div class="story_copy reveal" id="storyCopy"></div>
-    </div>
-    <div class="story_image reveal">
-      <div class="story_image_main"><div class="photo_placeholder"><span>Real wedding photos will be added by the couple.</span></div></div>
-      <div class="story_image_side"><div class="photo_placeholder"><span>Shared by the couple</span></div></div>
-    </div>
-    <div class="timeline" id="timeline"></div>
-  </div>
-</section>
-
-<section class="how" id="howWeMet">
-  <div class="how_inner">
-    <div class="video_frame reveal" id="videoFrame">
-      <div class="video_poster" id="videoPoster">
-        <div class="photo_placeholder"><span>The couple’s story video will appear here when they add it.</span></div>
-      </div>
-    </div>
-    <div class="how_text reveal">
-      <div class="eyebrow">Our story, in our own words</div>
-      <h3 style="margin-top:16px">THE MOMENT<br><em>it all began</em></h3>
-      <p class="body">The couple’s YouTube podcast will appear here once it has been provided and added to the wedding site.</p>
-      <p class="body" style="opacity:.7;font-size:13px">No podcast URL has been supplied yet. When available, playback will attempt to start muted; browser autoplay policies may require a tap.</p>
-      <div class="how_label">Podcast coming soon</div>
-    </div>
-  </div>
-</section>
-
-<section class="moments_cine" id="memories" aria-label="Memories">
-  <div class="moments_bg" id="momentsBg"></div>
-  <div class="moments_title"><div class="eyebrow">Our memories</div><h2>Little moments, held forever</h2></div>
-  <div class="memories_empty" id="momentsEmpty" hidden>Our memory album is taking shape. Photos will be added as they are shared.</div>
-  <div class="moments_card_wrap"><div class="moments_card" id="momentsCard"><img id="momentsImg" alt=""><div class="moments_card_caption"><h4 id="momentsTitle"></h4><p id="momentsCaption"></p><div class="moments_card_name" id="momentsName"></div></div></div></div>
-  <div class="moments_nav"><button id="momPrev" aria-label="Previous">←</button><button id="momNext" aria-label="Next">→</button></div>
-  <div class="moments_counter"><span id="momCounter"></span><div class="moments_dots" id="momDots"></div></div>
-</section>
-
-<section class="gallery_mason" id="gallery">
-  <div class="gallery_head"><div><div class="eyebrow">Photo journal</div><h2 class="h2" style="margin-top:12px">A love letter<br><i>in photographs</i></h2></div><div class="body" style="max-width:22em;opacity:.7">A photo journal of the moments Chiamaka and Gospel choose to share with family and friends.</div></div>
-  <div class="gallery_grid" id="galleryGrid"></div><p class="gallery_empty" id="galleryEmpty" hidden>Photos will be added to the journal as they are shared.</p>
-</section>
-
-<div class="lightbox" id="lightbox"><img class="lightbox_img" id="lbImg" alt=""><div class="lightbox_ui"><button class="lb_close" id="lbClose">✕</button><button class="lb_prev" id="lbPrev">‹</button><button class="lb_next" id="lbNext">›</button><div class="lb_counter" id="lbCounter"></div></div></div>
-
-<section class="wedding" id="wedding">
-  <div class="wedding_inner">
-    <div class="wedding_side reveal">
-      <div class="eyebrow">Our wedding</div>
-      <h2 class="h2" style="margin-top:12px">Come<br>celebrate<br><i>with us.</i></h2>
-      <p class="body" style="margin-top:20px;opacity:.7">Chiamaka and Gospel would be honoured by your presence as they celebrate with their families.</p>
-    </div>
-    <div class="reveal">
-      <div class="wedding_timeline" id="weddingTimeline"></div>
-      <div style="margin-top:48px;display:flex;gap:12px;flex-wrap:wrap"><button class="btn_line" id="venueJump">Venue details</button><button class="btn_line" id="addCalBtn2">Add to calendar</button></div>
-    </div>
-  </div>
-</section>
-
-<section class="venue" id="venue">
-  <div class="venue_inner reveal">
-    <div class="venue_map" role="img" aria-label="Venue location card; use View location for directions"><div class="venue_map_pattern" aria-hidden="true"></div><div class="venue_map_label">ATWIL EVENT CENTER • PORT HARCOURT</div></div>
-    <div class="venue_info"><div class="eyebrow">Venue</div><div class="venue_name" id="venueName"></div><div class="venue_addr" id="venueAddr"></div><div class="venue_actions"><a class="btn_line" id="viewMapBtn" href="#" target="_blank">View location</a><button class="btn_line" id="copyAddrBtn">Copy address</button></div><div style="margin-top:28px;font-size:12px;line-height:1.7;opacity:.7">The ceremony begins at 11:00 AM prompt. The reception follows.</div></div>
-  </div>
-</section>
-
-<section class="dress" id="dresscode">
-  <div class="dress_inner">
-    <div class="reveal"><div class="eyebrow">Dress code</div><h2 class="h2" style="margin-top:12px">Colors of<br><i>the day</i></h2><p class="body" style="margin-top:16px">The couple’s colors for the celebration are emerald green, beige, gold, and white.</p><div class="dress_note">Emerald green, beige, gold, and white.</div></div>
-    <div class="reveal"><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6">Suggested palette</div><div class="dress_swatches" id="dressSwatches"></div></div>
-  </div>
-</section>
-
-
-
-<section class="info_qa">
-  <div class="info_col reveal"><div class="eyebrow">Good to know</div><h2 class="h2" style="margin-top:12px;font-size:40px">Important<br>information</h2><div class="info_list" id="infoList"></div></div>
-  <div class="info_col reveal" id="qa"><div class="eyebrow">Questions & answers</div><h2 class="h2" style="margin-top:12px;font-size:40px">A few things<br><i>worth knowing</i></h2><div class="qa_list" id="qaList"></div></div>
-</section>
-
-<section class="cash_gift" id="cash-gift">
-  <div class="cash_gift_inner">
-    <div class="cash_gift_intro">
-      <div><div class="eyebrow">Cash gifts</div><h2 class="h2" style="margin-top:12px">Your presence is<br><i>the greatest gift.</i></h2></div>
-      <p class="body">We are grateful to celebrate with you. Cash gifts are entirely optional; bank transfer details will be shared here by the couple.</p>
-    </div>
-    <p class="cash_gift_note" role="status">This static prototype is not connected to the wedding settings. Add verified account details in the Laravel admin before launch.</p>
-    <p class="cash_gift_disclaimer">This website does not process or verify payments.</p>
-  </div>
-</section>
-
-<section class="rsvp" id="rsvp">
-  <div class="rsvp_inner">
-    <div class="eyebrow" style="color:rgba(252,251,247,.6)">RSVP</div>
-    <h2 class="h2" style="color:var(--warm);margin-top:12px">Will you celebrate<br><i>with us?</i></h2>
-    <p class="body" style="margin:16px auto 0;opacity:.7;color:var(--ivory)">Kindly respond by November 7, 2026.</p>
-    <form class="rsvp_form" id="rsvpForm">
-      <div class="rsvp_field"><label for="rsvpName">Full name</label><input id="rsvpName" required name="name" placeholder="Your full name" autocomplete="name" maxlength="255"></div>
-      <div class="rsvp_field"><label for="rsvpPhone">Phone number</label><input id="rsvpPhone" required type="tel" name="phone" placeholder="+234..." autocomplete="tel" inputmode="tel" maxlength="50"></div>
-      <button class="rsvp_submit" type="submit">Confirm my RSVP</button>
-    </form>
-    <a class="rsvp_whatsapp" href="https://wa.me/2348147684895?text=Hello%2C%20I%20would%20like%20to%20RSVP%20for%20Chiamaka%20and%20Gospel%27s%20wedding" target="_blank" rel="noopener noreferrer">Prefer WhatsApp? Message 08147684895</a>
-  </div>
-</section>
-
-<section class="guestbook" id="guestbook">
-  <div class="gb_inner">
-    <div><div class="eyebrow">Guestbook</div><h2 class="h2" style="margin-top:12px;font-size:36px">Leave us<br><i>a note</i></h2><p class="body" style="margin-top:12px;opacity:.7">Words you leave here will be kept in our home. Thank you for being part of our story.</p></div>
-    <div><div class="gb_list" id="gbList"></div><form class="gb_form" id="gbForm"><h4>Write a message</h4><div class="rsvp_field" style="margin-top:16px"><label>Your name</label><input name="gb_name" required placeholder="Name"></div><div class="rsvp_field" style="margin-top:12px"><label>Message</label><textarea name="gb_msg" rows="3" required placeholder="May your home always be..."></textarea></div><button class="btn_line" style="width:100%;margin-top:16px;justify-content:center" type="submit">Post note</button></form></div>
-  </div>
-</section>
-
-<section class="closing">
-  <div class="closing_overlay"></div>
-  <div class="closing_content reveal"><h2>And so,<br>our next chapter<br><em>begins.</em></h2><div class="closing_hash">THE GOSPELS — #THEGOSPELS26</div><div class="closing_thanks">Thank you for being part of our celebration.</div></div>
-</section>
-
-<footer class="footer">
-  <div class="footer_inner">
-    <div class="footer_top"><div class="footer_brand"><img src="/favicon.svg" alt="" aria-hidden="true"><span>THE<br>GOSPELS</span></div><div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.6;margin-bottom:16px">#THEGOSPELS26 — November 21, 2026</div><div class="footer_nav"><a href="#story">Our story</a><a href="#wedding">Our wedding</a><a href="#memories">Memories</a><a href="#qa">Q&A</a><a href="#cash-gift">Cash gift</a><a href="https://withthegospels.name.ng/admin" target="_blank" rel="noopener">Admin</a></div></div></div>
-    <div class="footer_bottom"><span>With love, Chiamaka &amp; Gospel</span><span>Port Harcourt, Rivers State • Crafted with care</span></div>
-  </div>
-</footer>
-
-<!-- RSVP prototype notice: the static file does not save responses. -->
-<div class="modal" id="rsvpModal"><div class="modal_box" style="text-align:center"><div class="modal_content" style="padding:48px 28px"><div style="font-family:var(--serif);font-size:42px;line-height:.9">Preview only.</div><p class="body" style="margin:16px auto 0">This static prototype does not save RSVPs. Please RSVP on WhatsApp or use the live Laravel website.</p><button class="btn_line" id="rsvpModalClose" style="margin-top:24px">Close</button></div></div></div>
-
-<script>
-// MOCK DATA ARCHITECTURE - Laravel ready
-const weddingData = {
-  couple:{
-    partnerOne:"Chiamaka Boma Ibekwe",
-    partnerTwo:"Gospel Abina-Aziba MacBenneth Isikpi",
-    hashtag:"#THEGOSPELS26",
-    familyOne:"Mr Ikechukwu Ibekwe & Hon. Mrs Ibierembo Thompson-Ibekwe",
-    familyTwo:"Bishop & Pastor Mrs Lemuel MacSimple Isikpi"
-  },
-  wedding:{
-    date:"2026-11-21",
-    dateLabel:"Saturday, November 21, 2026",
-    dateTime:"2026-11-21T11:00:00+01:00",
-    time:"11:00",
-    timezone:"Africa/Lagos",
-    venue:"ATWIL EVENT CENTER",
-    address:"Akpajo",
-    city:"Port Harcourt, Rivers State",
-    mapsUrl:"https://maps.google.com/?q=ATWIL+EVENT+CENTER+Akpajo+Port+Harcourt",
-    ceremonyTime:"11:00 AM",
-    receptionTime:"To follow"
-  },
-  rsvp:{
-    deadline:"November 7, 2026",
-    whatsapp:"08147684895",
-    whatsappUrl:"https://wa.me/2348147684895?text=Hello%2C%20I%20would%20like%20to%20RSVP%20for%20Chiamaka%20and%20Gospel%27s%20wedding"
-  },
-  story:{
-    title:"Two families, one joyful beginning.",
-    intro:"Chiamaka and Gospel begin a new chapter surrounded by the love of their families.",
-    content:[
-      "With gratitude to God and the love of their families, Chiamaka and Gospel invite you to celebrate their wedding ceremony.",
-      "They look forward to sharing this special day with family and friends as they begin a new chapter together."
-    ],
-    timeline:[
-      {date:"Nov 21, 2026", title:"Wedding Ceremony", desc:"Chiamaka and Gospel begin their new chapter."}
-    ]
-  },
-  podcast:{youtube:null,title:"The Gospels Wedding",desc:"No podcast URL has been supplied yet."},
-  moments:[],
-  gallery:[],
-  mc:null,
-  qa:[
-    {q:"When is the wedding ceremony?",a:"Saturday, November 21, 2026. The ceremony begins at 11:00 AM prompt."},
-    {q:"Where is the wedding?",a:"ATWIL EVENT CENTER, Akpajo, Port Harcourt, Rivers State."},
-    {q:"What are the colors for the day?",a:"Emerald green, beige, gold, and white."},
-    {q:"How do I RSVP?",a:"Please respond by November 7, 2026, using the RSVP form or WhatsApp 08147684895."},
-    {q:"Will there be a reception?",a:"The reception follows the ceremony."}
-  ],
-  info:[
-    {title:"Ceremony",text:"Saturday, November 21, 2026 at 11:00 AM prompt."},
-    {title:"Venue",text:"ATWIL EVENT CENTER, Akpajo, Port Harcourt, Rivers State."},
-    {title:"Reception",text:"Reception to follow the ceremony."},
-    {title:"RSVP",text:"Please respond by November 7, 2026. WhatsApp: 08147684895."}
-  ],
-  dressColors:[
-    {name:"Emerald Green",hex:"#123C32"},
-    {name:"Beige",hex:"#E8DDCC"},
-    {name:"Gold",hex:"#D4AF37"},
-    {name:"White",hex:"#FFFFFF"}
-  ],
-  guestbook:[]
-};
-
-// HELPERS
-const $ = s=>document.querySelector(s);
-const $$ = s=>[...document.querySelectorAll(s)];
-
-// NAV
-function initializeNavigation(){
-  const nav=$("#nav"), burger=$("#burger"), menu=$("#mobileMenu"), close=$("#closeMenu"), prog=$("#scrollProg");
-  const setMenuOpen=(isOpen)=>{
-    menu.classList.toggle("open",isOpen);
-    burger.setAttribute("aria-expanded",String(isOpen));
-    burger.setAttribute("aria-label",isOpen?"Close menu":"Open menu");
-    document.body.classList.toggle("menu-open",isOpen);
-  };
-  const onScroll=()=>{
-    nav.classList.toggle("scrolled", window.scrollY>60);
-    prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)*100)+"%";
-  };
-  window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
-  burger.addEventListener("click", ()=>setMenuOpen(!menu.classList.contains("open")));
-  close.addEventListener("click", ()=>setMenuOpen(false));
-  $$("[data-close]").forEach(a=>a.addEventListener("click", ()=>setMenuOpen(false)));
-}
-
-// COUNTDOWN
-function initializeCountdown(){
-  const target = new Date(weddingData.wedding.dateTime);
-  const els={d:$("#cDays"), h:$("#cHours"), m:$("#cMins"), s:$("#cSecs"), grid:$("#countGrid")};
-  function tick(){
-    const now=new Date(), diff=target-now;
-    if(diff<=0){els.grid.innerHTML=`<div style="grid-column:1/-1;padding:24px;text-align:center;font-family:var(--serif);font-size:24px">Today, we celebrate.</div>`; return;}
-    const d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
-    els.d.textContent=String(d).padStart(2,"0"); els.h.textContent=String(h).padStart(2,"0"); els.m.textContent=String(m).padStart(2,"0"); els.s.textContent=String(s).padStart(2,"0");
-  }
-  tick(); setInterval(tick,1000);
-}
-
-// STORY RENDER
-function renderStory(){
-  $("#storyCopy").innerHTML=weddingData.story.content.map(p=>`<p>${p}</p>`).join("");
-  $("#timeline").innerHTML=weddingData.story.timeline.map(t=>`<div class="tl_item"><div class="tl_date">${t.date}</div><div class="tl_title">${t.title}</div><div style="font-size:12px;opacity:.6;margin-top:4px">${t.desc}</div></div>`).join("");
-}
-
-// VIDEO
-function initializePodcast(){
-  const poster=$("#videoPoster"), frame=$("#videoFrame"), url=weddingData.podcast.youtube;
-  if(!url){
-    poster.setAttribute("aria-disabled","true");
-    poster.querySelector(".video_play")?.remove();
-    return;
-  }
-  const iframe=document.createElement("iframe");
-  iframe.src=`${url.split("?")[0]}?autoplay=1&mute=1&playsinline=1&controls=1&rel=0`;
-  iframe.title=`How ${weddingData.couple.partnerOne} and ${weddingData.couple.partnerTwo} met`;
-  iframe.allow="autoplay; encrypted-media; picture-in-picture";
-  iframe.allowFullscreen=true;
-  iframe.referrerPolicy="strict-origin-when-cross-origin";
-  frame.innerHTML="";
-  frame.appendChild(iframe);
-}
-
-// MOMENTS CINEMATIC
-function initializeGallery(){
-  const data=weddingData.moments;
-  const bg=$("#momentsBg"), img=$("#momentsImg"), title=$("#momentsTitle"), cap=$("#momentsCaption"), name=$("#momentsName"), counter=$("#momCounter"), dots=$("#momDots"), card=$("#momentsCard");
-  if(!data.length){
-    $("#momentsEmpty").hidden=false;
-    card.closest(".moments_card_wrap").hidden=true;
-    $(".moments_nav").hidden=true;
-    $(".moments_counter").hidden=true;
-    return;
-  }
-  let idx=0, timer=null, paused=false;
-  bg.innerHTML=data.map((m,i)=>`<img src="${m.src}" alt="" class="${i===0?'active':''}">`).join("");
-  const bgImgs=[...bg.children];
-  function render(){
-    const m=data[idx];
-    img.style.opacity=0;
-    setTimeout(()=>{
-      img.src=m.src; title.textContent=m.title; cap.textContent=m.caption; name.textContent=m.name; counter.textContent=`${String(idx+1).padStart(2,"0")} / ${String(data.length).padStart(2,"0")}`;
-      img.style.opacity=1;
-    },180);
-    bgImgs.forEach((im,i)=>im.classList.toggle("active", i===idx));
-    dots.innerHTML=data.map((_,i)=>`<span class="${i===idx?'active':''}"></span>`).join("");
-    card.style.transform=`rotate(${idx%2?1:-1}deg)`;
-  }
-  function next(){idx=(idx+1)%data.length; render();}
-  function prev(){idx=(idx-1+data.length)%data.length; render();}
-  $("#momNext").addEventListener("click", ()=>{next(); restart();});
-  $("#momPrev").addEventListener("click", ()=>{prev(); restart();});
-  dots.addEventListener("click", e=>{
-    const i=[...dots.children].indexOf(e.target);
-    if(i>=0){idx=i; render(); restart();}
-  });
-  function restart(){clearInterval(timer); if(!paused) timer=setInterval(next,5200);}
-  function start(){timer=setInterval(next,5200);}
-  $("#memories").addEventListener("mouseenter", ()=>{paused=true; clearInterval(timer);});
-  $("#memories").addEventListener("mouseleave", ()=>{paused=false; start();});
-  let sx=0;
-  card.addEventListener("touchstart", e=>sx=e.touches[0].clientX,{passive:true});
-  card.addEventListener("touchend", e=>{
-    const dx=e.changedTouches[0].clientX - sx;
-    if(Math.abs(dx)>40){ dx>0?prev():next(); restart();}
-  });
-  document.addEventListener("keydown", e=>{
-    if(!$("#memories").matches(":hover") && document.activeElement.tagName!=="INPUT") return;
-    if(e.key==="ArrowRight") next();
-    if(e.key==="ArrowLeft") prev();
-  });
-  render(); start();
-}
-
-// MASONRY + LIGHTBOX
-function initializeLightbox(){
-  const grid=$("#galleryGrid"), lb=$("#lightbox"), lbImg=$("#lbImg"), lbCounter=$("#lbCounter");
-  let cur=0;
-  const imgs=weddingData.gallery;
-  if(!imgs.length){
-    $("#galleryEmpty").hidden=false;
-    return;
-  }
-  grid.innerHTML=imgs.map((g,i)=>`<div class="gallery_item" data-i="${i}"><img src="${g.src}" loading="lazy" alt="${g.cap}"><div class="gallery_item_meta"><span>${g.cat} — ${g.cap}</span></div></div>`).join("");
-  function open(i){cur=i; lbImg.src=imgs[cur].src; lbCounter.textContent=`${cur+1} / ${imgs.length}`; lb.classList.add("open"); document.body.style.overflow="hidden";}
-  function close(){lb.classList.remove("open"); document.body.style.overflow="";}
-  function nav(d){cur=(cur+d+imgs.length)%imgs.length; lbImg.src=imgs[cur].src; lbCounter.textContent=`${cur+1} / ${imgs.length}`;}
-  grid.addEventListener("click", e=>{
-    const it=e.target.closest(".gallery_item"); if(!it) return; open(+it.dataset.i);
-  });
-  $("#lbClose").addEventListener("click", close);
-  $("#lbPrev").addEventListener("click", ()=>nav(-1));
-  $("#lbNext").addEventListener("click", ()=>nav(1));
-  lb.addEventListener("click", e=>{if(e.target===lb) close();});
-  document.addEventListener("keydown", e=>{if(!lb.classList.contains("open")) return; if(e.key==="Escape") close(); if(e.key==="ArrowRight") nav(1); if(e.key==="ArrowLeft") nav(-1);});
-  let sx=0; lb.addEventListener("touchstart", e=>sx=e.touches[0].clientX,{passive:true});
-  lb.addEventListener("touchend", e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) nav(dx>0?-1:1);});
-}
-
-// WEDDING TIMELINE + VENUE
-function renderWedding(){
-  const tl=[
-    {time:`${weddingData.wedding.ceremonyTime} prompt`, label:"Ceremony", title:"Wedding ceremony", desc:"Saturday, November 21, 2026."},
-    {time:weddingData.wedding.receptionTime, label:"Reception", title:"Reception", desc:"Reception to follow the ceremony."}
-  ];
-  $("#weddingTimeline").innerHTML=tl.map(r=>`<div class="wt_row"><div class="wt_time">${r.time}<div class="wt_label">${r.label}</div></div><div><div class="wt_title">${r.title}</div><div class="wt_desc">${r.desc}</div></div></div>`).join("");
-  $("#venueName").textContent=weddingData.wedding.venue;
-  $("#venueAddr").innerHTML=`${weddingData.wedding.address}<br>${weddingData.wedding.city}<br><br>${weddingData.wedding.dateLabel} • ${weddingData.wedding.ceremonyTime} prompt`;
-  $("#viewMapBtn").href=weddingData.wedding.mapsUrl;
-}
-
-// DRESSCODE
-function renderDress(){
-  $("#dressSwatches").innerHTML=weddingData.dressColors.map(c=>`<div class="swatch"><div class="swatch_circle" style="background:${c.hex}"></div><span class="swatch_label">${c.name}</span></div>`).join("");
-}
-
-// MC
-function renderMC(){
-  const mc=weddingData.mc;
-  if(!mc) return;
-  $("#mcName").textContent=mc.name; $("#mcBio").textContent=mc.bio; $("#mcImg").src=mc.img;
-  $("#mcSocial").innerHTML=`<a href="${mc.socials.instagram}">Instagram</a><a href="${mc.socials.x}">X</a><a href="${mc.socials.website}">Website</a>`;
-}
-
-// INFO QA
-function renderInfoQA(){
-  $("#infoList").innerHTML=weddingData.info.map(i=>`<div class="info_item"><h4>${i.title}</h4><p>${i.text}</p></div>`).join("");
-  const qa=$("#qaList");
-  qa.innerHTML=weddingData.qa.map((q,i)=>`<div class="qa_item ${i===0?'open':''}"><button class="qa_q"><span>${q.q}</span><span>+</span></button><div class="qa_a"><p>${q.a}</p></div></div>`).join("");
-  qa.addEventListener("click", e=>{
-    const btn=e.target.closest(".qa_q"); if(!btn) return;
-    const item=btn.parentElement;
-    item.classList.toggle("open");
-  });
-}
-
-// SCROLL ANIMATIONS
-function initializeScrollAnimations(){
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting) e.target.classList.add("in");});},{threshold:.12});
-  $$(".reveal").forEach(el=>io.observe(el));
-}
-
-// RSVP + GUESTBOOK + SHARE + CAL
-function initializeRSVP(){
-  const form=$("#rsvpForm"), modal=$("#rsvpModal");
-  form.addEventListener("submit", e=>{
-    e.preventDefault();
-    modal.classList.add("open"); form.reset();
-  });
-  $("#rsvpModalClose").addEventListener("click", ()=>modal.classList.remove("open"));
-  modal.addEventListener("click", e=>{if(e.target===modal) modal.classList.remove("open");});
-}
-
-function initializeGuestbook(){
-  const list=$("#gbList"), form=$("#gbForm");
-  function render(){
-    list.innerHTML=weddingData.guestbook.length
-      ? weddingData.guestbook.map(g=>`<div class="gb_card"><div class="gb_msg">"${g.msg}"</div><div class="gb_name">— ${g.name}</div></div>`).join("")
-      : '<p class="gb_empty">Be the first to leave a message. The live wedding site moderates guestbook notes.</p>';
-  }
-  render();
-  form.addEventListener("submit", e=>{
-    e.preventDefault();
-    const fd=new FormData(form);
-    weddingData.guestbook.unshift({name:fd.get("gb_name"), msg:fd.get("gb_msg")});
-    render(); form.reset();
-  });
-}
-
-function initializeShare(){
-  const copy=$("#copyLinkBtn"), share=$("#shareBtn");
-  const url=location.href;
-  copy.addEventListener("click", async()=>{
-    try{await navigator.clipboard.writeText(url); copy.textContent="Copied!"; setTimeout(()=>copy.textContent="Copy Link",2000);}catch{prompt("Copy link:",url);}
-  });
-  share.addEventListener("click", async()=>{
-    const data={title:`${weddingData.couple.partnerOne} & ${weddingData.couple.partnerTwo} | ${weddingData.couple.hashtag}`, text:`Join us on ${weddingData.wedding.dateLabel}`, url};
-    if(navigator.share){try{await navigator.share(data);}catch{}} else { await navigator.clipboard.writeText(url); share.textContent="Link copied"; setTimeout(()=>share.textContent="Share",2000); }
-  });
-}
-
-function initializeCalendar(){
-  function makeICS(){
-    const dt=weddingData.wedding.date.replace(/-/g,"");
-    const ics=`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//With the Gospels//Wedding//EN
-BEGIN:VEVENT
-DTSTART;TZID=Africa/Lagos:${dt}T110000
-SUMMARY:${weddingData.couple.partnerOne} & ${weddingData.couple.partnerTwo} Wedding — ${weddingData.couple.hashtag}
-LOCATION:${weddingData.wedding.venue}, ${weddingData.wedding.address}, ${weddingData.wedding.city}
-DESCRIPTION:Wedding ceremony begins at 11:00 AM prompt. Reception to follow.
-END:VEVENT
-END:VCALENDAR`;
-    const blob=new Blob([ics],{type:"text/calendar"});
-    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="The-Gospels-Wedding.ics"; a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  }
-  $("#addCalBtn").addEventListener("click", makeICS);
-  $("#addCalBtn2").addEventListener("click", makeICS);
-  $("#venueJump").addEventListener("click", ()=>document.querySelector("#venue").scrollIntoView({behavior:"smooth"}));
-  $("#copyAddrBtn").addEventListener("click", async()=>{
-    const t=`${weddingData.wedding.venue}, ${weddingData.wedding.address}, ${weddingData.wedding.city}`;
-    try{await navigator.clipboard.writeText(t); $("#copyAddrBtn").textContent="Copied!"; setTimeout(()=>$("#copyAddrBtn").textContent="Copy address",2000);}catch{prompt("Address:",t);}
-  });
-}
-
-// INIT
-document.addEventListener("DOMContentLoaded", ()=>{
-  initializeNavigation();
-  initializeCountdown();
-  renderStory();
-  initializePodcast();
-  initializeGallery();
-  initializeLightbox();
-  renderWedding();
-  renderDress();
-  renderMC();
-  renderInfoQA();
-  initializeScrollAnimations();
-  initializeRSVP();
-  initializeGuestbook();
-  initializeShare();
-  initializeCalendar();
-  // image fallback
-  document.addEventListener("error", e=>{
-    if(e.target.tagName==="IMG"){e.target.style.background="var(--beige)"; e.target.alt="Image unavailable";}
-  }, true);
-});
-</script>
+    <footer class="footer">
+      <span>Thank you for understanding</span>
+      <span class="footer-note">#THEGOSPELS26</span>
+    </footer>
+  </main>
 </body>
 </html>

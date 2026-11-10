@@ -18,6 +18,42 @@ class ExampleTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Keep the established homepage coverage while production is intentionally paused.
+        config(['app.public_site_paused' => false]);
+    }
+
+    public function test_paused_homepage_shows_a_text_only_landing_page(): void
+    {
+        config(['app.public_site_paused' => true]);
+
+        $response = $this->get('/');
+        $response->assertOk()
+            ->assertHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->assertSee('A quiet pause.')
+            ->assertSee('Our wedding website is temporarily paused while we review a few things.')
+            ->assertSee('Thank you for your patience and understanding. Please check back later.')
+            ->assertSee('Benny &amp; Chiamaka', false)
+            ->assertSee('#THEGOSPELS26')
+            ->assertDontSee('og:image')
+            ->assertDontSee('twitter:image');
+
+        $html = $response->getContent();
+        foreach (['<img', '<picture', '<svg', '<video', '<iframe', 'background-image', 'og-wedding-couple.jpg', 'story-chiamaka.jpg', 'story-benny.jpg'] as $imageMarkup) {
+            $this->assertStringNotContainsString($imageMarkup, $html);
+        }
+
+        $staticLanding = file_get_contents(base_path('index.html'));
+        $this->assertIsString($staticLanding);
+        $this->assertStringContainsString('A quiet pause.', $staticLanding);
+        foreach (['<img', '<picture', '<svg', '<video', '<iframe', 'background-image', 'og-wedding-couple.jpg', 'story-chiamaka.jpg', 'story-benny.jpg'] as $imageMarkup) {
+            $this->assertStringNotContainsString($imageMarkup, $staticLanding);
+        }
+    }
+
     public function test_homepage_renders_without_seeded_demo_content(): void
     {
         $this->get('/')
