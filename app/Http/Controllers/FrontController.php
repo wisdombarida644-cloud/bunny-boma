@@ -16,7 +16,7 @@ class FrontController extends Controller
 {
     public function index()
     {
-        if (config('app.public_site_paused', true)) {
+        if (config('app.public_site_paused', false)) {
             return response()
                 ->view('paused')
                 ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')

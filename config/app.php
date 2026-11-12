@@ -89,11 +89,11 @@ return [
     | Public landing-page pause
     |--------------------------------------------------------------------------
     |
-    | Keep the public homepage on its text-only holding page until the couple
-    | approves returning the full wedding site.
+    | The full wedding website is active by default. Set PUBLIC_SITE_PAUSED
+    | to true only when the couple requests the text-only holding page.
     |
     */
-    'public_site_paused' => env('PUBLIC_SITE_PAUSED', true),
+    'public_site_paused' => env('PUBLIC_SITE_PAUSED', false),
 
     /*
     |--------------------------------------------------------------------------

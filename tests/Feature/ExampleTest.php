@@ -18,14 +18,6 @@ class ExampleTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Keep the established homepage coverage while production is intentionally paused.
-        config(['app.public_site_paused' => false]);
-    }
-
     public function test_paused_homepage_shows_a_text_only_landing_page(): void
     {
         config(['app.public_site_paused' => true]);
@@ -56,6 +48,8 @@ class ExampleTest extends TestCase
 
     public function test_homepage_renders_without_seeded_demo_content(): void
     {
+        $this->assertFalse(config('app.public_site_paused'));
+
         $this->get('/')
             ->assertOk()
             ->assertDontSee('The Beginning of Forever')
