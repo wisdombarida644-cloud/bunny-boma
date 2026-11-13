@@ -22,6 +22,35 @@
   </div>
 
   <div class="card">
+    <div class="card_head"><h3>Our Story Portraits</h3></div>
+    <div class="card_body grid2">
+      <p style="grid-column:1/-1;font-size:12px;opacity:.7;margin:0">Choose the individual portrait shown with each account in the Our Story section. Uploading a new image replaces only that person’s portrait; leave the file input empty to keep the current one.</p>
+
+      <div class="field">
+        <label for="story_chiamaka_photo">Her side — Chiamaka</label>
+        <img src="{{ $setting->story_chiamaka_photo_path ?: asset('images/story-chiamaka.jpg') }}" alt="Current Chiamaka story portrait" style="display:block;width:112px;height:144px;object-fit:cover;object-position:center;border:1px solid rgba(29,33,30,.16);margin:8px 0 12px">
+        <input id="story_chiamaka_photo" type="file" name="story_chiamaka_photo" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp">
+        <small style="display:block;opacity:.65;margin-top:6px">JPG, PNG, or WebP; maximum 10 MB.</small>
+        @error('story_chiamaka_photo')<small style="display:block;color:#b42318;margin-top:5px">{{ $message }}</small>@enderror
+        @if($setting->story_chiamaka_photo_path)
+          <label style="display:flex;align-items:center;gap:8px;margin-top:12px;text-transform:none;letter-spacing:0"><input type="checkbox" name="remove_story_chiamaka_photo" value="1"> Restore the supplied default portrait</label>
+        @endif
+      </div>
+
+      <div class="field">
+        <label for="story_benny_photo">His side — Benny</label>
+        <img src="{{ $setting->story_benny_photo_path ?: asset('images/story-benny.jpg') }}" alt="Current Benny story portrait" style="display:block;width:112px;height:144px;object-fit:cover;object-position:center;border:1px solid rgba(29,33,30,.16);margin:8px 0 12px">
+        <input id="story_benny_photo" type="file" name="story_benny_photo" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp">
+        <small style="display:block;opacity:.65;margin-top:6px">JPG, PNG, or WebP; maximum 10 MB.</small>
+        @error('story_benny_photo')<small style="display:block;color:#b42318;margin-top:5px">{{ $message }}</small>@enderror
+        @if($setting->story_benny_photo_path)
+          <label style="display:flex;align-items:center;gap:8px;margin-top:12px;text-transform:none;letter-spacing:0"><input type="checkbox" name="remove_story_benny_photo" value="1"> Restore the supplied default portrait</label>
+        @endif
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card_head"><h3>Date, Time & Venue</h3></div>
     <div class="card_body grid2">
       <div class="field"><label>Wedding Date</label><input type="date" name="wedding_date" value="{{ old('wedding_date', $setting->wedding_date) }}" required></div>

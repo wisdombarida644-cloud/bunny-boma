@@ -30,7 +30,7 @@ class PublicMediaController extends Controller
     {
         $path = str_replace('\\', '/', $path);
         $segments = explode('/', $path);
-        $allowedDirectories = ['audio', 'docs', 'gallery', 'mc', 'memories'];
+        $allowedDirectories = ['audio', 'docs', 'gallery', 'mc', 'memories', 'story'];
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
         $contentType = self::MIME_TYPES[$extension] ?? null;
 

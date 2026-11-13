@@ -72,6 +72,10 @@ class SettingController extends Controller
             'account_name' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:64',
             'cash_gift_note' => 'nullable|string|max:2000',
+            'story_chiamaka_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10240',
+            'story_benny_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:10240',
+            'remove_story_chiamaka_photo' => 'sometimes|boolean',
+            'remove_story_benny_photo' => 'sometimes|boolean',
             'background_music_enabled' => 'sometimes|boolean',
             'background_music_file' => 'nullable|file|mimes:mp3,wav,ogg,m4a,aac|max:20480',
             'remove_background_music' => 'sometimes|boolean',
@@ -87,7 +91,14 @@ class SettingController extends Controller
         }
 
         $data['background_music_enabled'] = $request->boolean('background_music_enabled');
-        unset($data['background_music_file'], $data['remove_background_music']);
+        unset(
+            $data['story_chiamaka_photo'],
+            $data['story_benny_photo'],
+            $data['remove_story_chiamaka_photo'],
+            $data['remove_story_benny_photo'],
+            $data['background_music_file'],
+            $data['remove_background_music'],
+        );
 
         if ($request->hasFile('order_pdf')) {
             $path = $request->file('order_pdf')->store('docs', 'public');
@@ -108,6 +119,30 @@ class SettingController extends Controller
             $this->deleteStoredPublicFile($setting->background_music_path);
             $data['background_music_path'] = null;
             $data['background_music_enabled'] = false;
+        }
+
+        if ($request->hasFile('story_chiamaka_photo')) {
+            $path = $request->file('story_chiamaka_photo')->store('story/chiamaka', 'public');
+            if (! $path) {
+                return back()->withErrors(['story_chiamaka_photo' => 'Chiamaka’s portrait could not be saved. Please try again.'])->withInput();
+            }
+            $this->deleteStoredPublicFile($setting->story_chiamaka_photo_path);
+            $data['story_chiamaka_photo_path'] = '/media/'.$path;
+        } elseif ($request->boolean('remove_story_chiamaka_photo')) {
+            $this->deleteStoredPublicFile($setting->story_chiamaka_photo_path);
+            $data['story_chiamaka_photo_path'] = null;
+        }
+
+        if ($request->hasFile('story_benny_photo')) {
+            $path = $request->file('story_benny_photo')->store('story/benny', 'public');
+            if (! $path) {
+                return back()->withErrors(['story_benny_photo' => 'Benny’s portrait could not be saved. Please try again.'])->withInput();
+            }
+            $this->deleteStoredPublicFile($setting->story_benny_photo_path);
+            $data['story_benny_photo_path'] = '/media/'.$path;
+        } elseif ($request->boolean('remove_story_benny_photo')) {
+            $this->deleteStoredPublicFile($setting->story_benny_photo_path);
+            $data['story_benny_photo_path'] = null;
         }
 
         $setting->update($data);

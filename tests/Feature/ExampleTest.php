@@ -7,6 +7,7 @@ use App\Models\Guestbook;
 use App\Models\Mc;
 use App\Models\Moment;
 use App\Models\User;
+use App\Models\WeddingSetting;
 use Database\Seeders\DemoPhotoSeeder;
 use Database\Seeders\WeddingDatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -376,6 +377,7 @@ class ExampleTest extends TestCase
         Storage::fake('public');
         Storage::disk('public')->put('audio/wedding-track.mp3', 'audio-test-data');
         Storage::disk('public')->put('gallery/couple-photo.jpg', 'image-test-data');
+        Storage::disk('public')->put('story/chiamaka/portrait.png', 'story-image-test-data');
 
         $this->get('/media/audio/wedding-track.mp3')
             ->assertOk()
@@ -385,7 +387,110 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'image/jpeg')
             ->assertHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        $this->get('/media/story/chiamaka/portrait.png')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/png')
+            ->assertHeader('Cache-Control', 'public, max-age=31536000, immutable');
         $this->get('/media/private/secret.mp3')->assertNotFound();
+    }
+
+    public function test_admin_can_upload_and_restore_each_story_portrait(): void
+    {
+        Storage::fake('public');
+        $this->seed(WeddingDatabaseSeeder::class);
+        $admin = User::factory()->create();
+        $setting = WeddingSetting::firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.settings.edit'))
+            ->assertOk()
+            ->assertSee('Her side — Chiamaka')
+            ->assertSee('His side — Benny')
+            ->assertSee('name="story_chiamaka_photo"', false)
+            ->assertSee('name="story_benny_photo"', false);
+
+        $settingsData = [
+            'partner_one' => $setting->partner_one,
+            'partner_two' => $setting->partner_two,
+            'hashtag' => $setting->hashtag,
+            'wedding_date' => $setting->wedding_date,
+            'wedding_time' => $setting->wedding_time,
+            'timezone' => $setting->timezone,
+            'venue_name' => $setting->venue_name,
+            'address' => $setting->address,
+            'city' => $setting->city,
+            'maps_url' => $setting->maps_url,
+            'arrival_time' => $setting->arrival_time,
+            'ceremony_time' => $setting->ceremony_time,
+            'reception_time' => $setting->reception_time,
+            'family_one' => $setting->family_one,
+            'family_two' => $setting->family_two,
+            'rsvp_deadline' => $setting->rsvp_deadline?->format('Y-m-d'),
+            'whatsapp_phone' => $setting->whatsapp_phone,
+        ];
+        $pixelPng = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADUlEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC');
+        $temporaryImages = [];
+
+        try {
+            $storyUploads = [];
+            foreach ([
+                'story_chiamaka_photo' => 'chiamaka-portrait.png',
+                'story_benny_photo' => 'benny-portrait.png',
+            ] as $field => $filename) {
+                $temporaryPath = tempnam(sys_get_temp_dir(), 'story-portrait-');
+                file_put_contents($temporaryPath, $pixelPng);
+                $temporaryImages[] = $temporaryPath;
+                $storyUploads[$field] = new UploadedFile($temporaryPath, $filename, 'image/png', UPLOAD_ERR_OK, true);
+            }
+
+            $this->actingAs($admin)
+                ->post(route('admin.settings.update'), array_merge($settingsData, $storyUploads))
+                ->assertRedirect()
+                ->assertSessionHas('success', 'Wedding settings updated successfully!');
+        } finally {
+            foreach ($temporaryImages as $temporaryPath) {
+                if (is_file($temporaryPath)) {
+                    unlink($temporaryPath);
+                }
+            }
+        }
+
+        $setting->refresh();
+        $this->assertStringStartsWith('/media/story/chiamaka/', $setting->story_chiamaka_photo_path);
+        $this->assertStringStartsWith('/media/story/benny/', $setting->story_benny_photo_path);
+        Storage::disk('public')->assertExists(substr($setting->story_chiamaka_photo_path, strlen('/media/')));
+        Storage::disk('public')->assertExists(substr($setting->story_benny_photo_path, strlen('/media/')));
+        $this->actingAs($admin)
+            ->get(route('admin.settings.edit'))
+            ->assertOk()
+            ->assertSee('src="'.$setting->story_chiamaka_photo_path.'"', false)
+            ->assertSee('src="'.$setting->story_benny_photo_path.'"', false)
+            ->assertSee('name="remove_story_chiamaka_photo"', false)
+            ->assertSee('name="remove_story_benny_photo"', false);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('data-story-photo-chiamaka-src="'.$setting->story_chiamaka_photo_path.'"', false)
+            ->assertSee('data-story-photo-benny-src="'.$setting->story_benny_photo_path.'"', false);
+        $this->get($setting->story_chiamaka_photo_path)
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/png');
+
+        $bennyStoredPath = substr($setting->story_benny_photo_path, strlen('/media/'));
+        $this->actingAs($admin)
+            ->post(route('admin.settings.update'), array_merge($settingsData, [
+                'remove_story_benny_photo' => '1',
+            ]))
+            ->assertRedirect()
+            ->assertSessionHas('success', 'Wedding settings updated successfully!');
+
+        $setting->refresh();
+        $this->assertNull($setting->story_benny_photo_path);
+        Storage::disk('public')->assertMissing($bennyStoredPath);
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('data-story-photo-chiamaka-src="'.$setting->story_chiamaka_photo_path.'"', false)
+            ->assertSee('data-story-photo-benny-src="'.asset('images/story-benny.jpg').'"', false);
     }
 
     public function test_admin_can_save_an_optimized_replacement_for_an_existing_gallery_photo(): void

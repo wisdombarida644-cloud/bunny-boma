@@ -135,8 +135,8 @@
   $storyPhotoCredit = $hasStorySides
     ? 'As told by Chiamaka'
     : 'As told by '.$partnerOneFirst.' & '.$partnerTwoFirst;
-  $storyPhotoChiamaka = asset('images/story-chiamaka.jpg');
-  $storyPhotoBenny = asset('images/story-benny.jpg');
+  $storyPhotoChiamaka = $setting->story_chiamaka_photo_path ?: asset('images/story-chiamaka.jpg');
+  $storyPhotoBenny = $setting->story_benny_photo_path ?: asset('images/story-benny.jpg');
 @endphp
 <section class="how story_feature" id="howWeMet" aria-labelledby="storyHeadline">
   <div class="story_feature_inner">
